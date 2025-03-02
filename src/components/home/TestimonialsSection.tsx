@@ -15,7 +15,7 @@ const testimonials = [
   {
     name: "Michael Davis",
     location: "Peachtree City, GA",
-    text: "After a home insurance claim, I was blown away by how the team advocated for me. They handled everything and made sure I received a fair settlement quickly.",
+    text: "Standard Financial Group delivered exceptional service when helping me with my home insurance. They found comprehensive coverage at competitive rates and made the whole process seamless.",
     initials: "MD",
     rating: 5
   },
