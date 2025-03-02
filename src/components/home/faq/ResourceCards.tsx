@@ -1,24 +1,29 @@
 
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 // Insurance resources content
 const insuranceResources = [
   {
     title: "Understanding Auto Insurance Deductibles",
-    description: "How to choose the right deductible for your needs and budget while balancing premium costs and out-of-pocket expenses."
+    description: "How to choose the right deductible for your needs and budget while balancing premium costs and out-of-pocket expenses.",
+    slug: "understanding-auto-insurance-deductibles"
   },
   {
     title: "Home Insurance Coverage Gaps",
-    description: "Identify and address common coverage gaps that could leave you financially vulnerable in the event of a disaster."
+    description: "Identify and address common coverage gaps that could leave you financially vulnerable in the event of a disaster.",
+    slug: "home-insurance-coverage-gaps"
   },
   {
     title: "Business Insurance Essentials",
-    description: "Key coverages every business owner should consider to protect their company from common risks and liabilities."
+    description: "Key coverages every business owner should consider to protect their company from common risks and liabilities.",
+    slug: "business-insurance-essentials"
   },
   {
     title: "Insurance Tips for New Homeowners",
-    description: "What first-time homebuyers need to know about protecting their investment with the right insurance coverage."
+    description: "What first-time homebuyers need to know about protecting their investment with the right insurance coverage.",
+    slug: "insurance-tips-for-new-homeowners"
   }
 ];
 
@@ -41,7 +46,9 @@ const ResourceCards = () => {
             <h4 className="font-medium text-sm mb-2">{resource.title}</h4>
             <p className="text-xs text-gray-600">{resource.description}</p>
             <div className="mt-3">
-              <a href="#" className="text-xs text-sky-600 hover:underline">Read more →</a>
+              <Link to={`/blog#${resource.slug}`} className="text-xs text-sky-600 hover:underline">
+                Read more →
+              </Link>
             </div>
           </Card>
         ))}

@@ -17,7 +17,9 @@ const FAQSection = () => {
         <SavingsChart />
         <ClientSatisfaction />
         <ServiceAreas />
-        <ResourceCards />
+        <div className="mt-12">
+          <ResourceCards />
+        </div>
         <ContactCTA />
         <SEOContent />
       </div>
