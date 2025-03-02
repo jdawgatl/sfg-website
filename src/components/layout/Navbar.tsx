@@ -42,22 +42,23 @@ const Navbar = () => {
     <nav className="bg-white shadow-lg sticky top-0 z-50 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-24">
+          {/* Logo and Phone Section - Improved for responsiveness */}
           <div className="flex items-center">
-            <div className="text-center">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start">
               <Link to="/" className="block">
-                <h1 className="text-2xl md:text-3xl font-bold animate-fade-in">
-                  <span className="bg-gradient-to-r from-sky-800 to-sky-500 bg-clip-text text-transparent border-2 border-sky-600 px-2 py-1 rounded-lg">
+                <div className="flex items-center whitespace-nowrap">
+                  <span className="bg-gradient-to-r from-sky-800 to-sky-500 bg-clip-text text-transparent border-2 border-sky-600 px-2 py-1 rounded-lg text-2xl md:text-3xl font-bold">
                     STANDARD
                   </span>
-                  <span className="text-[80%] text-gray-600 ml-2">
+                  <span className="text-gray-600 text-xl ml-2 whitespace-nowrap">
                     Financial Group
                   </span>
-                </h1>
+                </div>
               </Link>
-              <div className="mt-1">
+              <div className="mt-1 sm:mt-2 sm:ml-2">
                 <a 
                   href="tel:+17709977999" 
-                  className="inline-flex items-center text-lg text-sky-600 hover:text-sky-700 transition-colors group"
+                  className="inline-flex items-center text-lg text-sky-600 hover:text-sky-700 transition-colors group whitespace-nowrap"
                   aria-label="Call us at (770) 997-7999"
                 >
                   <Phone className="h-4 w-4 mr-1 group-hover:scale-110 transition-transform" />
