@@ -85,7 +85,7 @@ const Navbar = () => {
                                 <NavigationMenuLink asChild>
                                   <Link
                                     to={subItem.href}
-                                    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-sky-100 hover:text-sky-600 focus:bg-sky-100 focus:text-sky-600"
                                   >
                                     <div className="text-sm font-medium leading-none">{subItem.name}</div>
                                   </Link>
@@ -96,7 +96,7 @@ const Navbar = () => {
                               <NavigationMenuLink asChild>
                                 <Link
                                   to={item.href}
-                                  className="block select-none rounded-md p-3 text-sm leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground text-sky-600 font-medium"
+                                  className="block select-none rounded-md p-3 text-sm leading-none no-underline outline-none transition-colors hover:bg-sky-100 hover:text-sky-600 focus:bg-sky-100 focus:text-sky-600 text-sky-600 font-medium"
                                 >
                                   View All Products
                                 </Link>
@@ -166,7 +166,7 @@ const Navbar = () => {
                 ) : (
                   <Link 
                     to={item.href} 
-                    className="text-gray-700 hover:text-sky-600 transition-colors block px-3 py-2 hover:bg-gray-50 text-base font-medium"
+                    className="text-gray-700 hover:text-sky-600 transition-colors block px-3 py-2 hover:bg-sky-50 text-base font-medium"
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}
