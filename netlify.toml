@@ -62,4 +62,3 @@
   minify = true
 [build.processing.images]
   compress = true
-

@@ -1,3 +1,4 @@
+
 import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -29,6 +30,10 @@ const NotFound = lazy(() => import("@/pages/NotFound"));
 const GeorgiaInsurance = lazy(() => import("@/pages/landing/GeorgiaInsurance"));
 const TennesseeAutoInsurance = lazy(() => import("@/pages/landing/TennesseeAutoInsurance"));
 const MississippiHomeInsurance = lazy(() => import("@/pages/landing/MississippiHomeInsurance"));
+
+// New surety bond landing pages
+const SuretyBonds = lazy(() => import("@/pages/landing/SuretyBonds"));
+const TitleBonds = lazy(() => import("@/pages/landing/TitleBonds"));
 
 const SEOWrapper = () => {
   const location = useLocation();
@@ -272,6 +277,17 @@ const AnimatedRoutes = () => {
         <Route path="/mississippi-home-insurance" element={
           <Suspense fallback={<LoadingFallback />}>
             <MississippiHomeInsurance />
+          </Suspense>
+        } />
+        {/* New surety bond routes */}
+        <Route path="/surety-bonds" element={
+          <Suspense fallback={<LoadingFallback />}>
+            <SuretyBonds />
+          </Suspense>
+        } />
+        <Route path="/landing/title-bonds" element={
+          <Suspense fallback={<LoadingFallback />}>
+            <TitleBonds />
           </Suspense>
         } />
         <Route path="*" element={
