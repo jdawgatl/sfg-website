@@ -1,6 +1,5 @@
 
 import { Link } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
 import { Shield, Check, DollarSign, FileText, Building, MapPin } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -16,7 +15,6 @@ import {
   CallToAction,
   SEOContent
 } from "./components/surety";
-import { SEOWrapper } from "@/components/seo/SEOWrapper";
 
 const SuretyBonds = () => {
   const bondTypes: BondType[] = [
@@ -49,10 +47,6 @@ const SuretyBonds = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <HelmetProvider>
-        <SEOWrapper />
-      </HelmetProvider>
-
       <Navbar />
       <main className="flex-grow">
         <HeroSection />

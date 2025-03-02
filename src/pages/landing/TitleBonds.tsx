@@ -1,5 +1,4 @@
 
-import { HelmetProvider } from "react-helmet-async";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ContactForm from "@/components/shared/ContactForm";
@@ -16,15 +15,10 @@ import {
   FAQSection, 
   TitleBondSEO 
 } from "./components/surety";
-import { SEOWrapper } from "@/components/seo/SEOWrapper";
 
 const TitleBonds = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <HelmetProvider>
-        <SEOWrapper />
-      </HelmetProvider>
-
       <Navbar />
       <main className="flex-grow">
         {/* Hero Section */}
