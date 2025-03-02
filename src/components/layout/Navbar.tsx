@@ -45,16 +45,21 @@ const Navbar = () => {
         <div className="flex justify-between h-24">
           {/* Logo Section with Stacked Text */}
           <div className="flex items-center">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col">
               <Link to="/" className="block">
-                <span className="bg-gradient-to-r from-sky-800 to-sky-500 bg-clip-text text-transparent border-2 border-sky-600 px-2 py-1 rounded-lg text-2xl md:text-3xl font-bold">
+                <div className="text-[#003087] text-3xl md:text-4xl font-bold tracking-wide">
                   STANDARD
-                </span>
+                </div>
               </Link>
-              <span className="text-gray-600 text-lg">Financial Group</span>
+              <div className="text-[#003087] text-xl md:text-2xl font-semibold tracking-wide">
+                FINANCIAL GROUP
+              </div>
+              <div className="text-[#003087] text-sm md:text-base">
+                INSURANCE & BONDS
+              </div>
               <a 
                 href="tel:+17709977999" 
-                className="inline-flex items-center text-sm text-sky-600 hover:text-sky-700 transition-colors group"
+                className="mt-1 inline-flex items-center text-sm text-sky-600 hover:text-sky-700 transition-colors group"
                 aria-label="Call us at (770) 997-7999"
               >
                 <Phone className="h-3 w-3 mr-1 group-hover:scale-110 transition-transform" />
@@ -127,9 +132,6 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-
-      {/* Full-width separator */}
-      <Separator className="h-0.5 bg-sky-500" />
 
       {/* Mobile menu */}
       {isOpen && (
