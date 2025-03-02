@@ -1,2 +1,4 @@
 
-export { default } from "./ContactForm";
+import ContactFormComponent from "./ContactForm/index";
+
+export default ContactFormComponent;
