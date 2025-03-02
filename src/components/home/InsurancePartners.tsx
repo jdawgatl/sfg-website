@@ -40,6 +40,7 @@ const InsurancePartners = () => {
                     width={120}
                     height={120}
                     className="object-contain"
+                    loading={index < 5 ? "eager" : "lazy"}
                   />
                 </div>
               </motion.div>

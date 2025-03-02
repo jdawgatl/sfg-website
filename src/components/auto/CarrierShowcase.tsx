@@ -1,6 +1,7 @@
 
 import { Tag } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Image } from "@/components/ui/image";
 
 const CarrierShowcase = () => {
   return (
@@ -11,12 +12,12 @@ const CarrierShowcase = () => {
           Our Auto Insurance Carriers
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          <img src="/images/progressive.avif" alt="Progressive Insurance" className="h-12 object-contain" />
-          <img src="/images/dairyland.avif" alt="Dairyland Insurance" className="h-12 object-contain" />
-          <img src="/images/national-general.avif" alt="National General" className="h-12 object-contain" />
-          <img src="/images/safeway-insurance.avif" alt="Safeway Insurance" className="h-12 object-contain" />
-          <img src="/images/clearcover.avif" alt="Clearcover Insurance" className="h-12 object-contain" />
-          <img src="/images/geico.avif" alt="Geico Insurance" className="h-12 object-contain" />
+          <Image src="/images/progressive.avif" alt="Progressive Insurance" className="h-12 object-contain" width={120} height={48} />
+          <Image src="/images/dairyland.avif" alt="Dairyland Insurance" className="h-12 object-contain" width={120} height={48} />
+          <Image src="/images/national-general.avif" alt="National General" className="h-12 object-contain" width={120} height={48} />
+          <Image src="/images/safeway-insurance.avif" alt="Safeway Insurance" className="h-12 object-contain" width={120} height={48} />
+          <Image src="/images/clearcover.avif" alt="Clearcover Insurance" className="h-12 object-contain" width={120} height={48} />
+          <Image src="/images/geico.avif" alt="Geico Insurance" className="h-12 object-contain" width={120} height={48} />
         </div>
       </CardContent>
     </Card>

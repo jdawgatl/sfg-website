@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { Image } from "@/components/ui/image";
 
 const backgroundImages = [
   "/images/hero-background1.avif",
@@ -20,6 +21,7 @@ const Hero = () => {
     backgroundImages.forEach((src) => {
       const img = new Image();
       img.src = src;
+      img.onload = () => setIsImageLoaded(true);
     });
 
     const interval = setInterval(() => {
@@ -41,15 +43,22 @@ const Hero = () => {
       {backgroundImages.map((image, index) => (
         <div
           key={image}
-          className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out"
+          className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
           style={{
-            backgroundImage: `url("${image}")`,
             opacity: currentImageIndex === index ? 1 : 0,
             zIndex: 1
           }}
-          role="img"
-          aria-label={`Background image ${index + 1}`}
-        />
+        >
+          <Image
+            src={image}
+            alt={`Background image ${index + 1}`}
+            className="absolute w-full h-full object-cover"
+            width={1920}
+            height={1080}
+            priority={index === 0}
+            sizes="100vw"
+          />
+        </div>
       ))}
 
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">

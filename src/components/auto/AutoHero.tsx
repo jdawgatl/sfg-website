@@ -1,14 +1,17 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Image } from "@/components/ui/image";
 
 const AutoHero = () => {
   return (
     <section className="relative h-[400px]">
-      <img
+      <Image
         src="/images/products-auto-cover.avif"
         alt="Cheap Car Insurance in Fayetteville GA"
         className="absolute inset-0 w-full h-full object-cover"
+        width={1920}
+        height={400}
       />
       <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
         <div className="text-center">

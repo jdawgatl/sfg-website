@@ -3,6 +3,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Card } from "@/components/ui/card";
 import { carriers } from "@/data/carriers";
 import { motion } from "framer-motion";
+import { Image } from "@/components/ui/image";
 
 const CarrierLogos = () => {
   return (
@@ -33,14 +34,13 @@ const CarrierLogos = () => {
                   <div className="p-1">
                     <Card className="p-6">
                       <div className="aspect-square relative flex items-center justify-center p-2">
-                        <img 
+                        <Image 
                           src={carrier.logo} 
                           alt={carrier.name} 
                           loading="lazy" 
-                          decoding="async" 
                           className="object-contain max-w-full max-h-full" 
-                          width="200" 
-                          height="200" 
+                          width={200} 
+                          height={200} 
                         />
                       </div>
                     </Card>

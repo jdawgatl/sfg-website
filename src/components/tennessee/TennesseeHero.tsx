@@ -1,14 +1,17 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Image } from "@/components/ui/image";
 
 const TennesseeHero = () => {
   return (
     <div className="relative h-[500px]">
-      <img
+      <Image
         src="/images/toyota.avif"
         alt="Tennessee Auto Insurance"
         className="w-full h-full object-cover"
+        width={1920}
+        height={500}
       />
       <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
         <div className="text-center max-w-4xl mx-auto px-4">
