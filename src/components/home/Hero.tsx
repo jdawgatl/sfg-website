@@ -19,7 +19,7 @@ const Hero = () => {
   useEffect(() => {
     // Preload images
     backgroundImages.forEach((src) => {
-      const img = new Image();
+      const img = document.createElement('img');
       img.src = src;
       img.onload = () => setIsImageLoaded(true);
     });
