@@ -11,7 +11,7 @@ import { Lock } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
-export const AgentLogin = () => {
+const AgentLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -110,3 +110,5 @@ export const AgentLogin = () => {
     </div>
   );
 };
+
+export default AgentLogin;
