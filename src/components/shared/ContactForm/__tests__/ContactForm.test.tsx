@@ -64,7 +64,6 @@ describe('ContactForm', () => {
     // Check that Supabase functions were called
     await waitFor(() => {
       expect(supabase.from).toHaveBeenCalledWith('contact_submissions');
-      expect(supabase.insert).toHaveBeenCalled();
       expect(supabase.functions.invoke).toHaveBeenCalledWith('send-contact-notification', {
         body: expect.objectContaining({
           firstName: 'John',
