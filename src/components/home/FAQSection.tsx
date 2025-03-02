@@ -11,11 +11,16 @@ import SEOContent from "./faq/SEOContent";
 const FAQSection = () => {
   return (
     <section className="py-16 bg-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <FAQHeader />
         <FAQAccordion />
-        <SavingsChart />
-        <ClientSatisfaction />
+        
+        {/* Charts side by side */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+          <SavingsChart />
+          <ClientSatisfaction />
+        </div>
+        
         <ServiceAreas />
         <div className="mt-12">
           <ResourceCards />

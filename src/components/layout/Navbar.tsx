@@ -75,7 +75,7 @@ const Navbar = () => {
                   <NavigationMenuItem key={item.name}>
                     {item.submenu ? (
                       <>
-                        <NavigationMenuTrigger className="text-gray-700 hover:text-sky-600 transition-colors">
+                        <NavigationMenuTrigger className="text-gray-700 hover:text-sky-600 transition-colors text-base font-medium">
                           {item.name}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
@@ -108,7 +108,7 @@ const Navbar = () => {
                     ) : (
                       <Link 
                         to={item.href} 
-                        className="relative text-gray-700 hover:text-sky-600 transition-colors py-2 px-4 after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-sky-600 after:left-0 after:bottom-0 after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
+                        className="relative text-gray-700 hover:text-sky-600 transition-colors py-2 px-4 text-base font-medium after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-sky-600 after:left-0 after:bottom-0 after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
                       >
                         {item.name}
                       </Link>
@@ -143,7 +143,7 @@ const Navbar = () => {
                     <div className="flex items-center justify-between text-gray-700 px-3 py-2">
                       <Link 
                         to={item.href} 
-                        className="hover:text-sky-600 transition-colors"
+                        className="hover:text-sky-600 transition-colors text-base font-medium"
                         onClick={() => setIsOpen(false)}
                       >
                         {item.name}
@@ -166,7 +166,7 @@ const Navbar = () => {
                 ) : (
                   <Link 
                     to={item.href} 
-                    className="text-gray-700 hover:text-sky-600 transition-colors block px-3 py-2 hover:bg-gray-50"
+                    className="text-gray-700 hover:text-sky-600 transition-colors block px-3 py-2 hover:bg-gray-50 text-base font-medium"
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}
