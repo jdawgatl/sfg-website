@@ -48,6 +48,20 @@ export const SEOWrapper = () => {
   const seoConfig = getSEOConfig();
   const { title, description, keywords } = seoConfig;
   const structuredData = getSchemaMarkup(baseUrl, description);
+  
+  // Additional WebSite schema to help with site name display
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Standard Financial Group",
+    "alternateName": "SFG Insurance",
+    "url": baseUrl,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": `${baseUrl}/search?q={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
+  };
 
   return (
     <Helmet>
@@ -64,6 +78,9 @@ export const SEOWrapper = () => {
       <meta property="og:site_name" content="Standard Financial Group" />
       <script type="application/ld+json">
         {JSON.stringify(structuredData)}
+      </script>
+      <script type="application/ld+json">
+        {JSON.stringify(websiteSchema)}
       </script>
     </Helmet>
   );

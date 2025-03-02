@@ -39,7 +39,7 @@
     <meta name="rating" content="general" />
     <link rel="canonical" href="https://sfg-ins.com" />
     
-    <!-- Structured Data -->
+    <!-- Structured Data - Updated with more emphasis on organization name -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -48,7 +48,7 @@
         "alternateName": "Standard Financial Group Insurance",
         "image": "https://sfg-ins.com/images/logo.png",
         "description": "Trusted insurance agency in Fayetteville, GA providing comprehensive auto, home, commercial, and surety bond insurance solutions. Family-owned and operated since 1989.",
-        "@id": "https://sfg-ins.com",
+        "@id": "https://sfg-ins.com/#organization",
         "url": "https://sfg-ins.com",
         "telephone": "+17709977999",
         "address": {
@@ -132,6 +132,22 @@
               }
             }
           ]
+        }
+      }
+    </script>
+    
+    <!-- Additional WebSite Schema specifically for site name representation -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Standard Financial Group",
+        "alternateName": "SFG Insurance",
+        "url": "https://sfg-ins.com",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://sfg-ins.com/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
         }
       }
     </script>

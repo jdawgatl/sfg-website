@@ -64,7 +64,8 @@ export const getSchemaMarkup = (baseUrl: string, description: string) => {
         "name": "Mississippi"
       }
     ],
-    "description": description
+    "description": description,
+    "@id": `${baseUrl}/#organization`
   };
 };
 
