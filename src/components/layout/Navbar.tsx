@@ -43,31 +43,23 @@ const Navbar = () => {
     <nav className="bg-white shadow-lg sticky top-0 z-50 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-24">
-          {/* Logo and Phone Section - New Organized Layout */}
+          {/* Logo Section with Stacked Text */}
           <div className="flex items-center">
-            <div className="flex flex-row items-center">
-              {/* Logo with Stacked Text */}
-              <div className="flex flex-col items-start">
-                <Link to="/" className="block">
-                  <span className="bg-gradient-to-r from-sky-800 to-sky-500 bg-clip-text text-transparent border-2 border-sky-600 px-2 py-1 rounded-lg text-2xl md:text-3xl font-bold">
-                    STANDARD
-                  </span>
-                </Link>
-                <span className="text-gray-600 text-lg ml-1">Financial Group</span>
-                <Separator className="w-full h-0.5 bg-sky-500 mt-1" />
-              </div>
-              
-              {/* Phone Number - Always at the right of STANDARD */}
-              <div className="ml-4">
-                <a 
-                  href="tel:+17709977999" 
-                  className="inline-flex items-center text-lg text-sky-600 hover:text-sky-700 transition-colors group whitespace-nowrap"
-                  aria-label="Call us at (770) 997-7999"
-                >
-                  <Phone className="h-4 w-4 mr-1 group-hover:scale-110 transition-transform" />
-                  (770) 997-7999
-                </a>
-              </div>
+            <div className="flex flex-col items-center">
+              <Link to="/" className="block">
+                <span className="bg-gradient-to-r from-sky-800 to-sky-500 bg-clip-text text-transparent border-2 border-sky-600 px-2 py-1 rounded-lg text-2xl md:text-3xl font-bold">
+                  STANDARD
+                </span>
+              </Link>
+              <span className="text-gray-600 text-lg">Financial Group</span>
+              <a 
+                href="tel:+17709977999" 
+                className="inline-flex items-center text-sm text-sky-600 hover:text-sky-700 transition-colors group"
+                aria-label="Call us at (770) 997-7999"
+              >
+                <Phone className="h-3 w-3 mr-1 group-hover:scale-110 transition-transform" />
+                (770) 997-7999
+              </a>
             </div>
           </div>
 
@@ -89,7 +81,7 @@ const Navbar = () => {
                                 <NavigationMenuLink asChild>
                                   <Link
                                     to={subItem.href}
-                                    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-sky-100 hover:text-sky-600 focus:bg-sky-100 focus:text-sky-600"
                                   >
                                     <div className="text-sm font-medium leading-none">{subItem.name}</div>
                                   </Link>
@@ -100,7 +92,7 @@ const Navbar = () => {
                               <NavigationMenuLink asChild>
                                 <Link
                                   to={item.href}
-                                  className="block select-none rounded-md p-3 text-sm leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground text-sky-600 font-medium"
+                                  className="block select-none rounded-md p-3 text-sm leading-none no-underline outline-none transition-colors hover:bg-sky-100 hover:text-sky-600 focus:bg-sky-100 focus:text-sky-600 text-sky-600 font-medium"
                                 >
                                   View All Products
                                 </Link>
@@ -136,6 +128,9 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* Full-width separator */}
+      <Separator className="h-0.5 bg-sky-500" />
+
       {/* Mobile menu */}
       {isOpen && (
         <div className="md:hidden animate-fade-in">
@@ -170,7 +165,7 @@ const Navbar = () => {
                 ) : (
                   <Link 
                     to={item.href} 
-                    className="text-gray-700 hover:text-sky-600 transition-colors block px-3 py-2 hover:bg-gray-50 text-base font-medium"
+                    className="text-gray-700 hover:text-sky-600 transition-colors block px-3 py-2 hover:bg-sky-50 text-base font-medium"
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}
