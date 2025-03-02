@@ -9,6 +9,7 @@ import { Car, Shield, AlertTriangle, Clock, BadgeCheck, Coins, MapPin } from "lu
 import ContactForm from "@/components/shared/ContactForm";
 import { HelmetProvider } from "react-helmet-async";
 import { SEOWrapper } from "@/components/seo/SEOWrapper";
+import { Image } from "@/components/ui/image";
 
 const TennesseeAutoInsurance = () => {
   return (
@@ -91,10 +92,10 @@ const TennesseeAutoInsurance = () => {
               </Button>
             </div>
             <div className="space-y-6">
-              <img
+              <Image
                 src="/images/camaro-resized.avif"
                 alt="Tennessee Auto Insurance Coverage"
-                className="rounded-lg shadow-lg"
+                className="rounded-lg shadow-lg w-full h-[300px] object-cover object-center"
               />
               <div className="bg-sky-50 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3">Why Choose Us for Tennessee Auto Insurance?</h3>

@@ -6,16 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Car, Shield, Gauge, Ban, Clock, DollarSign, Tag, Award } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Helmet } from "react-helmet-async";
+import { HelmetProvider } from "react-helmet-async";
+import { SEOWrapper } from "@/components/seo/SEOWrapper";
+import { Image } from "@/components/ui/image";
 
 const Auto = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Helmet>
-        <title>Auto Insurance | Cheap Car Insurance | Fayetteville GA</title>
-        <meta name="description" content="Get affordable car insurance in Fayetteville, GA. Compare rates from multiple carriers for the best cheap auto insurance coverage with same-day service." />
-        <meta name="keywords" content="cheap car insurance Fayetteville GA, affordable auto insurance Georgia, car insurance quotes, cheap auto insurance, liability car insurance, full coverage auto insurance, SR22 insurance, high risk auto insurance" />
-      </Helmet>
+      <HelmetProvider>
+        <SEOWrapper />
+      </HelmetProvider>
       <Navbar />
 
       <main className="flex-grow">
@@ -127,10 +127,10 @@ const Auto = () => {
             </div>
 
             <div>
-              <img 
+              <Image 
                 src="/images/camaro.avif" 
                 alt="Cheap Car Insurance in Fayetteville GA"
-                className="rounded-lg shadow-lg w-full h-auto mb-8"
+                className="rounded-lg shadow-lg w-full h-[300px] object-cover object-center mb-8"
               />
               
               <Card className="shadow-md mb-8">
