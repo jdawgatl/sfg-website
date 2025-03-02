@@ -19,7 +19,7 @@ const Hero = () => {
   useEffect(() => {
     // Preload images
     backgroundImages.forEach((src) => {
-      const img = new Image();
+      const img = new HTMLImageElement();
       img.src = src;
       img.onload = () => setIsImageLoaded(true);
     });
@@ -55,7 +55,7 @@ const Hero = () => {
             className="absolute w-full h-full object-cover"
             width={1920}
             height={1080}
-            priority={index === 0}
+            loading={index === 0 ? "eager" : "lazy"}
             sizes="100vw"
           />
         </div>
