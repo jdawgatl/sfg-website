@@ -128,7 +128,7 @@ const Auto = () => {
 
             <div>
               <img 
-                src="/images/prodcuts-auto-car-insurance.avif" 
+                src="/images/camaro.avif" 
                 alt="Cheap Car Insurance in Fayetteville GA"
                 className="rounded-lg shadow-lg w-full h-auto mb-8"
               />
