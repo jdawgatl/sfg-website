@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
 
@@ -31,7 +31,7 @@ const faqs = [
   },
   {
     question: "Where do you provide insurance services?",
-    answer: "We're proud to serve all counties across Georgia including Fulton, Fayette, Coweta, Clayton, Henry, Spalding, and all other GA counties. We're also licensed in Tennessee and Mississippi, providing multi-state coverage options for our clients."
+    answer: "We're proud to serve all counties across Georgia including Fulton, Fayette, Coweta, Clayton, Henry, Spalding, DeKalb, Gwinnett, Cobb, Rockdale, Douglas, Cherokee, and all other GA counties. Our services extend to cities such as Atlanta, Fayetteville, Peachtree City, Newnan, McDonough, Jonesboro, Marietta, Alpharetta, Roswell, Sandy Springs, Decatur, and throughout Georgia. We're also licensed in Tennessee and Mississippi, providing multi-state coverage options for our clients."
   },
   {
     question: "How often should I review my insurance coverage?",
@@ -39,20 +39,40 @@ const faqs = [
   }
 ];
 
-// Client savings data for visualization
+// Average annual client savings data for visualization
 const savingsData = [
-  { name: "Auto Insurance", value: 32, color: "#0088FE" },
-  { name: "Home Insurance", value: 28, color: "#00C49F" },
-  { name: "Commercial", value: 18, color: "#FFBB28" },
-  { name: "Surety Bonds", value: 22, color: "#FF8042" }
+  { name: "Auto Insurance", savings: 485 },
+  { name: "Home Insurance", savings: 380 },
+  { name: "Commercial", savings: 1250 },
+  { name: "Surety Bonds", savings: 275 }
 ];
 
 // Client satisfaction data
 const satisfactionMetrics = [
   { name: "Customer Satisfaction", value: 96 },
-  { name: "Claims Assistance", value: 92 },
   { name: "Policy Customization", value: 94 },
-  { name: "Response Time", value: 98 }
+  { name: "Response Time", value: 98 },
+  { name: "Service Quality", value: 95 }
+];
+
+// Insurance resources content
+const insuranceResources = [
+  {
+    title: "Understanding Auto Insurance Deductibles",
+    description: "How to choose the right deductible for your needs and budget while balancing premium costs and out-of-pocket expenses."
+  },
+  {
+    title: "Home Insurance Coverage Gaps",
+    description: "Identify and address common coverage gaps that could leave you financially vulnerable in the event of a disaster."
+  },
+  {
+    title: "Business Insurance Essentials",
+    description: "Key coverages every business owner should consider to protect their company from common risks and liabilities."
+  },
+  {
+    title: "Insurance Tips for New Homeowners",
+    description: "What first-time homebuyers need to know about protecting their investment with the right insurance coverage."
+  }
 ];
 
 const FAQSection = () => {
@@ -89,7 +109,7 @@ const FAQSection = () => {
           </Accordion>
         </Card>
 
-        {/* Client Savings Visualization */}
+        {/* Average Annual Client Savings Bar Chart */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -97,35 +117,34 @@ const FAQSection = () => {
           className="mb-10"
         >
           <Card className="p-6">
-            <h3 className="text-xl font-bold text-center mb-6">Average Client Savings</h3>
-            <div className="h-64">
+            <h3 className="text-xl font-bold text-center mb-6">Average Annual Client Savings</h3>
+            <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={savingsData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                  >
-                    {savingsData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value) => `${value}%`} />
+                <BarChart
+                  data={savingsData}
+                  margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis label={{ value: 'Dollars Saved ($)', angle: -90, position: 'insideLeft' }} />
+                  <Tooltip formatter={(value) => [`$${value}`, "Annual Savings"]} />
                   <Legend />
-                </PieChart>
+                  <Bar dataKey="savings" name="Annual Savings" fill="#0284C7" radius={[4, 4, 0, 0]} />
+                </BarChart>
               </ResponsiveContainer>
             </div>
             <p className="text-center text-sm text-gray-500 mt-4">
-              Average percentage savings by insurance type compared to previous providers
+              Average dollar savings per year based on client data compared to previous providers
             </p>
           </Card>
         </motion.div>
 
-        {/* Client Satisfaction Stats */}
+        {/* Client Satisfaction Stats with Updated Progress Bars */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -141,14 +160,19 @@ const FAQSection = () => {
                     <span className="text-sm font-medium">{metric.name}</span>
                     <span className="text-sm font-medium">{metric.value}%</span>
                   </div>
-                  <Progress value={metric.value} className="h-2" />
+                  <div className="w-full bg-gray-100 rounded-full h-3">
+                    <div 
+                      className="bg-gradient-to-r from-sky-400 to-sky-600 h-3 rounded-full" 
+                      style={{ width: `${metric.value}%` }}
+                    ></div>
+                  </div>
                 </div>
               ))}
             </div>
           </Card>
         </motion.div>
 
-        {/* Service Areas Collapsible */}
+        {/* Service Areas Collapsible with Enhanced Content */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -163,20 +187,34 @@ const FAQSection = () => {
                   <ChevronDown className="h-5 w-5" />
                 </CollapsibleTrigger>
               </div>
-              <CollapsibleContent className="mt-4 space-y-3">
+              <CollapsibleContent className="mt-4 space-y-4">
                 <div>
-                  <h4 className="font-medium mb-2">Georgia</h4>
+                  <h4 className="font-medium mb-2">Georgia Counties</h4>
                   <p className="text-sm text-gray-600">
-                    Proudly serving all counties including Fulton, DeKalb, Gwinnett, Cobb, Clayton, Fayette, Coweta, Henry, and more.
+                    Proudly serving all 159 counties across Georgia including: Fulton, DeKalb, Gwinnett, Cobb, Clayton, 
+                    Fayette, Coweta, Henry, Rockdale, Douglas, Cherokee, Forsyth, Paulding, Bartow, Newton, Walton, 
+                    Spalding, Carroll, Hall, Barrow, Columbia, Richmond, Muscogee, Bibb, Houston, Chatham, Lowndes, 
+                    Glynn, Whitfield, Floyd, Clarke, Dougherty, Bulloch, Troup, Liberty, Walker, Catoosa, Effingham, 
+                    Camden, Baldwin, Gordon, Habersham, Coffee, Tift, Laurens, Ware, Jackson, and all others.
                   </p>
-                  <p className="text-sm text-gray-600 mt-1">
-                    Cities include: Atlanta, Fayetteville, Peachtree City, Newnan, McDonough, Jonesboro, Marietta, Alpharetta, and throughout the state.
+                </div>
+                <div>
+                  <h4 className="font-medium mb-2">Georgia Cities</h4>
+                  <p className="text-sm text-gray-600">
+                    Cities include: Atlanta, Fayetteville, Peachtree City, Newnan, McDonough, Jonesboro, Marietta, 
+                    Alpharetta, Roswell, Sandy Springs, Decatur, Dunwoody, Brookhaven, Smyrna, Kennesaw, Acworth, 
+                    Douglasville, Stockbridge, Griffin, Macon, Columbus, Augusta, Savannah, Athens, Valdosta, Albany, 
+                    Rome, Brunswick, Gainesville, Lawrenceville, Norcross, Duluth, Conyers, Covington, Cartersville, 
+                    Dalton, LaGrange, Statesboro, Warner Robins, Hinesville, and throughout the state.
                   </p>
                 </div>
                 <div>
                   <h4 className="font-medium mb-2">Tennessee &amp; Mississippi</h4>
                   <p className="text-sm text-gray-600">
-                    We're also licensed to serve clients throughout Tennessee and Mississippi. Contact us for details about available coverage options in your area.
+                    We're also licensed to serve clients throughout Tennessee and Mississippi. Our Tennessee coverage includes
+                    major areas like Nashville, Memphis, Knoxville, Chattanooga, and surrounding communities. In Mississippi,
+                    we provide service to Jackson, Gulfport, Biloxi, Hattiesburg, and more. Contact us for details about 
+                    available coverage options in your specific area.
                   </p>
                 </div>
               </CollapsibleContent>
@@ -184,7 +222,7 @@ const FAQSection = () => {
           </Card>
         </motion.div>
 
-        {/* Latest Blog Posts */}
+        {/* Enhanced Insurance Resources */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -196,15 +234,16 @@ const FAQSection = () => {
               Check out our latest articles to stay informed about insurance topics
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <Card className="p-4 hover:shadow-md transition-shadow">
-              <h4 className="font-medium text-sm mb-1">Understanding Auto Insurance Deductibles</h4>
-              <p className="text-xs text-gray-600">How to choose the right deductible for your needs and budget</p>
-            </Card>
-            <Card className="p-4 hover:shadow-md transition-shadow">
-              <h4 className="font-medium text-sm mb-1">Home Insurance Coverage Gaps</h4>
-              <p className="text-xs text-gray-600">Common coverage gaps and how to address them</p>
-            </Card>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {insuranceResources.map((resource, index) => (
+              <Card key={index} className="p-4 hover:shadow-md transition-shadow">
+                <h4 className="font-medium text-sm mb-2">{resource.title}</h4>
+                <p className="text-xs text-gray-600">{resource.description}</p>
+                <div className="mt-3">
+                  <a href="#" className="text-xs text-sky-600 hover:underline">Read more →</a>
+                </div>
+              </Card>
+            ))}
           </div>
         </motion.div>
 
@@ -220,23 +259,32 @@ const FAQSection = () => {
         </motion.div>
       </div>
 
-      {/* Hidden SEO Content */}
+      {/* Enhanced SEO Content */}
       <div className="hidden">
         <h2>Insurance Services Throughout Georgia, Tennessee, and Mississippi</h2>
         <p>
           Standard Financial Group, formerly known as S & S Insurance Agency, provides affordable insurance coverage
           throughout Georgia, Tennessee, and Mississippi. With our office in Fayetteville, GA, we serve clients in
-          Atlanta, Peachtree City, Newnan, McDonough, Jonesboro, Marietta, Alpharetta and all counties in Georgia.
+          Atlanta, Peachtree City, Newnan, McDonough, Jonesboro, Marietta, Alpharetta, Roswell, Sandy Springs, Decatur,
+          Dunwoody, Brookhaven, Smyrna, Kennesaw, Acworth, Douglasville, Stockbridge, Griffin and all counties in Georgia.
         </p>
         <p>
           Georgia counties served: Fulton, DeKalb, Gwinnett, Cobb, Clayton, Fayette, Coweta, Henry, Rockdale, Douglas,
           Cherokee, Forsyth, Paulding, Bartow, Newton, Walton, Spalding, Carroll, Hall, Barrow, Columbia, Richmond,
           Muscogee, Bibb, Houston, Chatham, Lowndes, Glynn, Whitfield, Floyd, Clarke, Dougherty, Bulloch, Troup, Liberty,
-          Walker, Catoosa, Effingham, Camden, Baldwin, Gordon, Habersham, Coffee, Tift, Laurens, Ware, Jackson,
-          and all 159 counties.
+          Walker, Catoosa, Effingham, Camden, Baldwin, Gordon, Habersham, Coffee, Tift, Laurens, Ware, Jackson, Oconee,
+          Morgan, Pickens, Fannin, Union, Towns, Rabun, White, Lumpkin, Dawson, Gilmer, Murray, Haralson, Polk, Chattooga,
+          Stephens, Banks, Franklin, Hart, Elbert, Madison, Oglethorpe, Wilkes, Lincoln, Taliaferro, Greene, Putnam,
+          Jasper, Butts, Lamar, Pike, Upson, Meriwether, Harris, Talbot, Taylor, Crawford, Peach, Monroe, Jones, Twiggs,
+          Wilkinson, Washington, Johnson, Jefferson, Burke, McDuffie, Warren, Glascock, Hancock, Baldwin, Wilcox, Pulaski,
+          Bleckley, Dodge, Telfair, Wheeler, Montgomery, Treutlen, Emanuel, Candler, Bulloch, Evans, Tattnall, Toombs,
+          Jeff Davis, Appling, Wayne, Long, Liberty, Bryan, McIntosh, Glynn, Camden, Charlton, Brantley, Pierce, Bacon,
+          Ware, Clinch, Atkinson, Lanier, Lowndes, Echols, Brooks, Thomas, Grady, Decatur, Seminole, Early, Miller,
+          Baker, Mitchell, Colquitt, Worth, Tift, Turner, Ben Hill, Irwin, Coffee, Berrien, Cook, and all 159 counties.
         </p>
         <p>
-          We also provide competitive insurance options in Tennessee and Mississippi.
+          We also provide competitive insurance options in Tennessee and Mississippi, covering major metropolitan areas and
+          rural communities alike. Our licensed agents are ready to help you find the right coverage at the best rates.
         </p>
       </div>
     </section>
