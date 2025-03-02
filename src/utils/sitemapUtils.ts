@@ -56,9 +56,14 @@ export const generateSitemapFromRoutes = () => {
     { path: '/', priority: 1.0, changefreq: 'weekly' as const },
     { path: '/about', priority: 0.8, changefreq: 'monthly' as const },
     { path: '/service', priority: 0.8, changefreq: 'monthly' as const },
-    { path: '/products', priority: 0.9, changefreq: 'monthly' as const },
-    { path: '/contact', priority: 0.8, changefreq: 'monthly' as const },
-    { path: '/blog', priority: 0.7, changefreq: 'weekly' as const },
+    { path: '/products', priority: 1.0, changefreq: 'monthly' as const },
+    { path: '/products/auto', priority: 1.0, changefreq: 'monthly' as const },
+    { path: '/products/home', priority: 1.0, changefreq: 'monthly' as const },
+    { path: '/products/commercial', priority: 1.0, changefreq: 'monthly' as const },
+    { path: '/products/bonds', priority: 1.0, changefreq: 'monthly' as const },
+    { path: '/quote', priority: 1.0, changefreq: 'weekly' as const },
+    { path: '/contact', priority: 1.0, changefreq: 'monthly' as const },
+    { path: '/blog', priority: 0.8, changefreq: 'weekly' as const },
     // Add more routes as needed
   ];
   
