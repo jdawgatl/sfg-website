@@ -4,7 +4,9 @@ import { useInView } from "framer-motion";
 import { useRef } from "react";
 import Hero from "@/components/home/Hero";
 import ServiceCards from "@/components/home/ServiceCards";
-import CarrierLogos from "@/components/home/CarrierLogos";
+import InsurancePartners from "@/components/home/InsurancePartners";
+import TestimonialsSection from "@/components/home/TestimonialsSection";
+import FAQSection from "@/components/home/FAQSection";
 import ContactForm from "@/components/shared/ContactForm";
 import { Card } from "@/components/ui/card";
 import Navbar from "@/components/layout/Navbar";
@@ -67,7 +69,7 @@ const Index = () => {
         </AnimatedSection>
 
         <AnimatedSection>
-          <CarrierLogos />
+          <InsurancePartners />
         </AnimatedSection>
 
         {/* Benefits Section */}
@@ -118,6 +120,16 @@ const Index = () => {
               </div>
             </div>
           </section>
+        </AnimatedSection>
+
+        {/* Testimonials Section */}
+        <AnimatedSection>
+          <TestimonialsSection />
+        </AnimatedSection>
+
+        {/* FAQ Section */}
+        <AnimatedSection>
+          <FAQSection />
         </AnimatedSection>
 
         {/* Contact Form Section */}
