@@ -2,8 +2,8 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Car, Shield, AlertTriangle, Clock } from "lucide-react";
-import { Image } from "@/components/ui/image";
+import TennesseeBenefitsList from "./TennesseeBenefitsList";
+import TennesseeSidePanel from "./TennesseeSidePanel";
 
 const TennesseeMainContent = () => {
   return (
@@ -22,68 +22,15 @@ const TennesseeMainContent = () => {
             Get competitive rates on Tennessee auto insurance. We work with multiple
             carriers to find you the best coverage at the lowest rates in the Volunteer State.
           </p>
-          <ul className="space-y-4">
-            <li className="flex items-center gap-3">
-              <Car className="h-6 w-6 text-sky-600" />
-              <div>
-                <h3 className="font-semibold">Liability Coverage</h3>
-                <p className="text-gray-600">Meet Tennessee state requirements</p>
-              </div>
-            </li>
-            <li className="flex items-center gap-3">
-              <Shield className="h-6 w-6 text-sky-600" />
-              <div>
-                <h3 className="font-semibold">Full Coverage</h3>
-                <p className="text-gray-600">Comprehensive protection for your vehicle</p>
-              </div>
-            </li>
-            <li className="flex items-center gap-3">
-              <AlertTriangle className="h-6 w-6 text-sky-600" />
-              <div>
-                <h3 className="font-semibold">High-Risk Coverage</h3>
-                <p className="text-gray-600">Solutions for all driving records</p>
-              </div>
-            </li>
-            <li className="flex items-center gap-3">
-              <Clock className="h-6 w-6 text-sky-600" />
-              <div>
-                <h3 className="font-semibold">Quick Service</h3>
-                <p className="text-gray-600">Same-day coverage available</p>
-              </div>
-            </li>
-          </ul>
+          
+          <TennesseeBenefitsList />
+          
           <Button asChild size="lg" className="mt-6 bg-sky-600 hover:bg-sky-700">
             <Link to="/quote">Get a Tennessee Auto Quote</Link>
           </Button>
         </div>
-        <div className="space-y-6">
-          <Image
-            src="/images/camaro-resized.avif"
-            alt="Tennessee Auto Insurance Coverage"
-            className="rounded-lg shadow-lg w-full h-[300px] object-cover object-center"
-          />
-          <div className="bg-sky-50 p-6 rounded-lg">
-            <h3 className="text-xl font-semibold mb-3">Why Choose Us for Tennessee Auto Insurance?</h3>
-            <ul className="space-y-2">
-              <li className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-sky-600" />
-                Multiple carrier options
-              </li>
-              <li className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-sky-600" />
-                Competitive Tennessee rates
-              </li>
-              <li className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-sky-600" />
-                Easy claims process
-              </li>
-              <li className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-sky-600" />
-                Local expertise
-              </li>
-            </ul>
-          </div>
-        </div>
+        
+        <TennesseeSidePanel />
       </motion.div>
     </div>
   );
