@@ -15,16 +15,19 @@ const FAQSection = () => {
         <FAQHeader />
         <FAQAccordion />
         
-        {/* Charts side by side */}
+        {/* Charts side by side with improved styling */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
           <SavingsChart />
           <ClientSatisfaction />
         </div>
         
         <ServiceAreas />
+        
+        {/* Enhanced Resources Cards with expandable content */}
         <div className="mt-12">
           <ResourceCards />
         </div>
+        
         <ContactCTA />
         <SEOContent />
       </div>
