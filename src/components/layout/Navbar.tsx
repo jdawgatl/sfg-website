@@ -11,6 +11,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
+import { Separator } from "@/components/ui/separator";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,20 +43,22 @@ const Navbar = () => {
     <nav className="bg-white shadow-lg sticky top-0 z-50 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-24">
-          {/* Logo and Phone Section - Improved for responsiveness */}
+          {/* Logo and Phone Section - New Organized Layout */}
           <div className="flex items-center">
-            <div className="flex flex-col sm:flex-row items-center sm:items-start">
-              <Link to="/" className="block">
-                <div className="flex items-center whitespace-nowrap">
+            <div className="flex flex-row items-center">
+              {/* Logo with Stacked Text */}
+              <div className="flex flex-col items-start">
+                <Link to="/" className="block">
                   <span className="bg-gradient-to-r from-sky-800 to-sky-500 bg-clip-text text-transparent border-2 border-sky-600 px-2 py-1 rounded-lg text-2xl md:text-3xl font-bold">
                     STANDARD
                   </span>
-                  <span className="text-gray-600 text-xl ml-2 whitespace-nowrap">
-                    Financial Group
-                  </span>
-                </div>
-              </Link>
-              <div className="mt-1 sm:mt-2 sm:ml-2">
+                </Link>
+                <span className="text-gray-600 text-lg ml-1">Financial Group</span>
+                <Separator className="w-full h-0.5 bg-sky-500 mt-1" />
+              </div>
+              
+              {/* Phone Number - Always at the right of STANDARD */}
+              <div className="ml-4">
                 <a 
                   href="tel:+17709977999" 
                   className="inline-flex items-center text-lg text-sky-600 hover:text-sky-700 transition-colors group whitespace-nowrap"
