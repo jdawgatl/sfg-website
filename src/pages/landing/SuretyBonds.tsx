@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { HelmetProvider } from "react-helmet-async";
 import { Shield, Check, DollarSign, FileText, Building, MapPin } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -16,6 +16,7 @@ import {
   CallToAction,
   SEOContent
 } from "./components/surety";
+import { SEOWrapper } from "@/components/seo/SEOWrapper";
 
 const SuretyBonds = () => {
   const bondTypes: BondType[] = [
@@ -48,12 +49,9 @@ const SuretyBonds = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Helmet>
-        <title>Surety Bonds Georgia | Certificate of Title Bonds | Standard Financial Group</title>
-        <meta name="description" content="Get instant surety bonds in Georgia - title bonds, probate bonds, court bonds, and more. Trusted bond provider serving all Georgia counties with same-day service. Fast, affordable bonding solutions from Standard Financial Group." />
-        <meta name="keywords" content="surety bonds Georgia, certificate of title bonds, cheap title bonds, Georgia title bonds, probate bonds, court bonds, administrator bonds, guardian bonds, fiduciary bonds, executor bonds, license bonds, permit bonds, contract bonds, performance bonds, bid bonds, payment bonds, same-day bonds, instant bonds, affordable surety bonds" />
-        <link rel="canonical" href="https://sfg-ins.com/surety-bonds" />
-      </Helmet>
+      <HelmetProvider>
+        <SEOWrapper />
+      </HelmetProvider>
 
       <Navbar />
       <main className="flex-grow">

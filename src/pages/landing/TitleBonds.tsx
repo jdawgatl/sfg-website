@@ -1,5 +1,5 @@
 
-import { Helmet } from "react-helmet-async";
+import { HelmetProvider } from "react-helmet-async";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ContactForm from "@/components/shared/ContactForm";
@@ -16,16 +16,14 @@ import {
   FAQSection, 
   TitleBondSEO 
 } from "./components/surety";
+import { SEOWrapper } from "@/components/seo/SEOWrapper";
 
 const TitleBonds = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Helmet>
-        <title>Certificate of Title Bonds Georgia | Cheap Title Bonds | Standard Financial Group</title>
-        <meta name="description" content="Get cheap certificate of title bonds in Georgia. Same-day service for lost title bonds - serving all 159 counties. Instant online quotes with rates starting at $100. Georgia's trusted source for vehicle title bonds." />
-        <meta name="keywords" content="certificate of title bonds Georgia, title bond Georgia, lost title bond, cheap title bond, affordable title bond, bonded title Georgia, motor vehicle title bond, car title bond, mobile home title bond, motorcycle title bond, boat title bond, fayetteville title bond, Atlanta title bond, same day title bond" />
-        <link rel="canonical" href="https://sfg-ins.com/landing/title-bonds" />
-      </Helmet>
+      <HelmetProvider>
+        <SEOWrapper />
+      </HelmetProvider>
 
       <Navbar />
       <main className="flex-grow">
