@@ -1,124 +1,7 @@
 
-import React, { createContext, useContext, useReducer, useEffect } from "react";
+import React, { createContext, useContext, useReducer, useEffect, useState } from "react";
 import { InsuranceQuote, AutoQuote, HomeQuote } from "../types";
-
-// Sample data - in a real implementation this would come from an API or database
-const sampleQuotes: InsuranceQuote[] = [
-  {
-    id: "q-001",
-    type: "auto",
-    status: "completed",
-    clientInfo: {
-      firstName: "John",
-      lastName: "Smith",
-      email: "john@example.com",
-      phone: "555-123-4567",
-      address: "123 Main St",
-      city: "Atlanta",
-      state: "GA",
-      zipCode: "30301",
-    },
-    householdMembers: [
-      {
-        id: "member-1",
-        firstName: "John",
-        lastName: "Smith",
-        relationToInsured: "self",
-        licenseState: "GA",
-      }
-    ],
-    vehicles: [
-      {
-        id: "vehicle-1",
-        year: 2022,
-        make: "Toyota",
-        model: "Camry",
-        hasComprehensive: true,
-        hasCollision: true,
-      },
-      {
-        id: "vehicle-2",
-        year: 2020,
-        make: "Honda",
-        model: "Civic",
-        hasComprehensive: true,
-        hasCollision: true,
-      }
-    ],
-    createdAt: "2025-03-01T12:00:00Z",
-    updatedAt: "2025-03-01T12:00:00Z",
-    currentStep: "summary",
-  },
-  {
-    id: "q-002",
-    type: "home",
-    status: "completed",
-    clientInfo: {
-      firstName: "Sarah",
-      lastName: "Johnson",
-      email: "sarah@example.com",
-      phone: "555-987-6543",
-      address: "456 Pine St",
-      city: "Atlanta",
-      state: "GA",
-      zipCode: "30301",
-    },
-    householdMembers: [
-      {
-        id: "member-1",
-        firstName: "Sarah",
-        lastName: "Johnson",
-        relationToInsured: "self",
-      }
-    ],
-    propertyInfo: {
-      address: "123 Main St",
-      city: "Atlanta",
-      state: "GA",
-      zipCode: "30301",
-      yearBuilt: 2005,
-      squareFootage: 2200,
-      hasAlarmSystem: true,
-    },
-    createdAt: "2025-02-28T10:30:00Z",
-    updatedAt: "2025-02-28T10:30:00Z",
-    currentStep: "summary",
-  },
-  {
-    id: "q-003",
-    type: "auto",
-    status: "draft",
-    clientInfo: {
-      firstName: "Michael",
-      lastName: "Brown",
-      email: "michael@example.com",
-      phone: "555-555-5555",
-      address: "789 Oak St",
-      city: "Atlanta",
-      state: "GA",
-      zipCode: "30301",
-    },
-    householdMembers: [
-      {
-        id: "member-1",
-        firstName: "Michael",
-        lastName: "Brown",
-        relationToInsured: "self",
-      }
-    ],
-    vehicles: [
-      {
-        id: "vehicle-1",
-        year: 2021,
-        make: "Ford",
-        model: "Explorer",
-      }
-    ],
-    createdAt: "2025-02-25T14:45:00Z",
-    updatedAt: "2025-02-25T14:45:00Z",
-    currentStep: "vehicle",
-  }
-];
+import { supabase } from "@/integrations/supabase/client";
 
 // Action types
 type QuotesAction = 
@@ -130,11 +13,12 @@ type QuotesAction =
 // Context type
 type QuotesContextType = {
   quotes: InsuranceQuote[];
+  isLoading: boolean;
   getQuoteById: (id: string) => InsuranceQuote | undefined;
   addQuote: (quote: InsuranceQuote) => void;
   updateQuote: (quote: InsuranceQuote) => void;
   deleteQuote: (id: string) => void;
-  createNewQuote: (type: "auto" | "home") => InsuranceQuote;
+  createNewQuote: (type: "auto" | "home") => Promise<InsuranceQuote>;
 };
 
 // Create context
@@ -161,12 +45,37 @@ const quotesReducer = (state: InsuranceQuote[], action: QuotesAction): Insurance
 // Provider component
 export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [quotes, dispatch] = useReducer(quotesReducer, []);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Load quotes from localStorage or API
+  // Load quotes from Supabase
   useEffect(() => {
-    // In a real application, you would fetch from your backend
-    // For now, we'll use the sample data
-    dispatch({ type: "SET_QUOTES", payload: sampleQuotes });
+    const fetchQuotes = async () => {
+      setIsLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('insurance_quotes')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching quotes:', error);
+          return;
+        }
+
+        // Transform the data from Supabase format to our application format
+        const transformedQuotes = data.map(item => {
+          return JSON.parse(item.quote_data as string) as InsuranceQuote;
+        });
+
+        dispatch({ type: "SET_QUOTES", payload: transformedQuotes });
+      } catch (error) {
+        console.error('Error processing quotes:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchQuotes();
   }, []);
 
   // Get quote by ID
@@ -174,23 +83,67 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return quotes.find(quote => quote.id === id);
   };
 
-  // Add new quote
-  const addQuote = (quote: InsuranceQuote) => {
-    dispatch({ type: "ADD_QUOTE", payload: quote });
+  // Add new quote to Supabase
+  const addQuote = async (quote: InsuranceQuote) => {
+    try {
+      const { error } = await supabase
+        .from('insurance_quotes')
+        .insert({
+          id: quote.id,
+          quote_type: quote.type,
+          status: quote.status,
+          quote_data: JSON.stringify(quote),
+          created_at: quote.createdAt,
+          updated_at: quote.updatedAt
+        });
+
+      if (error) throw error;
+      
+      dispatch({ type: "ADD_QUOTE", payload: quote });
+    } catch (error) {
+      console.error('Error adding quote:', error);
+    }
   };
 
-  // Update existing quote
-  const updateQuote = (quote: InsuranceQuote) => {
-    dispatch({ type: "UPDATE_QUOTE", payload: quote });
+  // Update existing quote in Supabase
+  const updateQuote = async (quote: InsuranceQuote) => {
+    try {
+      const { error } = await supabase
+        .from('insurance_quotes')
+        .update({
+          quote_type: quote.type,
+          status: quote.status,
+          quote_data: JSON.stringify(quote),
+          updated_at: quote.updatedAt
+        })
+        .eq('id', quote.id);
+
+      if (error) throw error;
+      
+      dispatch({ type: "UPDATE_QUOTE", payload: quote });
+    } catch (error) {
+      console.error('Error updating quote:', error);
+    }
   };
 
-  // Delete quote
-  const deleteQuote = (id: string) => {
-    dispatch({ type: "DELETE_QUOTE", payload: id });
+  // Delete quote from Supabase
+  const deleteQuote = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('insurance_quotes')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      dispatch({ type: "DELETE_QUOTE", payload: id });
+    } catch (error) {
+      console.error('Error deleting quote:', error);
+    }
   };
 
   // Create a new quote
-  const createNewQuote = (type: "auto" | "home"): InsuranceQuote => {
+  const createNewQuote = async (type: "auto" | "home"): Promise<InsuranceQuote> => {
     const now = new Date().toISOString();
     const id = `q-${Date.now()}`; // Simple ID generation, use UUID in production
 
@@ -214,16 +167,16 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       currentStep: "client" as const,
     };
 
+    let newQuote: InsuranceQuote;
+
     if (type === "auto") {
-      const autoQuote: AutoQuote = {
+      newQuote = {
         ...baseQuote,
         type: "auto",
         vehicles: []
-      };
-      addQuote(autoQuote);
-      return autoQuote;
+      } as AutoQuote;
     } else {
-      const homeQuote: HomeQuote = {
+      newQuote = {
         ...baseQuote,
         type: "home",
         propertyInfo: {
@@ -232,15 +185,17 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           state: "GA", // Default state
           zipCode: "",
         }
-      };
-      addQuote(homeQuote);
-      return homeQuote;
+      } as HomeQuote;
     }
+
+    await addQuote(newQuote);
+    return newQuote;
   };
 
   return (
     <QuotesContext.Provider value={{ 
       quotes, 
+      isLoading,
       getQuoteById, 
       addQuote, 
       updateQuote, 

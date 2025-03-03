@@ -7,6 +7,7 @@ import { QuoteForm } from "./QuoteForm";
 import { useQuotes } from "./context/QuotesContext";
 import { useToast } from "@/components/ui/use-toast";
 import { InsuranceQuote } from "./types";
+import { supabase } from "@/integrations/supabase/client"; 
 
 export const QuoteDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,26 +15,59 @@ export const QuoteDetail = () => {
   const { getQuoteById } = useQuotes();
   const { toast } = useToast();
   const [quote, setQuote] = useState<InsuranceQuote | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    if (id) {
-      const foundQuote = getQuoteById(id);
-      console.log("Looking for quote:", id);
-      console.log("Found quote:", foundQuote);
+    const fetchQuote = async () => {
+      if (!id) {
+        navigate("/admin/rater");
+        return;
+      }
+
+      setIsLoading(true);
       
-      if (foundQuote) {
-        setQuote(foundQuote);
-      } else {
-        // If no quote found with this ID, navigate back to quotes list
+      try {
+        // First try to get from context
+        const foundQuote = getQuoteById(id);
+        
+        if (foundQuote) {
+          setQuote(foundQuote);
+          setIsLoading(false);
+          return;
+        }
+        
+        // If not in context, try to get directly from Supabase
+        const { data, error } = await supabase
+          .from('insurance_quotes')
+          .select('*')
+          .eq('id', id)
+          .single();
+        
+        if (error || !data) {
+          throw new Error("Quote not found in database");
+        }
+        
+        const quoteData = JSON.parse(data.quote_data as string) as InsuranceQuote;
+        setQuote(quoteData);
+      } catch (error) {
+        console.error("Error fetching quote:", error);
         toast({
           title: "Quote not found",
           description: "The requested quote could not be found",
           variant: "destructive",
         });
         navigate("/admin/rater");
+      } finally {
+        setIsLoading(false);
       }
-    }
+    };
+    
+    fetchQuote();
   }, [id, navigate, toast, getQuoteById]);
+  
+  if (isLoading) {
+    return <div className="flex items-center justify-center p-12">Loading quote...</div>;
+  }
   
   if (!quote) {
     return null; // Return null while redirecting

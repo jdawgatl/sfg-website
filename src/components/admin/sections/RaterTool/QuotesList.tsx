@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Edit, FileText, Trash2, Share2, Clock } from "lucide-react";
 import { useQuotes } from "./context/QuotesContext";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type QuotesListProps = {
   type: "completed" | "draft";
 };
 
 export const QuotesList = ({ type }: QuotesListProps) => {
-  const { quotes, deleteQuote } = useQuotes();
+  const { quotes, deleteQuote, isLoading } = useQuotes();
   const navigate = useNavigate();
   
   const filteredQuotes = quotes.filter(quote => 
@@ -20,13 +21,39 @@ export const QuotesList = ({ type }: QuotesListProps) => {
   );
 
   const handleEditClick = (quoteId: string) => {
-    console.log(`Navigating to quote with ID: ${quoteId}`);
     navigate(`/admin/rater/quote/${quoteId}`);
   };
 
   const handleDeleteClick = (quoteId: string) => {
     deleteQuote(quoteId);
   };
+  
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        {[1, 2, 3].map((i) => (
+          <Card key={i} className="overflow-hidden">
+            <CardContent className="p-0">
+              <div className="flex items-center justify-between p-4 border-b">
+                <div className="space-y-2">
+                  <Skeleton className="h-5 w-40" />
+                  <Skeleton className="h-4 w-24" />
+                </div>
+                <div className="flex space-x-2">
+                  <Skeleton className="h-9 w-20" />
+                  <Skeleton className="h-9 w-20" />
+                  <Skeleton className="h-9 w-10" />
+                </div>
+              </div>
+              <div className="p-4 bg-muted/50">
+                <Skeleton className="h-4 w-32" />
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
 
   if (filteredQuotes.length === 0) {
     return (
@@ -50,7 +77,9 @@ export const QuotesList = ({ type }: QuotesListProps) => {
             <div className="flex items-center justify-between p-4 border-b">
               <div>
                 <div className="flex items-center space-x-2">
-                  <h3 className="text-lg font-medium">{quote.clientInfo.firstName} {quote.clientInfo.lastName}</h3>
+                  <h3 className="text-lg font-medium">
+                    {quote.clientInfo.firstName || "New"} {quote.clientInfo.lastName || "Quote"}
+                  </h3>
                   <Badge variant={quote.type === "auto" ? "default" : "outline"}>
                     {quote.type === "auto" ? "Auto" : "Home"}
                   </Badge>
@@ -90,7 +119,11 @@ export const QuotesList = ({ type }: QuotesListProps) => {
               {quote.type === "auto" ? (
                 <p className="text-sm">{quote.vehicles ? quote.vehicles.length : 0} vehicle(s)</p>
               ) : (
-                <p className="text-sm">Property: {quote.propertyInfo?.address}, {quote.propertyInfo?.city}, {quote.propertyInfo?.state}</p>
+                <p className="text-sm">
+                  Property: {quote.propertyInfo?.address || "Not specified"}, 
+                  {quote.propertyInfo?.city ? ` ${quote.propertyInfo.city},` : ""} 
+                  {quote.propertyInfo?.state || ""}
+                </p>
               )}
             </div>
           </CardContent>

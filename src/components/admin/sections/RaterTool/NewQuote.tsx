@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Car, Home, ArrowLeft } from "lucide-react";
+import { Car, Home, ArrowLeft, LoaderCircle } from "lucide-react";
 import { useQuotes } from "./context/QuotesContext";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -13,12 +13,12 @@ export const NewQuote = () => {
   const { toast } = useToast();
   const [isCreating, setIsCreating] = useState(false);
   
-  const handleCreateQuote = (type: "auto" | "home") => {
+  const handleCreateQuote = async (type: "auto" | "home") => {
     setIsCreating(true);
     
     try {
       // Create the new quote
-      const newQuote = createNewQuote(type);
+      const newQuote = await createNewQuote(type);
       console.log("Created new quote:", newQuote);
       
       if (newQuote && newQuote.id) {
@@ -53,7 +53,7 @@ export const NewQuote = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
         <Card 
-          className="p-6 cursor-pointer hover:shadow-md transition-shadow flex flex-col items-center justify-center py-12"
+          className={`p-6 cursor-pointer hover:shadow-md transition-shadow flex flex-col items-center justify-center py-12 ${isCreating ? 'opacity-50 pointer-events-none' : ''}`}
           onClick={() => !isCreating && handleCreateQuote("auto")}
         >
           <Car className="h-16 w-16 mb-4 text-sky-600" />
@@ -65,12 +65,12 @@ export const NewQuote = () => {
             e.stopPropagation();
             if (!isCreating) handleCreateQuote("auto");
           }}>
-            {isCreating ? "Creating..." : "Start Auto Quote"}
+            {isCreating ? <><LoaderCircle className="h-4 w-4 mr-2 animate-spin" /> Creating...</> : "Start Auto Quote"}
           </Button>
         </Card>
         
         <Card 
-          className="p-6 cursor-pointer hover:shadow-md transition-shadow flex flex-col items-center justify-center py-12"
+          className={`p-6 cursor-pointer hover:shadow-md transition-shadow flex flex-col items-center justify-center py-12 ${isCreating ? 'opacity-50 pointer-events-none' : ''}`}
           onClick={() => !isCreating && handleCreateQuote("home")}
         >
           <Home className="h-16 w-16 mb-4 text-sky-600" />
@@ -82,7 +82,7 @@ export const NewQuote = () => {
             e.stopPropagation();
             if (!isCreating) handleCreateQuote("home");
           }}>
-            {isCreating ? "Creating..." : "Start Home Quote"}
+            {isCreating ? <><LoaderCircle className="h-4 w-4 mr-2 animate-spin" /> Creating...</> : "Start Home Quote"}
           </Button>
         </Card>
       </div>

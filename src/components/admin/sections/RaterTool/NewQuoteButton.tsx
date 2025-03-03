@@ -11,7 +11,7 @@ import {
   DialogTrigger 
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, HomeIcon, Car } from "lucide-react";
+import { PlusCircle, HomeIcon, Car, LoaderCircle } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useQuotes } from "./context/QuotesContext";
@@ -25,12 +25,12 @@ export const NewQuoteButton = () => {
   const { createNewQuote } = useQuotes();
   const { toast } = useToast();
 
-  const handleCreateQuote = () => {
+  const handleCreateQuote = async () => {
     setIsCreating(true);
     
     try {
       // Create the new quote using the context function
-      const newQuote = createNewQuote(quoteType);
+      const newQuote = await createNewQuote(quoteType);
       console.log("Created new quote:", newQuote);
       
       if (newQuote && newQuote.id) {
@@ -94,7 +94,14 @@ export const NewQuoteButton = () => {
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)} disabled={isCreating}>Cancel</Button>
           <Button onClick={handleCreateQuote} disabled={isCreating}>
-            {isCreating ? "Creating..." : "Create Quote"}
+            {isCreating ? (
+              <>
+                <LoaderCircle className="h-4 w-4 mr-2 animate-spin" />
+                Creating...
+              </>
+            ) : (
+              "Create Quote"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>
