@@ -51,7 +51,7 @@ export const generateSitemapFromRoutes = () => {
   const baseUrl = 'https://sfg-ins.com';
   const today = format(new Date(), 'yyyy-MM-dd');
   
-  // Sample implementation
+  // Sample implementation with updated priorities
   const routes = [
     { path: '/', priority: 1.0, changefreq: 'weekly' as const },
     { path: '/about', priority: 0.8, changefreq: 'monthly' as const },
@@ -64,6 +64,11 @@ export const generateSitemapFromRoutes = () => {
     { path: '/quote', priority: 1.0, changefreq: 'weekly' as const },
     { path: '/contact', priority: 1.0, changefreq: 'monthly' as const },
     { path: '/blog', priority: 0.8, changefreq: 'weekly' as const },
+    { path: '/georgia-insurance', priority: 1.0, changefreq: 'monthly' as const },
+    { path: '/tennessee-auto-insurance', priority: 1.0, changefreq: 'monthly' as const },
+    { path: '/mississippi-home-insurance', priority: 1.0, changefreq: 'monthly' as const },
+    { path: '/surety-bonds', priority: 1.0, changefreq: 'weekly' as const },
+    { path: '/landing/title-bonds', priority: 1.0, changefreq: 'weekly' as const },
     // Add more routes as needed
   ];
   

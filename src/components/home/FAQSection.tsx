@@ -21,7 +21,10 @@ const FAQSection = () => {
           <ClientSatisfaction />
         </div>
         
-        <ServiceAreas />
+        {/* Added margin-top to create padding before ServiceAreas section */}
+        <div className="mt-16">
+          <ServiceAreas />
+        </div>
         
         {/* Enhanced Resources Cards with expandable content */}
         <div className="mt-12">

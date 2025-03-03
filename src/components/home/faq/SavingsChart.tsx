@@ -3,12 +3,12 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
-// Average annual client savings data for visualization
+// Average annual client savings data with simplified labels
 const savingsData = [
-  { name: "Auto Insurance", savings: 485, fill: "#4F46E5" },
-  { name: "Home Insurance", savings: 380, fill: "#0EA5E9" },
+  { name: "Auto", savings: 485, fill: "#4F46E5" },
+  { name: "Home", savings: 380, fill: "#0EA5E9" },
   { name: "Commercial", savings: 1250, fill: "#059669" },
-  { name: "Surety Bonds", savings: 275, fill: "#8B5CF6" }
+  { name: "Bonds", savings: 275, fill: "#8B5CF6" }
 ];
 
 const SavingsChart = () => {
