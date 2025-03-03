@@ -8,7 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useQuotes } from "../context/QuotesContext";
 import { InsuranceQuote } from "../types";
 import { steps, stepTitles } from "./constants";
-import StepRenderer from "./components/StepRenderer";
+import { StepRenderer } from "./components/StepRenderer"; // Fixed import syntax
 import ProgressIndicator from "./components/ProgressIndicator";
 
 export const QuoteForm = () => {
@@ -123,8 +123,7 @@ export const QuoteForm = () => {
         <StepRenderer
           currentStep={currentStep}
           formData={formData}
-          handleUpdateField={handleUpdateField}
-          handleComplete={handleComplete}
+          onUpdate={handleUpdateField}
         />
       </Card>
       
