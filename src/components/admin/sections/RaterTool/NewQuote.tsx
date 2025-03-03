@@ -5,20 +5,31 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Car, Home, ArrowLeft } from "lucide-react";
 import { useQuotes } from "./context/QuotesContext";
+import { useToast } from "@/components/ui/use-toast";
 
 export const NewQuote = () => {
   const navigate = useNavigate();
   const { createNewQuote } = useQuotes();
+  const { toast } = useToast();
   const [isCreating, setIsCreating] = useState(false);
   
   const handleCreateQuote = (type: "auto" | "home") => {
     setIsCreating(true);
     
     try {
+      // Create the new quote
       const newQuote = createNewQuote(type);
+      console.log("Created new quote:", newQuote);
+      
+      // Navigate to the quote detail page
       navigate(`/admin/rater/quote/${newQuote.id}`);
     } catch (error) {
       console.error("Error creating quote:", error);
+      toast({
+        title: "Error",
+        description: "Failed to create new quote",
+        variant: "destructive",
+      });
       setIsCreating(false);
     }
   };
@@ -46,7 +57,7 @@ export const NewQuote = () => {
           <p className="text-gray-600 text-center max-w-md">
             Create a new auto insurance quote for your client, including vehicle information and coverage options.
           </p>
-          <Button className="mt-6" disabled={isCreating}>
+          <Button className="mt-6" disabled={isCreating} onClick={() => !isCreating && handleCreateQuote("auto")}>
             {isCreating ? "Creating..." : "Start Auto Quote"}
           </Button>
         </Card>
@@ -60,7 +71,7 @@ export const NewQuote = () => {
           <p className="text-gray-600 text-center max-w-md">
             Create a new home insurance quote for your client, including property details and coverage options.
           </p>
-          <Button className="mt-6" disabled={isCreating}>
+          <Button className="mt-6" disabled={isCreating} onClick={() => !isCreating && handleCreateQuote("home")}>
             {isCreating ? "Creating..." : "Start Home Quote"}
           </Button>
         </Card>

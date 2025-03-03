@@ -14,18 +14,37 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle, HomeIcon, Car } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { useQuotes } from "./context/QuotesContext";
+import { useToast } from "@/components/ui/use-toast";
 
 export const NewQuoteButton = () => {
   const [open, setOpen] = useState(false);
   const [quoteType, setQuoteType] = useState<"auto" | "home">("auto");
+  const [isCreating, setIsCreating] = useState(false);
   const navigate = useNavigate();
+  const { createNewQuote } = useQuotes();
+  const { toast } = useToast();
 
   const handleCreateQuote = () => {
-    // In a real implementation, this would create a new quote in the database
-    // and then navigate to the quote form
-    const quoteId = `new-${quoteType}-${Date.now()}`;
-    navigate(`/admin/rater/quote/${quoteId}`);
-    setOpen(false);
+    setIsCreating(true);
+    
+    try {
+      // Create the new quote using the context function
+      const newQuote = createNewQuote(quoteType);
+      
+      // Navigate to the quote detail page
+      navigate(`/admin/rater/quote/${newQuote.id}`);
+      setOpen(false);
+    } catch (error) {
+      console.error("Error creating quote:", error);
+      toast({
+        title: "Error",
+        description: "Failed to create new quote",
+        variant: "destructive",
+      });
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   return (
@@ -68,8 +87,10 @@ export const NewQuoteButton = () => {
         </RadioGroup>
         
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={handleCreateQuote}>Create Quote</Button>
+          <Button variant="outline" onClick={() => setOpen(false)} disabled={isCreating}>Cancel</Button>
+          <Button onClick={handleCreateQuote} disabled={isCreating}>
+            {isCreating ? "Creating..." : "Create Quote"}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
