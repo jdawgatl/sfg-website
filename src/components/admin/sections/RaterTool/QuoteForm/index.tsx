@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight, Save } from "lucide-react";
@@ -8,31 +8,24 @@ import { useToast } from "@/components/ui/use-toast";
 import { useQuotes } from "../context/QuotesContext";
 import { InsuranceQuote } from "../types";
 import { steps, stepTitles } from "./constants";
-import { StepRenderer } from "./components/StepRenderer"; // Fixed import syntax
+import { StepRenderer } from "./components/StepRenderer";
 import ProgressIndicator from "./components/ProgressIndicator";
 
-export const QuoteForm = () => {
-  const { id } = useParams<{ id: string }>();
+type QuoteFormProps = {
+  quote: InsuranceQuote;
+};
+
+export const QuoteForm = ({ quote: initialQuote }: QuoteFormProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { getQuoteById, updateQuote } = useQuotes();
-  
-  const quote = id ? getQuoteById(id) : null;
+  const { updateQuote } = useQuotes();
   
   const [currentStepIndex, setCurrentStepIndex] = useState(() => {
-    if (quote) {
-      const index = steps.indexOf(quote.currentStep);
-      return index >= 0 ? index : 0;
-    }
-    return 0;
+    const index = steps.indexOf(initialQuote.currentStep);
+    return index >= 0 ? index : 0;
   });
   
-  const [formData, setFormData] = useState<InsuranceQuote | null>(quote);
-  
-  if (!formData) {
-    navigate("/admin/rater");
-    return null;
-  }
+  const [formData, setFormData] = useState<InsuranceQuote>(initialQuote);
   
   const currentStep = steps[currentStepIndex];
   
@@ -85,14 +78,10 @@ export const QuoteForm = () => {
   };
   
   const handleUpdateField = (field: string, value: any) => {
-    setFormData(prev => {
-      if (!prev) return prev;
-      
-      return {
-        ...prev,
-        [field]: value
-      };
-    });
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
   
   return (
@@ -136,11 +125,15 @@ export const QuoteForm = () => {
           <ArrowLeft className="h-4 w-4 mr-2" /> Previous
         </Button>
         
-        {currentStep !== "summary" && currentStep !== "rating" && (
+        {currentStep !== "summary" && currentStep !== "rating" ? (
           <Button onClick={handleNext}>
             Next <ArrowRight className="h-4 w-4 ml-2" />
           </Button>
-        )}
+        ) : currentStep === "summary" ? (
+          <Button onClick={handleComplete}>
+            Complete Quote
+          </Button>
+        ) : null}
       </div>
     </div>
   );

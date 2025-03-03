@@ -21,8 +21,12 @@ export const NewQuote = () => {
       const newQuote = createNewQuote(type);
       console.log("Created new quote:", newQuote);
       
-      // Navigate to the quote detail page
-      navigate(`/admin/rater/quote/${newQuote.id}`);
+      if (newQuote && newQuote.id) {
+        // Navigate to the quote detail page
+        navigate(`/admin/rater/quote/${newQuote.id}`);
+      } else {
+        throw new Error("Failed to create quote");
+      }
     } catch (error) {
       console.error("Error creating quote:", error);
       toast({
@@ -57,7 +61,10 @@ export const NewQuote = () => {
           <p className="text-gray-600 text-center max-w-md">
             Create a new auto insurance quote for your client, including vehicle information and coverage options.
           </p>
-          <Button className="mt-6" disabled={isCreating} onClick={() => !isCreating && handleCreateQuote("auto")}>
+          <Button className="mt-6" disabled={isCreating} onClick={(e) => {
+            e.stopPropagation();
+            if (!isCreating) handleCreateQuote("auto");
+          }}>
             {isCreating ? "Creating..." : "Start Auto Quote"}
           </Button>
         </Card>
@@ -71,7 +78,10 @@ export const NewQuote = () => {
           <p className="text-gray-600 text-center max-w-md">
             Create a new home insurance quote for your client, including property details and coverage options.
           </p>
-          <Button className="mt-6" disabled={isCreating} onClick={() => !isCreating && handleCreateQuote("home")}>
+          <Button className="mt-6" disabled={isCreating} onClick={(e) => {
+            e.stopPropagation();
+            if (!isCreating) handleCreateQuote("home");
+          }}>
             {isCreating ? "Creating..." : "Start Home Quote"}
           </Button>
         </Card>

@@ -1,31 +1,39 @@
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { QuoteForm } from "./QuoteForm";
 import { useQuotes } from "./context/QuotesContext";
 import { useToast } from "@/components/ui/use-toast";
+import { InsuranceQuote } from "./types";
 
 export const QuoteDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { getQuoteById } = useQuotes();
   const { toast } = useToast();
-  
-  const quote = id ? getQuoteById(id) : null;
+  const [quote, setQuote] = useState<InsuranceQuote | null>(null);
   
   useEffect(() => {
-    if (!quote && id) {
-      // If no quote found with this ID, navigate back to quotes list
-      toast({
-        title: "Quote not found",
-        description: "The requested quote could not be found",
-        variant: "destructive",
-      });
-      navigate("/admin/rater");
+    if (id) {
+      const foundQuote = getQuoteById(id);
+      console.log("Looking for quote:", id);
+      console.log("Found quote:", foundQuote);
+      
+      if (foundQuote) {
+        setQuote(foundQuote);
+      } else {
+        // If no quote found with this ID, navigate back to quotes list
+        toast({
+          title: "Quote not found",
+          description: "The requested quote could not be found",
+          variant: "destructive",
+        });
+        navigate("/admin/rater");
+      }
     }
-  }, [quote, id, navigate, toast]);
+  }, [id, navigate, toast, getQuoteById]);
   
   if (!quote) {
     return null; // Return null while redirecting
@@ -46,7 +54,7 @@ export const QuoteDetail = () => {
         </h2>
       </div>
       
-      <QuoteForm />
+      <QuoteForm quote={quote} />
     </div>
   );
 };

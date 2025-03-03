@@ -12,12 +12,21 @@ type QuotesListProps = {
 };
 
 export const QuotesList = ({ type }: QuotesListProps) => {
-  const { quotes } = useQuotes();
+  const { quotes, deleteQuote } = useQuotes();
   const navigate = useNavigate();
   
   const filteredQuotes = quotes.filter(quote => 
     type === "completed" ? quote.status === "completed" : quote.status === "draft"
   );
+
+  const handleEditClick = (quoteId: string) => {
+    console.log(`Navigating to quote with ID: ${quoteId}`);
+    navigate(`/admin/rater/quote/${quoteId}`);
+  };
+
+  const handleDeleteClick = (quoteId: string) => {
+    deleteQuote(quoteId);
+  };
 
   if (filteredQuotes.length === 0) {
     return (
@@ -55,7 +64,7 @@ export const QuotesList = ({ type }: QuotesListProps) => {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  onClick={() => navigate(`/admin/rater/quote/${quote.id}`)}
+                  onClick={() => handleEditClick(quote.id)}
                 >
                   <Edit className="h-4 w-4 mr-1" />
                   Edit
@@ -71,6 +80,7 @@ export const QuotesList = ({ type }: QuotesListProps) => {
                   variant="outline" 
                   size="sm" 
                   className="text-destructive hover:text-destructive"
+                  onClick={() => handleDeleteClick(quote.id)}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>

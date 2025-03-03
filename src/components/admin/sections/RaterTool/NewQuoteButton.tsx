@@ -31,10 +31,15 @@ export const NewQuoteButton = () => {
     try {
       // Create the new quote using the context function
       const newQuote = createNewQuote(quoteType);
+      console.log("Created new quote:", newQuote);
       
-      // Navigate to the quote detail page
-      navigate(`/admin/rater/quote/${newQuote.id}`);
-      setOpen(false);
+      if (newQuote && newQuote.id) {
+        // Navigate to the quote detail page
+        navigate(`/admin/rater/quote/${newQuote.id}`);
+        setOpen(false);
+      } else {
+        throw new Error("Failed to create quote");
+      }
     } catch (error) {
       console.error("Error creating quote:", error);
       toast({
