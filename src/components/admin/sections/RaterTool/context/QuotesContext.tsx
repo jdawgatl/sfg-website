@@ -15,9 +15,9 @@ type QuotesContextType = {
   quotes: InsuranceQuote[];
   isLoading: boolean;
   getQuoteById: (id: string) => InsuranceQuote | undefined;
-  addQuote: (quote: InsuranceQuote) => void;
-  updateQuote: (quote: InsuranceQuote) => void;
-  deleteQuote: (id: string) => void;
+  addQuote: (quote: InsuranceQuote) => Promise<void>;
+  updateQuote: (quote: InsuranceQuote) => Promise<void>;
+  deleteQuote: (id: string) => Promise<void>;
   createNewQuote: (type: "auto" | "home") => Promise<InsuranceQuote>;
 };
 
@@ -52,6 +52,7 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const fetchQuotes = async () => {
       setIsLoading(true);
       try {
+        console.log("Fetching quotes from Supabase...");
         const { data, error } = await supabase
           .from('contact_submissions')
           .select('*')
@@ -63,21 +64,26 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           return;
         }
 
-        // Transform the data from Supabase format to our application format
-        const transformedQuotes = data.map(item => {
-          // Parse the message field where we stored the quote JSON
-          try {
-            if (item.message) {
-              const quoteData = JSON.parse(item.message);
-              return quoteData as InsuranceQuote;
-            }
-            return null;
-          } catch (err) {
-            console.error('Error parsing quote data:', err);
-            return null;
-          }
-        }).filter(Boolean) as InsuranceQuote[];
+        console.log("Received data from Supabase:", data);
 
+        // Transform the data from Supabase format to our application format
+        const transformedQuotes = data
+          .map(item => {
+            // Parse the message field where we stored the quote JSON
+            try {
+              if (item.message) {
+                const quoteData = JSON.parse(item.message);
+                return quoteData as InsuranceQuote;
+              }
+              return null;
+            } catch (err) {
+              console.error('Error parsing quote data:', err);
+              return null;
+            }
+          })
+          .filter(Boolean) as InsuranceQuote[];
+
+        console.log("Transformed quotes:", transformedQuotes);
         dispatch({ type: "SET_QUOTES", payload: transformedQuotes });
       } catch (error) {
         console.error('Error processing quotes:', error);
@@ -91,12 +97,17 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   // Get quote by ID
   const getQuoteById = (id: string) => {
-    return quotes.find(quote => quote.id === id);
+    console.log("Looking for quote with ID:", id);
+    console.log("Available quotes:", quotes);
+    const found = quotes.find(quote => quote.id === id);
+    console.log("Found quote:", found);
+    return found;
   };
 
   // Add new quote to Supabase
   const addQuote = async (quote: InsuranceQuote) => {
     try {
+      console.log("Adding new quote to Supabase:", quote);
       const { error } = await supabase
         .from('contact_submissions')
         .insert({
@@ -115,17 +126,23 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           consent: true
         });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error inserting quote into Supabase:", error);
+        throw error;
+      }
       
+      console.log("Quote added successfully, dispatching to state");
       dispatch({ type: "ADD_QUOTE", payload: quote });
     } catch (error) {
       console.error('Error adding quote:', error);
+      throw error;
     }
   };
 
   // Update existing quote in Supabase
   const updateQuote = async (quote: InsuranceQuote) => {
     try {
+      console.log("Updating quote in Supabase:", quote);
       const { error } = await supabase
         .from('contact_submissions')
         .update({
@@ -141,33 +158,45 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         })
         .eq('id', quote.id);
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error updating quote in Supabase:", error);
+        throw error;
+      }
       
+      console.log("Quote updated successfully, dispatching to state");
       dispatch({ type: "UPDATE_QUOTE", payload: quote });
     } catch (error) {
       console.error('Error updating quote:', error);
+      throw error;
     }
   };
 
   // Delete quote from Supabase
   const deleteQuote = async (id: string) => {
     try {
+      console.log("Deleting quote from Supabase with ID:", id);
       const { error } = await supabase
         .from('contact_submissions')
         .delete()
         .eq('id', id)
         .eq('insurance_type', 'QUOTE_TOOL'); // Make sure we only delete quotes
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error deleting quote from Supabase:", error);
+        throw error;
+      }
       
+      console.log("Quote deleted successfully, dispatching to state");
       dispatch({ type: "DELETE_QUOTE", payload: id });
     } catch (error) {
       console.error('Error deleting quote:', error);
+      throw error;
     }
   };
 
   // Create a new quote
   const createNewQuote = async (type: "auto" | "home"): Promise<InsuranceQuote> => {
+    console.log(`Creating new ${type} quote...`);
     const now = new Date().toISOString();
     const id = `q-${Date.now()}`; // Simple ID generation, use UUID in production
 
@@ -212,7 +241,9 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       } as HomeQuote;
     }
 
+    console.log("New quote created in memory:", newQuote);
     await addQuote(newQuote);
+    console.log("Quote successfully added to Supabase and state");
     return newQuote;
   };
 

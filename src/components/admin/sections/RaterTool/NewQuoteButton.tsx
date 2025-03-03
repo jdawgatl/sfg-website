@@ -29,22 +29,24 @@ export const NewQuoteButton = () => {
     setIsCreating(true);
     
     try {
+      console.log(`Starting quote creation for type: ${quoteType} from dialog`);
       // Create the new quote using the context function
       const newQuote = await createNewQuote(quoteType);
-      console.log("Created new quote:", newQuote);
+      console.log("Created new quote from dialog:", newQuote);
       
       if (newQuote && newQuote.id) {
         // Navigate to the quote detail page
+        console.log(`Navigating to quote detail: ${newQuote.id} from dialog`);
         navigate(`/admin/rater/quote/${newQuote.id}`);
         setOpen(false);
       } else {
-        throw new Error("Failed to create quote");
+        throw new Error("Failed to create quote - no ID returned");
       }
     } catch (error) {
-      console.error("Error creating quote:", error);
+      console.error("Error creating quote from dialog:", error);
       toast({
         title: "Error",
-        description: "Failed to create new quote",
+        description: "Failed to create new quote. Please try again.",
         variant: "destructive",
       });
     } finally {

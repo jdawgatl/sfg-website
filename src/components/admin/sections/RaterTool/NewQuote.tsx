@@ -17,21 +17,23 @@ export const NewQuote = () => {
     setIsCreating(true);
     
     try {
+      console.log(`Starting quote creation for type: ${type}`);
       // Create the new quote
       const newQuote = await createNewQuote(type);
       console.log("Created new quote:", newQuote);
       
       if (newQuote && newQuote.id) {
         // Navigate to the quote detail page
+        console.log(`Navigating to quote detail: ${newQuote.id}`);
         navigate(`/admin/rater/quote/${newQuote.id}`);
       } else {
-        throw new Error("Failed to create quote");
+        throw new Error("Failed to create quote - no ID returned");
       }
     } catch (error) {
       console.error("Error creating quote:", error);
       toast({
         title: "Error",
-        description: "Failed to create new quote",
+        description: "Failed to create new quote. Please try again.",
         variant: "destructive",
       });
       setIsCreating(false);

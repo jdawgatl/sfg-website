@@ -20,15 +20,18 @@ export const QuoteDetail = () => {
   useEffect(() => {
     const fetchQuote = async () => {
       if (!id) {
+        console.error("No ID provided");
         navigate("/admin/rater");
         return;
       }
 
+      console.log("Fetching quote with ID:", id);
       setIsLoading(true);
       
       try {
         // First try to get from context
         const foundQuote = getQuoteById(id);
+        console.log("Quote from context:", foundQuote);
         
         if (foundQuote) {
           setQuote(foundQuote);
@@ -36,6 +39,7 @@ export const QuoteDetail = () => {
           return;
         }
         
+        console.log("Quote not found in context, fetching from Supabase");
         // If not in context, try to get directly from Supabase
         const { data, error } = await supabase
           .from('contact_submissions')
@@ -44,14 +48,18 @@ export const QuoteDetail = () => {
           .eq('insurance_type', 'QUOTE_TOOL')
           .single();
         
-        if (error || !data) {
+        if (error) {
+          console.error("Error fetching quote from Supabase:", error);
           throw new Error("Quote not found in database");
         }
+        
+        console.log("Quote data from Supabase:", data);
         
         // Parse the quote data from the message field
         if (data.message) {
           try {
             const quoteData = JSON.parse(data.message);
+            console.log("Parsed quote data:", quoteData);
             setQuote(quoteData as InsuranceQuote);
           } catch (err) {
             console.error("Error parsing quote data:", err);
