@@ -1,6 +1,6 @@
 
 import React from "react";
-import { InsuranceQuote, QuoteStep } from "../../../types";
+import { InsuranceQuote, QuoteStep } from "../../types";
 import ClientInfoStep from "../steps/ClientInfoStep";
 import HouseholdStep from "../steps/HouseholdStep";
 import VehicleStep from "../steps/VehicleStep";
