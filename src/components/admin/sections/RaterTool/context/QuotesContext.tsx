@@ -52,10 +52,10 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const fetchQuotes = async () => {
       setIsLoading(true);
       try {
-        // @ts-ignore - Using any to bypass type checking for Supabase tables
         const { data, error } = await supabase
-          .from('insurance_quotes')
+          .from('contact_submissions')
           .select('*')
+          .eq('insurance_type', 'QUOTE_TOOL')
           .order('created_at', { ascending: false });
 
         if (error) {
@@ -65,14 +65,13 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
         // Transform the data from Supabase format to our application format
         const transformedQuotes = data.map(item => {
-          // Parse the JSONB quote_data field to get the full quote object
+          // Parse the message field where we stored the quote JSON
           try {
-            // If quote_data is already an object, use it, otherwise parse the string
-            const quoteData = typeof item.quote_data === 'string' 
-              ? JSON.parse(item.quote_data) 
-              : item.quote_data;
-              
-            return quoteData as InsuranceQuote;
+            if (item.message) {
+              const quoteData = JSON.parse(item.message);
+              return quoteData as InsuranceQuote;
+            }
+            return null;
           } catch (err) {
             console.error('Error parsing quote data:', err);
             return null;
@@ -98,16 +97,22 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   // Add new quote to Supabase
   const addQuote = async (quote: InsuranceQuote) => {
     try {
-      // @ts-ignore - Using any to bypass type checking for Supabase tables
       const { error } = await supabase
-        .from('insurance_quotes')
+        .from('contact_submissions')
         .insert({
           id: quote.id,
-          quote_type: quote.type,
-          status: quote.status,
-          quote_data: quote, // Store the entire quote object in JSONB
+          first_name: quote.clientInfo.firstName || "New",
+          last_name: quote.clientInfo.lastName || "Quote",
+          email: quote.clientInfo.email || "",
+          phone: quote.clientInfo.phone || "",
+          address: quote.clientInfo.address || "",
+          city: quote.clientInfo.city || "",
+          state: quote.clientInfo.state || "GA",
+          zip: quote.clientInfo.zipCode || "",
+          insurance_type: "QUOTE_TOOL", // Special marker for quotes from the tool
+          message: JSON.stringify(quote), // Store the entire quote object as JSON string
           created_at: quote.createdAt,
-          updated_at: quote.updatedAt
+          consent: true
         });
 
       if (error) throw error;
@@ -121,14 +126,18 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   // Update existing quote in Supabase
   const updateQuote = async (quote: InsuranceQuote) => {
     try {
-      // @ts-ignore - Using any to bypass type checking for Supabase tables
       const { error } = await supabase
-        .from('insurance_quotes')
+        .from('contact_submissions')
         .update({
-          quote_type: quote.type,
-          status: quote.status,
-          quote_data: quote, // Store the entire quote object in JSONB
-          updated_at: quote.updatedAt
+          first_name: quote.clientInfo.firstName || "New",
+          last_name: quote.clientInfo.lastName || "Quote",
+          email: quote.clientInfo.email || "",
+          phone: quote.clientInfo.phone || "",
+          address: quote.clientInfo.address || "",
+          city: quote.clientInfo.city || "",
+          state: quote.clientInfo.state || "GA",
+          zip: quote.clientInfo.zipCode || "",
+          message: JSON.stringify(quote), // Store the entire quote object as JSON string
         })
         .eq('id', quote.id);
 
@@ -143,11 +152,11 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   // Delete quote from Supabase
   const deleteQuote = async (id: string) => {
     try {
-      // @ts-ignore - Using any to bypass type checking for Supabase tables
       const { error } = await supabase
-        .from('insurance_quotes')
+        .from('contact_submissions')
         .delete()
-        .eq('id', id);
+        .eq('id', id)
+        .eq('insurance_type', 'QUOTE_TOOL'); // Make sure we only delete quotes
 
       if (error) throw error;
       

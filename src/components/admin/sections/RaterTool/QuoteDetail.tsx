@@ -7,7 +7,7 @@ import { QuoteForm } from "./QuoteForm";
 import { useQuotes } from "./context/QuotesContext";
 import { useToast } from "@/components/ui/use-toast";
 import { InsuranceQuote } from "./types";
-import { supabase } from "@/integrations/supabase/client"; 
+import { supabase } from "@/integrations/supabase/client";
 
 export const QuoteDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -37,23 +37,29 @@ export const QuoteDetail = () => {
         }
         
         // If not in context, try to get directly from Supabase
-        // @ts-ignore - Using any to bypass type checking for Supabase tables
         const { data, error } = await supabase
-          .from('insurance_quotes')
+          .from('contact_submissions')
           .select('*')
           .eq('id', id)
+          .eq('insurance_type', 'QUOTE_TOOL')
           .single();
         
         if (error || !data) {
           throw new Error("Quote not found in database");
         }
         
-        // If quote_data is already an object, use it, otherwise parse the string
-        const quoteData = typeof data.quote_data === 'string' 
-          ? JSON.parse(data.quote_data) 
-          : data.quote_data;
-          
-        setQuote(quoteData as InsuranceQuote);
+        // Parse the quote data from the message field
+        if (data.message) {
+          try {
+            const quoteData = JSON.parse(data.message);
+            setQuote(quoteData as InsuranceQuote);
+          } catch (err) {
+            console.error("Error parsing quote data:", err);
+            throw new Error("Invalid quote data format");
+          }
+        } else {
+          throw new Error("Quote data is missing");
+        }
       } catch (error) {
         console.error("Error fetching quote:", error);
         toast({
