@@ -1,13 +1,28 @@
-
 import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, FileText, Edit } from "lucide-react";
 import { QuotesList } from "./QuotesList";
 import { NewQuoteButton } from "./NewQuoteButton";
+import { QuoteDetail } from "./QuoteDetail";
+import { NewQuote } from "./NewQuote";
+import { QuotesProvider } from "./context/QuotesContext";
 
 export const RaterTool = () => {
+  return (
+    <QuotesProvider>
+      <Routes>
+        <Route index element={<RaterDashboard />} />
+        <Route path="new" element={<NewQuote />} />
+        <Route path="quote/:id" element={<QuoteDetail />} />
+      </Routes>
+    </QuotesProvider>
+  );
+};
+
+const RaterDashboard = () => {
   const [activeTab, setActiveTab] = useState("quotes");
 
   return (
