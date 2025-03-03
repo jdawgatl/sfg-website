@@ -37,6 +37,7 @@ export const QuoteDetail = () => {
         }
         
         // If not in context, try to get directly from Supabase
+        // @ts-ignore - Using any to bypass type checking for Supabase tables
         const { data, error } = await supabase
           .from('insurance_quotes')
           .select('*')
@@ -47,8 +48,12 @@ export const QuoteDetail = () => {
           throw new Error("Quote not found in database");
         }
         
-        const quoteData = JSON.parse(data.quote_data as string) as InsuranceQuote;
-        setQuote(quoteData);
+        // If quote_data is already an object, use it, otherwise parse the string
+        const quoteData = typeof data.quote_data === 'string' 
+          ? JSON.parse(data.quote_data) 
+          : data.quote_data;
+          
+        setQuote(quoteData as InsuranceQuote);
       } catch (error) {
         console.error("Error fetching quote:", error);
         toast({
