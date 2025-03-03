@@ -6,17 +6,10 @@ import { Card } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight, Save } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useQuotes } from "../context/QuotesContext";
-import { InsuranceQuote, QuoteStep } from "../types";
-
-// Step components
-import ClientInfoStep from "./steps/ClientInfoStep";
-import HouseholdStep from "./steps/HouseholdStep";
-import PropertyStep from "./steps/PropertyStep";
-import VehicleStep from "./steps/VehicleStep";
-import SummaryStep from "./steps/SummaryStep";
-import RatingStep from "./steps/RatingStep";
-
-const steps: QuoteStep[] = ["client", "household", "property", "vehicle", "summary", "rating"];
+import { InsuranceQuote } from "../types";
+import { steps, stepTitles } from "./constants";
+import StepRenderer from "./components/StepRenderer";
+import ProgressIndicator from "./components/ProgressIndicator";
 
 export const QuoteForm = () => {
   const { id } = useParams<{ id: string }>();
@@ -102,74 +95,6 @@ export const QuoteForm = () => {
     });
   };
   
-  const renderStep = () => {
-    switch (currentStep) {
-      case "client":
-        return (
-          <ClientInfoStep 
-            data={formData.clientInfo} 
-            onUpdate={(clientInfo) => handleUpdateField("clientInfo", clientInfo)} 
-          />
-        );
-      case "household":
-        return (
-          <HouseholdStep 
-            data={formData.householdMembers} 
-            onUpdate={(members) => handleUpdateField("householdMembers", members)} 
-          />
-        );
-      case "property":
-        if (formData.type === "home") {
-          return (
-            <PropertyStep 
-              data={formData.propertyInfo} 
-              onUpdate={(propertyInfo) => handleUpdateField("propertyInfo", propertyInfo)} 
-            />
-          );
-        }
-        // Skip property step for auto quotes
-        handleNext();
-        return null;
-      case "vehicle":
-        if (formData.type === "auto") {
-          return (
-            <VehicleStep 
-              data={"vehicles" in formData ? formData.vehicles : []} 
-              householdMembers={formData.householdMembers}
-              onUpdate={(vehicles) => handleUpdateField("vehicles", vehicles)} 
-            />
-          );
-        }
-        // Skip vehicle step for home quotes
-        handleNext();
-        return null;
-      case "summary":
-        return (
-          <SummaryStep 
-            quote={formData} 
-            onComplete={handleComplete} 
-          />
-        );
-      case "rating":
-        return (
-          <RatingStep 
-            quote={formData} 
-          />
-        );
-      default:
-        return null;
-    }
-  };
-  
-  const stepTitles = {
-    client: "Client Information",
-    household: "Household Members",
-    property: "Property Information",
-    vehicle: "Vehicle Information",
-    summary: "Quote Summary",
-    rating: "Generate Quotes"
-  };
-  
   return (
     <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
@@ -187,49 +112,20 @@ export const QuoteForm = () => {
         </div>
       </div>
       
-      {/* Progress indicator */}
-      <div className="flex mb-6">
-        {steps
-          .filter(step => 
-            (formData.type === "auto" && step !== "property") || 
-            (formData.type === "home" && step !== "vehicle")
-          )
-          .map((step, index) => {
-            const adjustedIndex = formData.type === "auto" && step === "summary" 
-              ? steps.indexOf("summary") - 1 
-              : formData.type === "home" && step === "summary" 
-                ? steps.indexOf("summary") - 1 
-                : steps.indexOf(step);
-                
-            const isActive = currentStepIndex === adjustedIndex;
-            const isCompleted = currentStepIndex > adjustedIndex;
-            
-            return (
-              <div 
-                key={step} 
-                className="flex-1 flex flex-col items-center"
-              >
-                <div 
-                  className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 
-                    ${isActive ? 'bg-sky-600 text-white' : 
-                      isCompleted ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'}`}
-                >
-                  {isCompleted ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  ) : (
-                    index + 1
-                  )}
-                </div>
-                <span className="text-xs text-center">{stepTitles[step]}</span>
-              </div>
-            );
-          })}
-      </div>
+      <ProgressIndicator 
+        steps={steps}
+        formData={formData}
+        currentStepIndex={currentStepIndex}
+        stepTitles={stepTitles}
+      />
       
       <Card className="p-6">
-        {renderStep()}
+        <StepRenderer
+          currentStep={currentStep}
+          formData={formData}
+          handleUpdateField={handleUpdateField}
+          handleComplete={handleComplete}
+        />
       </Card>
       
       <div className="flex justify-between mt-6">
