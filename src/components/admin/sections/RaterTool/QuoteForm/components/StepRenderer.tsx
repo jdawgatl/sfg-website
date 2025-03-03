@@ -1,78 +1,29 @@
 
 import React from "react";
-import { InsuranceQuote, QuoteStep } from "../../types";
+import { FormStepProps } from "../index";
 import ClientInfoStep from "../steps/ClientInfoStep";
 import HouseholdStep from "../steps/HouseholdStep";
-import PropertyStep from "../steps/PropertyStep";
 import VehicleStep from "../steps/VehicleStep";
-import SummaryStep from "../steps/SummaryStep";
+import PropertyStep from "../steps/PropertyStep";
 import RatingStep from "../steps/RatingStep";
+import SummaryStep from "../steps/SummaryStep";
+import { STEPS } from "../constants";
 
-interface StepRendererProps {
-  currentStep: QuoteStep;
-  formData: InsuranceQuote;
-  handleUpdateField: (field: string, value: any) => void;
-  handleComplete: () => void;
-}
-
-export const StepRenderer: React.FC<StepRendererProps> = ({
-  currentStep,
-  formData,
-  handleUpdateField,
-  handleComplete
-}) => {
+export const StepRenderer: React.FC<FormStepProps> = ({ currentStep, formData, onUpdate }) => {
   switch (currentStep) {
-    case "client":
-      return (
-        <ClientInfoStep 
-          data={formData.clientInfo} 
-          onUpdate={(clientInfo) => handleUpdateField("clientInfo", clientInfo)} 
-        />
-      );
-    case "household":
-      return (
-        <HouseholdStep 
-          data={formData.householdMembers} 
-          onUpdate={(members) => handleUpdateField("householdMembers", members)} 
-        />
-      );
-    case "property":
-      if (formData.type === "home") {
-        return (
-          <PropertyStep 
-            data={formData.propertyInfo} 
-            onUpdate={(propertyInfo) => handleUpdateField("propertyInfo", propertyInfo)} 
-          />
-        );
-      }
-      return null;
-    case "vehicle":
-      if (formData.type === "auto") {
-        return (
-          <VehicleStep 
-            data={"vehicles" in formData ? formData.vehicles : []} 
-            householdMembers={formData.householdMembers}
-            onUpdate={(vehicles) => handleUpdateField("vehicles", vehicles)} 
-          />
-        );
-      }
-      return null;
-    case "summary":
-      return (
-        <SummaryStep 
-          quote={formData} 
-          onComplete={handleComplete} 
-        />
-      );
-    case "rating":
-      return (
-        <RatingStep 
-          quote={formData} 
-        />
-      );
+    case STEPS.CLIENT_INFO:
+      return <ClientInfoStep data={formData.clientInfo} onUpdate={(data) => onUpdate("clientInfo", data)} />;
+    case STEPS.HOUSEHOLD:
+      return <HouseholdStep data={formData.household} onUpdate={(data) => onUpdate("household", data)} />;
+    case STEPS.VEHICLE:
+      return <VehicleStep data={formData.vehicles} onUpdate={(data) => onUpdate("vehicles", data)} />;
+    case STEPS.PROPERTY:
+      return <PropertyStep data={formData.property} onUpdate={(data) => onUpdate("property", data)} />;
+    case STEPS.RATING:
+      return <RatingStep formData={formData} onUpdate={(data) => onUpdate("rating", data)} />;
+    case STEPS.SUMMARY:
+      return <SummaryStep formData={formData} />;
     default:
-      return null;
+      return <div>Unknown step</div>;
   }
 };
-
-export default StepRenderer;
