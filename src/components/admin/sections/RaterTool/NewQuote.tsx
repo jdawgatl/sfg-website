@@ -14,11 +14,13 @@ export const NewQuote = () => {
   const { toast } = useToast();
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<"auto" | "home" | null>(null);
   
   const handleCreateQuote = async (type: "auto" | "home") => {
     if (isCreating) return; // Prevent double submission
     
     setIsCreating(true);
+    setSelectedType(type);
     setError(null);
     
     try {
@@ -34,13 +36,17 @@ export const NewQuote = () => {
           title: "Success",
           description: `New ${type} insurance quote created successfully.`,
         });
-        navigate(`/admin/rater/quote/${newQuote.id}`);
+        
+        // Use timeout to ensure the state has been updated before navigating
+        setTimeout(() => {
+          navigate(`/admin/rater/quote/${newQuote.id}`);
+        }, 300);
       } else {
         throw new Error("Failed to create quote - no ID returned");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating quote:", error);
-      setError("Failed to create new quote. Please try again.");
+      setError(error.message || "Failed to create new quote. Please try again.");
       toast({
         title: "Error",
         description: "Failed to create new quote. Please try again.",
@@ -48,6 +54,7 @@ export const NewQuote = () => {
       });
     } finally {
       setIsCreating(false);
+      setSelectedType(null);
     }
   };
   
@@ -84,7 +91,11 @@ export const NewQuote = () => {
             e.stopPropagation();
             if (!isCreating) handleCreateQuote("auto");
           }}>
-            {isCreating ? <><LoaderCircle className="h-4 w-4 mr-2 animate-spin" /> Creating...</> : "Start Auto Quote"}
+            {isCreating && selectedType === "auto" ? (
+              <><LoaderCircle className="h-4 w-4 mr-2 animate-spin" /> Creating...</>
+            ) : (
+              "Start Auto Quote"
+            )}
           </Button>
         </Card>
         
@@ -101,7 +112,11 @@ export const NewQuote = () => {
             e.stopPropagation();
             if (!isCreating) handleCreateQuote("home");
           }}>
-            {isCreating ? <><LoaderCircle className="h-4 w-4 mr-2 animate-spin" /> Creating...</> : "Start Home Quote"}
+            {isCreating && selectedType === "home" ? (
+              <><LoaderCircle className="h-4 w-4 mr-2 animate-spin" /> Creating...</>
+            ) : (
+              "Start Home Quote"
+            )}
           </Button>
         </Card>
       </div>

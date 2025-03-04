@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useReducer, useEffect, useState } from "react";
 import { InsuranceQuote, AutoQuote, HomeQuote } from "../types";
 import { supabase } from "@/integrations/supabase/client";
@@ -126,6 +125,7 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       
       if (checkError) {
         console.error("Error checking existing quote:", checkError);
+        throw new Error(`Error checking for existing quote: ${checkError.message}`);
       }
       
       if (existingQuote) {
@@ -153,7 +153,7 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
       if (error) {
         console.error("Error inserting quote into Supabase:", error);
-        throw error;
+        throw new Error(`Error inserting quote: ${error.message}`);
       }
       
       console.log("Quote added successfully, dispatching to state");
@@ -185,7 +185,7 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
       if (error) {
         console.error("Error updating quote in Supabase:", error);
-        throw error;
+        throw new Error(`Error updating quote: ${error.message}`);
       }
       
       console.log("Quote updated successfully, dispatching to state");
@@ -208,7 +208,7 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
       if (error) {
         console.error("Error deleting quote from Supabase:", error);
-        throw error;
+        throw new Error(`Error deleting quote: ${error.message}`);
       }
       
       console.log("Quote deleted successfully, dispatching to state");
@@ -225,9 +225,10 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     
     try {
       const now = new Date().toISOString();
-      // Use UUID for more reliable IDs
-      const id = `q-${uuidv4()}`;
+      // Generate a simpler ID format that's less likely to cause issues
+      const id = `quote-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
+      // Create base quote with common properties
       const baseQuote = {
         id,
         type,
@@ -250,6 +251,7 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
       let newQuote: InsuranceQuote;
 
+      // Create the appropriate quote type
       if (type === "auto") {
         newQuote = {
           ...baseQuote,
@@ -257,20 +259,18 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           vehicles: []
         } as AutoQuote;
       } else {
-        // Create a home quote with proper types for all fields
         newQuote = {
           ...baseQuote,
           type: "home",
           propertyInfo: {
             address: "",
             city: "",
-            state: "GA", // Default state
+            state: "GA",
             zipCode: "",
-            yearBuilt: undefined, // Using undefined instead of empty string for number fields
-            squareFootage: undefined, // Changed from squareFeet to squareFootage to match the type
+            yearBuilt: undefined,
+            squareFootage: undefined,
             constructionType: "",
             roofType: "",
-            // Adding other properties from the type to ensure full compatibility
             numberOfStories: undefined,
             purchaseDate: "",
             roofReplacedYear: undefined,
@@ -286,39 +286,18 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       console.log("New quote created in memory:", newQuote);
       
       // Add the quote to Supabase
-      await addQuote(newQuote);
-      console.log("Quote successfully added to Supabase and state");
-      
-      // Verify the quote was added correctly
-      const addedQuote = getQuoteById(id);
-      if (!addedQuote) {
-        console.error("Quote was not added to state properly");
-        // Try to fetch directly from Supabase
-        const { data, error } = await supabase
-          .from('contact_submissions')
-          .select('*')
-          .eq('id', id)
-          .maybeSingle();
+      try {
+        await addQuote(newQuote);
+        console.log("Quote successfully added to Supabase and state");
         
-        if (error || !data) {
-          console.error("Could not verify quote was added to Supabase:", error);
-          throw new Error("Failed to create quote - verification failed");
-        }
+        // Add immediately to local state to ensure it's available
+        dispatch({ type: "ADD_QUOTE", payload: newQuote });
         
-        // Try to parse the quote from the message field
-        try {
-          if (data.message) {
-            const parsedQuote = JSON.parse(data.message) as InsuranceQuote;
-            // Add to local state
-            dispatch({ type: "ADD_QUOTE", payload: parsedQuote });
-            return parsedQuote;
-          }
-        } catch (err) {
-          console.error("Error parsing verified quote:", err);
-        }
+        return newQuote;
+      } catch (error) {
+        console.error("Error saving quote to Supabase:", error);
+        throw new Error("Failed to save quote to database");
       }
-      
-      return newQuote;
     } catch (error) {
       console.error("Error during quote creation:", error);
       throw error;

@@ -28,6 +28,8 @@ export const NewQuoteButton = () => {
   const { toast } = useToast();
 
   const handleCreateQuote = async () => {
+    if (isCreating) return; // Prevent double submission
+    
     setIsCreating(true);
     setError(null);
     
@@ -39,26 +41,24 @@ export const NewQuoteButton = () => {
       console.log("Created new quote from dialog:", newQuote);
       
       if (newQuote && newQuote.id) {
-        // Navigate to the quote detail page
-        console.log(`Navigating to quote detail: ${newQuote.id} from dialog`);
+        // Close dialog before navigation to avoid state issues
+        setOpen(false);
+        
         toast({
           title: "Success",
           description: `New ${quoteType} insurance quote created successfully.`,
         });
         
-        // Close dialog before navigation to avoid state issues
-        setOpen(false);
-        
         // Short delay to ensure dialog is closed before navigation
         setTimeout(() => {
           navigate(`/admin/rater/quote/${newQuote.id}`);
-        }, 100);
+        }, 300);
       } else {
         throw new Error("Failed to create quote - no ID returned");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating quote from dialog:", error);
-      setError("Failed to create new quote. Please try again.");
+      setError(error.message || "Failed to create new quote. Please try again.");
       toast({
         title: "Error",
         description: "Failed to create new quote. Please try again.",
