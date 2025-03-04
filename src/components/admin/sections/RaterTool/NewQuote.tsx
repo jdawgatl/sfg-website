@@ -6,15 +6,18 @@ import { Card } from "@/components/ui/card";
 import { Car, Home, ArrowLeft, LoaderCircle } from "lucide-react";
 import { useQuotes } from "./context/QuotesContext";
 import { useToast } from "@/components/ui/use-toast";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export const NewQuote = () => {
   const navigate = useNavigate();
   const { createNewQuote } = useQuotes();
   const { toast } = useToast();
   const [isCreating, setIsCreating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
   const handleCreateQuote = async (type: "auto" | "home") => {
     setIsCreating(true);
+    setError(null);
     
     try {
       console.log(`Starting quote creation for type: ${type}`);
@@ -25,17 +28,23 @@ export const NewQuote = () => {
       if (newQuote && newQuote.id) {
         // Navigate to the quote detail page
         console.log(`Navigating to quote detail: ${newQuote.id}`);
+        toast({
+          title: "Success",
+          description: `New ${type} insurance quote created successfully.`,
+        });
         navigate(`/admin/rater/quote/${newQuote.id}`);
       } else {
         throw new Error("Failed to create quote - no ID returned");
       }
     } catch (error) {
       console.error("Error creating quote:", error);
+      setError("Failed to create new quote. Please try again.");
       toast({
         title: "Error",
         description: "Failed to create new quote. Please try again.",
         variant: "destructive",
       });
+    } finally {
       setIsCreating(false);
     }
   };
@@ -52,6 +61,12 @@ export const NewQuote = () => {
         </Button>
         <h2 className="text-3xl font-bold tracking-tight">Create New Quote</h2>
       </div>
+      
+      {error && (
+        <Alert variant="destructive" className="my-4">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
         <Card 

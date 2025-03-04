@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useReducer, useEffect, useState } from "react";
 import { InsuranceQuote, AutoQuote, HomeQuote } from "../types";
 import { supabase } from "@/integrations/supabase/client";
+import { v4 as uuidv4 } from "uuid";
 
 // Action types
 type QuotesAction = 
@@ -108,6 +109,12 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const addQuote = async (quote: InsuranceQuote) => {
     try {
       console.log("Adding new quote to Supabase:", quote);
+      
+      // Check that we have a valid ID and all required fields
+      if (!quote.id) {
+        throw new Error("Quote missing ID");
+      }
+      
       const { error } = await supabase
         .from('contact_submissions')
         .insert({
@@ -197,54 +204,65 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   // Create a new quote
   const createNewQuote = async (type: "auto" | "home"): Promise<InsuranceQuote> => {
     console.log(`Creating new ${type} quote...`);
-    const now = new Date().toISOString();
-    const id = `q-${Date.now()}`; // Simple ID generation, use UUID in production
+    
+    try {
+      const now = new Date().toISOString();
+      // Use UUID for more reliable IDs
+      const id = `q-${uuidv4()}`;
 
-    const baseQuote = {
-      id,
-      type,
-      status: "draft" as const,
-      clientInfo: {
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        address: "",
-        city: "",
-        state: "GA", // Default state
-        zipCode: "",
-      },
-      householdMembers: [],
-      createdAt: now,
-      updatedAt: now,
-      currentStep: "client" as const,
-    };
-
-    let newQuote: InsuranceQuote;
-
-    if (type === "auto") {
-      newQuote = {
-        ...baseQuote,
-        type: "auto",
-        vehicles: []
-      } as AutoQuote;
-    } else {
-      newQuote = {
-        ...baseQuote,
-        type: "home",
-        propertyInfo: {
+      const baseQuote = {
+        id,
+        type,
+        status: "draft" as const,
+        clientInfo: {
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
           address: "",
           city: "",
           state: "GA", // Default state
           zipCode: "",
-        }
-      } as HomeQuote;
-    }
+        },
+        householdMembers: [],
+        createdAt: now,
+        updatedAt: now,
+        currentStep: "client" as const,
+      };
 
-    console.log("New quote created in memory:", newQuote);
-    await addQuote(newQuote);
-    console.log("Quote successfully added to Supabase and state");
-    return newQuote;
+      let newQuote: InsuranceQuote;
+
+      if (type === "auto") {
+        newQuote = {
+          ...baseQuote,
+          type: "auto",
+          vehicles: []
+        } as AutoQuote;
+      } else {
+        newQuote = {
+          ...baseQuote,
+          type: "home",
+          propertyInfo: {
+            address: "",
+            city: "",
+            state: "GA", // Default state
+            zipCode: "",
+            yearBuilt: "",
+            squareFeet: "",
+            constructionType: "",
+            roofType: "",
+          }
+        } as HomeQuote;
+      }
+
+      console.log("New quote created in memory:", newQuote);
+      await addQuote(newQuote);
+      console.log("Quote successfully added to Supabase and state");
+      return newQuote;
+    } catch (error) {
+      console.error("Error during quote creation:", error);
+      throw error;
+    }
   };
 
   return (

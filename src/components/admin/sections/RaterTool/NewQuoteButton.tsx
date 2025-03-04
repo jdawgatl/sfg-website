@@ -16,20 +16,24 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useQuotes } from "./context/QuotesContext";
 import { useToast } from "@/components/ui/use-toast";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export const NewQuoteButton = () => {
   const [open, setOpen] = useState(false);
   const [quoteType, setQuoteType] = useState<"auto" | "home">("auto");
   const [isCreating, setIsCreating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { createNewQuote } = useQuotes();
   const { toast } = useToast();
 
   const handleCreateQuote = async () => {
     setIsCreating(true);
+    setError(null);
     
     try {
       console.log(`Starting quote creation for type: ${quoteType} from dialog`);
+      
       // Create the new quote using the context function
       const newQuote = await createNewQuote(quoteType);
       console.log("Created new quote from dialog:", newQuote);
@@ -37,6 +41,10 @@ export const NewQuoteButton = () => {
       if (newQuote && newQuote.id) {
         // Navigate to the quote detail page
         console.log(`Navigating to quote detail: ${newQuote.id} from dialog`);
+        toast({
+          title: "Success",
+          description: `New ${quoteType} insurance quote created successfully.`,
+        });
         navigate(`/admin/rater/quote/${newQuote.id}`);
         setOpen(false);
       } else {
@@ -44,6 +52,7 @@ export const NewQuoteButton = () => {
       }
     } catch (error) {
       console.error("Error creating quote from dialog:", error);
+      setError("Failed to create new quote. Please try again.");
       toast({
         title: "Error",
         description: "Failed to create new quote. Please try again.",
@@ -69,6 +78,12 @@ export const NewQuoteButton = () => {
             Select the type of insurance quote you want to create.
           </DialogDescription>
         </DialogHeader>
+        
+        {error && (
+          <Alert variant="destructive" className="my-2">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
         
         <RadioGroup 
           defaultValue="auto" 
