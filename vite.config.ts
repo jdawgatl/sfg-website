@@ -27,13 +27,14 @@ export default defineConfig(({ mode }) => ({
           react: ['react', 'react-dom'],
           router: ['react-router-dom'],
           motion: ['framer-motion'],
+          googleapis: ['googleapis'],
           radix: [
             '@radix-ui/react-toast',
             '@radix-ui/react-tooltip',
             '@radix-ui/react-slot',
             '@radix-ui/react-checkbox'
           ],
-          utils: ['date-fns', 'clsx', 'tailwind-merge'],
+          utils: ['date-fns', 'clsx', 'tailwind-merge', 'uuid'],
         },
         // Add cache busting
         entryFileNames: 'assets/[name]-[hash].js',
