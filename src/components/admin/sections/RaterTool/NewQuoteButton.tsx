@@ -36,12 +36,12 @@ export const NewQuoteButton = () => {
     try {
       console.log(`Starting quote creation for type: ${quoteType} from dialog`);
       
-      // Create the new quote using the context function
+      // Create the new quote directly with error handling
       const newQuote = await createNewQuote(quoteType);
       console.log("Created new quote from dialog:", newQuote);
       
       if (newQuote && newQuote.id) {
-        // Close dialog before navigation to avoid state issues
+        // Close dialog before navigation
         setOpen(false);
         
         toast({
@@ -49,19 +49,19 @@ export const NewQuoteButton = () => {
           description: `New ${quoteType} insurance quote created successfully.`,
         });
         
-        // Short delay to ensure dialog is closed before navigation
+        // Navigate with a slight delay to ensure dialog is fully closed
         setTimeout(() => {
           navigate(`/admin/rater/quote/${newQuote.id}`);
-        }, 300);
+        }, 500);
       } else {
-        throw new Error("Failed to create quote - no ID returned");
+        throw new Error("Quote creation failed - no valid quote returned");
       }
     } catch (error: any) {
       console.error("Error creating quote from dialog:", error);
       setError(error.message || "Failed to create new quote. Please try again.");
       toast({
         title: "Error",
-        description: "Failed to create new quote. Please try again.",
+        description: error.message || "Failed to create new quote. Please try again.",
         variant: "destructive",
       });
     } finally {

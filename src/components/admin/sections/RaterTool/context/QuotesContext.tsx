@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect, useState } from "react";
 import { InsuranceQuote, AutoQuote, HomeQuote } from "../types";
 import { supabase } from "@/integrations/supabase/client";
-import { v4 as uuidv4 } from "uuid";
 
 // Action types
 type QuotesAction = 
@@ -111,7 +110,7 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     try {
       console.log("Adding new quote to Supabase:", quote);
       
-      // Check that we have a valid ID and all required fields
+      // Check that we have a valid ID
       if (!quote.id) {
         throw new Error("Quote missing ID");
       }
@@ -146,8 +145,8 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           state: quote.clientInfo.state || "GA",
           zip: quote.clientInfo.zipCode || "",
           insurance_type: "QUOTE_TOOL", // Special marker for quotes from the tool
-          message: JSON.stringify(quote), // Store the entire quote object as JSON string
-          created_at: quote.createdAt,
+          message: JSON.stringify(quote), // Store the entire quote object as JSON
+          created_at: new Date().toISOString(),
           consent: true
         });
 
@@ -156,9 +155,10 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         throw new Error(`Error inserting quote: ${error.message}`);
       }
       
-      console.log("Quote added successfully, dispatching to state");
+      console.log("Quote added successfully to Supabase, dispatching to state");
+      // Update local state only after successful Supabase operation
       dispatch({ type: "ADD_QUOTE", payload: quote });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error adding quote:', error);
       throw error;
     }
@@ -179,7 +179,7 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           city: quote.clientInfo.city || "",
           state: quote.clientInfo.state || "GA",
           zip: quote.clientInfo.zipCode || "",
-          message: JSON.stringify(quote), // Store the entire quote object as JSON string
+          message: JSON.stringify(quote), // Store the entire quote object as JSON
         })
         .eq('id', quote.id);
 
@@ -224,9 +224,9 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     console.log(`Creating new ${type} quote...`);
     
     try {
+      // Use a simpler ID format
+      const id = `quote-${Date.now()}`;
       const now = new Date().toISOString();
-      // Generate a simpler ID format that's less likely to cause issues
-      const id = `quote-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
       // Create base quote with common properties
       const baseQuote = {
@@ -285,20 +285,41 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
       console.log("New quote created in memory:", newQuote);
       
-      // Add the quote to Supabase
+      // First add to local state so it's immediately available
+      dispatch({ type: "ADD_QUOTE", payload: newQuote });
+      
+      // Then save to database
       try {
-        await addQuote(newQuote);
-        console.log("Quote successfully added to Supabase and state");
-        
-        // Add immediately to local state to ensure it's available
-        dispatch({ type: "ADD_QUOTE", payload: newQuote });
-        
+        const { error } = await supabase
+          .from('contact_submissions')
+          .insert({
+            id: newQuote.id,
+            first_name: "New",
+            last_name: "Quote", 
+            email: "",
+            phone: "",
+            address: "",
+            city: "",
+            state: "GA",
+            zip: "",
+            insurance_type: "QUOTE_TOOL",
+            message: JSON.stringify(newQuote),
+            created_at: now,
+            consent: true
+          });
+          
+        if (error) {
+          console.error("Database error:", error);
+          throw new Error(`Database error: ${error.message}`);
+        }
+
+        console.log("Quote successfully saved to database with ID:", newQuote.id);
         return newQuote;
-      } catch (error) {
-        console.error("Error saving quote to Supabase:", error);
+      } catch (dbError: any) {
+        console.error("Failed to save quote to database:", dbError);
         throw new Error("Failed to save quote to database");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error during quote creation:", error);
       throw error;
     }

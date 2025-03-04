@@ -25,13 +25,11 @@ export const NewQuote = () => {
     
     try {
       console.log(`Starting quote creation for type: ${type}`);
-      // Create the new quote
+      // Create the new quote with direct database access
       const newQuote = await createNewQuote(type);
       console.log("Created new quote:", newQuote);
       
       if (newQuote && newQuote.id) {
-        // Navigate to the quote detail page
-        console.log(`Navigating to quote detail: ${newQuote.id}`);
         toast({
           title: "Success",
           description: `New ${type} insurance quote created successfully.`,
@@ -40,16 +38,16 @@ export const NewQuote = () => {
         // Use timeout to ensure the state has been updated before navigating
         setTimeout(() => {
           navigate(`/admin/rater/quote/${newQuote.id}`);
-        }, 300);
+        }, 500);
       } else {
-        throw new Error("Failed to create quote - no ID returned");
+        throw new Error("Quote creation failed - no valid quote returned");
       }
     } catch (error: any) {
       console.error("Error creating quote:", error);
       setError(error.message || "Failed to create new quote. Please try again.");
       toast({
         title: "Error",
-        description: "Failed to create new quote. Please try again.",
+        description: error.message || "Failed to create new quote. Please try again.",
         variant: "destructive",
       });
     } finally {
