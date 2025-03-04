@@ -13,7 +13,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 export const QuoteDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { getQuoteById } = useQuotes();
+  const { getQuoteById, quotes } = useQuotes();
   const { toast } = useToast();
   const [quote, setQuote] = useState<InsuranceQuote | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -50,20 +50,31 @@ export const QuoteDetail = () => {
           .select('*')
           .eq('id', id)
           .eq('insurance_type', 'QUOTE_TOOL')
-          .single();
+          .maybeSingle();
         
         if (error) {
           console.error("Error fetching quote from Supabase:", error);
           throw new Error("Quote not found in database");
         }
         
+        if (!data) {
+          console.error("No data returned from Supabase");
+          throw new Error("Quote not found in database");
+        }
+        
         console.log("Quote data from Supabase:", data);
         
         // Parse the quote data from the message field
-        if (data && data.message) {
+        if (data.message) {
           try {
             const quoteData = JSON.parse(data.message);
             console.log("Parsed quote data:", quoteData);
+            
+            // Validate the parsed quote has required fields
+            if (!quoteData || !quoteData.id || !quoteData.type) {
+              throw new Error("Invalid quote data structure");
+            }
+            
             setQuote(quoteData as InsuranceQuote);
           } catch (err) {
             console.error("Error parsing quote data:", err);
@@ -86,7 +97,7 @@ export const QuoteDetail = () => {
     };
     
     fetchQuote();
-  }, [id, navigate, toast, getQuoteById]);
+  }, [id, navigate, toast, getQuoteById, quotes]); // Added quotes to dependency array to refresh when they change
   
   if (isLoading) {
     return (

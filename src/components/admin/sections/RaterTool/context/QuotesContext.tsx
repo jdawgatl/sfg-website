@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useReducer, useEffect, useState } from "react";
 import { InsuranceQuote, AutoQuote, HomeQuote } from "../types";
 import { supabase } from "@/integrations/supabase/client";
@@ -68,11 +69,13 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
         // Transform the data from Supabase format to our application format
         const transformedQuotes = data
+          .filter(item => item.message) // Ensure message field exists
           .map(item => {
             // Parse the message field where we stored the quote JSON
             try {
-              if (item.message) {
-                const quoteData = JSON.parse(item.message);
+              const quoteData = JSON.parse(item.message);
+              // Validate that the parsed data has the required structure
+              if (quoteData && quoteData.id && quoteData.type && quoteData.clientInfo) {
                 return quoteData as InsuranceQuote;
               }
               return null;
@@ -112,6 +115,22 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       // Check that we have a valid ID and all required fields
       if (!quote.id) {
         throw new Error("Quote missing ID");
+      }
+      
+      // First check if the quote already exists to avoid duplicates
+      const { data: existingQuote, error: checkError } = await supabase
+        .from('contact_submissions')
+        .select('id')
+        .eq('id', quote.id)
+        .maybeSingle();
+      
+      if (checkError) {
+        console.error("Error checking existing quote:", checkError);
+      }
+      
+      if (existingQuote) {
+        console.log("Quote already exists, updating instead");
+        return updateQuote(quote);
       }
       
       const { error } = await supabase
@@ -265,8 +284,40 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       }
 
       console.log("New quote created in memory:", newQuote);
+      
+      // Add the quote to Supabase
       await addQuote(newQuote);
       console.log("Quote successfully added to Supabase and state");
+      
+      // Verify the quote was added correctly
+      const addedQuote = getQuoteById(id);
+      if (!addedQuote) {
+        console.error("Quote was not added to state properly");
+        // Try to fetch directly from Supabase
+        const { data, error } = await supabase
+          .from('contact_submissions')
+          .select('*')
+          .eq('id', id)
+          .maybeSingle();
+        
+        if (error || !data) {
+          console.error("Could not verify quote was added to Supabase:", error);
+          throw new Error("Failed to create quote - verification failed");
+        }
+        
+        // Try to parse the quote from the message field
+        try {
+          if (data.message) {
+            const parsedQuote = JSON.parse(data.message) as InsuranceQuote;
+            // Add to local state
+            dispatch({ type: "ADD_QUOTE", payload: parsedQuote });
+            return parsedQuote;
+          }
+        } catch (err) {
+          console.error("Error parsing verified quote:", err);
+        }
+      }
+      
       return newQuote;
     } catch (error) {
       console.error("Error during quote creation:", error);

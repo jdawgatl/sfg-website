@@ -45,8 +45,14 @@ export const NewQuoteButton = () => {
           title: "Success",
           description: `New ${quoteType} insurance quote created successfully.`,
         });
-        navigate(`/admin/rater/quote/${newQuote.id}`);
+        
+        // Close dialog before navigation to avoid state issues
         setOpen(false);
+        
+        // Short delay to ensure dialog is closed before navigation
+        setTimeout(() => {
+          navigate(`/admin/rater/quote/${newQuote.id}`);
+        }, 100);
       } else {
         throw new Error("Failed to create quote - no ID returned");
       }

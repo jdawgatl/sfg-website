@@ -16,6 +16,8 @@ export const NewQuote = () => {
   const [error, setError] = useState<string | null>(null);
   
   const handleCreateQuote = async (type: "auto" | "home") => {
+    if (isCreating) return; // Prevent double submission
+    
     setIsCreating(true);
     setError(null);
     
