@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useReducer, useEffect, useState } from "react";
 import { InsuranceQuote, AutoQuote, HomeQuote } from "../types";
 import { supabase } from "@/integrations/supabase/client";
@@ -239,6 +238,7 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           vehicles: []
         } as AutoQuote;
       } else {
+        // Create a home quote with proper types for all fields
         newQuote = {
           ...baseQuote,
           type: "home",
@@ -247,10 +247,19 @@ export const QuotesProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             city: "",
             state: "GA", // Default state
             zipCode: "",
-            yearBuilt: "",
-            squareFeet: "",
+            yearBuilt: undefined, // Using undefined instead of empty string for number fields
+            squareFootage: undefined, // Changed from squareFeet to squareFootage to match the type
             constructionType: "",
             roofType: "",
+            // Adding other properties from the type to ensure full compatibility
+            numberOfStories: undefined,
+            purchaseDate: "",
+            roofReplacedYear: undefined,
+            hasAlarmSystem: false,
+            hasBasement: false,
+            hasPool: false,
+            hasGarage: false,
+            garageType: ""
           }
         } as HomeQuote;
       }

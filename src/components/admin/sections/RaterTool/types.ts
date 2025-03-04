@@ -34,12 +34,13 @@ export type PropertyInfo = {
   state: string;
   zipCode: string;
   yearBuilt?: number;
-  squareFootage?: number;
+  squareFootage?: number; // This should be squareFootage to match what we use elsewhere
   purchaseDate?: string;
   roofReplacedYear?: number;
-  hasAlarmSystem?: boolean;
-  constructionType?: string;
   numberOfStories?: number;
+  constructionType?: string;
+  roofType?: string; // Added to match the one used in PropertyInfo
+  hasAlarmSystem?: boolean;
   hasBasement?: boolean;
   hasPool?: boolean;
   hasGarage?: boolean;
