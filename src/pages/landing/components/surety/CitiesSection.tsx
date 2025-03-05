@@ -48,9 +48,9 @@ const CitiesSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {cities.map((item) => (
-            <Card key={item.city} className="p-4 text-center">
+            <Card key={item.city} className="p-4 text-center hover:shadow-md transition-shadow">
               <h3 className="font-semibold mb-1">{item.city}</h3>
               <p className="text-sm text-gray-500">{item.description}</p>
             </Card>

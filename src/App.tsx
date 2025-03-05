@@ -9,6 +9,7 @@ import ScrollToTop from "@/components/utils/ScrollToTop";
 import { SEOWrapper } from "@/components/seo/SEOWrapper";
 import { AppRoutes } from "@/routes";
 
+// Fix the HelmetProvider type issue by wrapping components
 const App = () => (
   <BrowserRouter>
     <HelmetProvider>
