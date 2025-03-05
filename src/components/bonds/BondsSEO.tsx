@@ -4,7 +4,7 @@ const BondsSEO = () => {
     <section className="sr-only">
       <h2>Georgia Title Bonds and Surety Bonds</h2>
       <p>
-        We provide title bonds and surety bonds throughout Georgia including Fayetteville, Atlanta, Peachtree City, 
+        We provide title bonds and surety bonds throughout Georgia including Fayetteville, Atlanta, Peachtree City, Hampton, 
         Newnan, McDonough, Jonesboro, Stockbridge, Griffin, Riverdale, Union City, College Park, East Point, 
         Forest Park, Morrow, Lovejoy, Hampton, Fairburn, Tyrone, Senoia, Brooks, Sharpsburg, Locust Grove, 
         Jackson, Flovilla, Jenkinsburg, Milner, Zebulon, Barnesville, Thomaston, LaGrange, Carrollton, Villa Rica, 

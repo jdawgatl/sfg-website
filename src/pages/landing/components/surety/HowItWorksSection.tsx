@@ -23,7 +23,7 @@ const HowItWorksSection = () => {
     {
       step: "4",
       title: "Visit DMV",
-      description: "Take your bond to the Georgia DMV to obtain your bonded vehicle title."
+      description: "Take your bond to the tag office or Georgia DOR to obtain your bonded vehicle title."
     },
   ];
 

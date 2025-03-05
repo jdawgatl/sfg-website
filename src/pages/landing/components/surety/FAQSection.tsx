@@ -9,7 +9,7 @@ const FAQSection = () => {
     },
     {
       question: "How much does a title bond cost in Georgia?",
-      answer: "The cost of a title bond in Georgia typically starts around $100 for most vehicles, but varies based on the value of your vehicle. The bond amount is usually set at 1.5 times the vehicle's value, but you only pay a percentage of this amount (the premium) to purchase the bond."
+      answer: "The cost of a title bond in Georgia typically starts around $100 for most vehicles, but varies based on the value of your vehicle. The bond amount is usually set at 2 times the vehicle's value, but you only pay a percentage of this amount (the premium) to purchase the bond."
     },
     {
       question: "How long does it take to get a title bond?",
@@ -21,7 +21,7 @@ const FAQSection = () => {
     },
     {
       question: "How long is a title bond valid in Georgia?",
-      answer: "A Georgia certificate of title bond remains in effect for 3 years. After this period, if no one has come forward to claim ownership of the vehicle, the \"bonded\" status is removed from your title."
+      answer: "A Georgia certificate of title bond remains in effect for 4 years. After this period, if no one has come forward to claim ownership of the vehicle, the \"bonded\" status is removed from your title."
     }
   ];
 

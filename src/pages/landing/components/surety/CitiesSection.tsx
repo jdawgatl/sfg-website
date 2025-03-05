@@ -59,7 +59,7 @@ const CitiesSection = () => {
         
         <div className="text-center mt-8">
           <p className="text-sm text-gray-600 mb-4">
-            Also serving Sandy Springs, Johns Creek, Alpharetta, Marietta, Smyrna, Dunwoody, Brookhaven, 
+            Also serving Sandy Springs, Johns Creek, Alpharetta, Marietta, Smyrna, Dunwoody, Brookhaven, Riverdale, Jonesboro, Griffin, Fayetteville, Hampton,  
             Peachtree Corners, Kennesaw, Gainesville, Dalton, Lawrenceville, Duluth, Peachtree City, 
             Newnan, Douglasville, Carrollton, Rome, Warner Robins, Valdosta, Albany, Mcdonough, 
             Hinesville, Milton, Statesboro and all Georgia municipalities.

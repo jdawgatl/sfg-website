@@ -24,6 +24,6 @@ export const landingSEOConfig = {
   titleBonds: {
     title: "Georgia Title Bonds | Lost Vehicle Title Bond Solutions",
     description: "Quick and affordable title bonds in Georgia. Certificate of title bonds for vehicles with missing titles. Same-day service available.",
-    keywords: "Standard Financial Group, insurance Fayetteville GA, cheap car insurance, cheap auto insurance, affordable insurance, Georgia title bond, certificate of title bond, lost title bond Georgia, car title bond"
+    keywords: "Standard Financial Group, insurance Fayetteville GA, cheap car insurance, cheap auto insurance, affordable insurance, title bond, cheap title bond, car title bond, lost title bond, Georgia title bond, certificate of title bond, lost title bond Georgia, car title bond"
   }
 };

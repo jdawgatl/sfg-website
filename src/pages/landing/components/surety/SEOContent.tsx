@@ -5,7 +5,7 @@ const SEOContent = () => {
       <h2>Georgia Title Bonds in Every City and County</h2>
       <p>
         We provide certificate of title bonds in Atlanta, Savannah, Macon, Augusta, Columbus, Athens, Sandy Springs, 
-        Roswell, Johns Creek, Alpharetta, Marietta, Smyrna, Dunwoody, Brookhaven, Peachtree Corners, Kennesaw, 
+        Roswell, Johns Creek, Alpharetta, Marietta, Smyrna, Dunwoody, Brookhaven, Riverdale, Jonesboro, Griffin, Hampton, Peachtree Corners, Kennesaw, 
         Gainesville, Dalton, Lawrenceville, Duluth, Peachtree City, Newnan, Douglasville, Carrollton, Rome, 
         Warner Robins, Valdosta, Albany, Fayetteville, Mcdonough, Hinesville, Milton, Statesboro.
       </p>

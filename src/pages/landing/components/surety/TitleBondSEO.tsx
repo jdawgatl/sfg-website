@@ -41,7 +41,7 @@ const TitleBondSEO = () => {
       <p>
         We provide certificate of title bonds in Atlanta, Savannah, Macon, Augusta, Columbus, Athens, Sandy Springs, 
         Roswell, Johns Creek, Alpharetta, Marietta, Smyrna, Dunwoody, Brookhaven, Peachtree Corners, Kennesaw, 
-        Gainesville, Dalton, Lawrenceville, Duluth, Peachtree City, Newnan, Douglasville, Carrollton, Rome, 
+        Gainesville, Dalton, Lawrenceville, Duluth, Riverdale, Jonesboro, Peachtree City, Newnan, Douglasville, Carrollton, Rome, 
         Warner Robins, Valdosta, Albany, Fayetteville, Mcdonough, Hinesville, Milton, Statesboro, 
         Woodstock, Canton, Acworth, Pooler, Decatur, Snellville, Kingsland, Suwanee, Braselton, Buford, 
         Sugar Hill, Fairburn, Union City, Conyers, Stockbridge, Winder, Jefferson, Villa Rica, Holly Springs, 
