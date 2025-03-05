@@ -10,6 +10,7 @@ This project follows these security best practices for handling API keys and sec
 1. **Client-side code:** 
    - Only publishable/public API keys are used in browser-accessible code
    - The Supabase publishable key in `src/integrations/supabase/client.ts` is designed to be public and has appropriate permissions restrictions
+   - This publishable key has limited access controlled by Row Level Security (RLS) policies in Supabase
 
 2. **Server-side code:**
    - All sensitive API keys and secrets are stored as environment variables in Supabase Edge Functions
@@ -30,3 +31,9 @@ This project follows these security best practices for handling API keys and sec
    const apiKey = Deno.env.get("API_KEY_NAME");
    ```
 
+5. **Supabase Key Security:**
+   - Supabase uses a dual-key system:
+     - **Publishable/anon key**: Safe for client code, limited by Row Level Security
+     - **Secret/service key**: Never use in client code, only in secure server environments
+   - Verify your Row Level Security policies in Supabase to ensure proper data protection
+   - All sensitive operations should use Edge Functions that have access to the secret key

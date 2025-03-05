@@ -3,8 +3,19 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-// Note: This is the publishable key which is safe to use in browser code
-// The private/secret key should only be used in server-side code (Supabase Edge Functions)
+/**
+ * SECURITY NOTE:
+ * 
+ * This is a publishable/anon key designed to be used in browser code.
+ * It is NOT a security risk to have this key in your source code.
+ * 
+ * Supabase uses a dual-key system:
+ * 1. This publishable key (used here) - Has limited permissions controlled by Row Level Security
+ * 2. Service/secret key - Never use this in browser code or public repositories
+ * 
+ * Security is enforced by Row Level Security policies on your Supabase tables.
+ * All sensitive operations must be performed in Supabase Edge Functions using the secret key.
+ */
 const SUPABASE_URL = "https://tgpoyuabcvemmihlsipg.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRncG95dWFiY3ZlbW1paGxzaXBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg5NDg4NTksImV4cCI6MjA1NDUyNDg1OX0.PEbN29n5SC2_8QfqBXbxePp9ZAi-cfwikUlF51YRti8";
 
