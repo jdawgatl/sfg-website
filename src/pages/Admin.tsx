@@ -7,7 +7,6 @@ import { ClientsSection } from "@/components/admin/sections/ClientsSection";
 import { QuotesSection } from "@/components/admin/sections/QuotesSection";
 import { PaymentsSection } from "@/components/admin/sections/PaymentsSection";
 import { ManualsSection } from "@/components/admin/sections/ManualsSection";
-import { RaterTool } from "@/components/admin/sections/RaterTool";
 
 const Admin = () => {
   return (
@@ -19,7 +18,6 @@ const Admin = () => {
           <Route path="quotes" element={<QuotesSection />} />
           <Route path="payments" element={<PaymentsSection />} />
           <Route path="manuals" element={<ManualsSection />} />
-          <Route path="rater/*" element={<RaterTool />} />
         </Route>
       </Routes>
     </QueryProvider>

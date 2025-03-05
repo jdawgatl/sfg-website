@@ -7,12 +7,43 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { 
   LogOut, 
+  Users, 
+  FileText, 
+  DollarSign, 
+  BookOpen,
+  FileText as QuoteIcon,
   Loader2,
   ChevronLeft,
   ChevronRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { menuItems } from "./menuItems";
+
+const menuItems = [
+  { 
+    icon: Users, 
+    label: "Clients & Prospects", 
+    path: "/admin/clients",
+    description: "Manage client and prospect information"
+  },
+  { 
+    icon: QuoteIcon, 
+    label: "Quotes", 
+    path: "/admin/quotes",
+    description: "Create and manage insurance quotes"
+  },
+  { 
+    icon: DollarSign, 
+    label: "Payments", 
+    path: "/admin/payments",
+    description: "Process and track payments"
+  },
+  { 
+    icon: BookOpen, 
+    label: "Underwriting Manuals", 
+    path: "/admin/manuals",
+    description: "Access underwriting guidelines and documents"
+  }
+];
 
 export const AdminLayout = () => {
   const navigate = useNavigate();
@@ -159,7 +190,7 @@ export const AdminLayout = () => {
         </div>
 
         {/* Main content */}
-        <div className="flex-1 overflow-auto p-8">
+        <div className="flex-1 overflow-auto">
           <Outlet />
         </div>
       </div>

@@ -4,8 +4,7 @@ import {
   FileText, 
   DollarSign, 
   BookOpen,
-  FileText as QuoteIcon,
-  Calculator
+  FileText as QuoteIcon
 } from "lucide-react";
 
 export const menuItems = [
@@ -32,11 +31,5 @@ export const menuItems = [
     label: "Underwriting Manuals", 
     path: "/admin/manuals",
     description: "Access underwriting guidelines and documents"
-  },
-  { 
-    icon: Calculator, 
-    label: "Comparative Rater", 
-    path: "/admin/rater",
-    description: "Generate and compare insurance quotes"
   }
 ];
