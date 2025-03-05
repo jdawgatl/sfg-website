@@ -2,6 +2,8 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { Resend } from "npm:resend@2.0.0";
 
+// Sensitive API keys are securely stored as environment variables in Supabase
+// and are not exposed to the client
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 const notificationEmail = Deno.env.get("NOTIFICATION_EMAIL");
 

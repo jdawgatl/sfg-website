@@ -11,6 +11,8 @@ interface EventProps {
   value?: number;
 }
 
+// These functions use the global gtag function which is loaded via script tag in the HTML
+// The actual API key/tracking ID should be in the script tag in index.html and not hardcoded here
 export const trackPageView = ({ title, path }: PageViewProps) => {
   if (typeof window !== 'undefined' && (window as any).gtag) {
     (window as any).gtag('event', 'page_view', {
