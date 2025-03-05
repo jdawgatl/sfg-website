@@ -4,9 +4,13 @@ Disallow: /admin
 Disallow: /admin/*
 Disallow: /agent-login
 Disallow: /agent-login/*
+Disallow: /search
 Allow: /assets/
 Allow: /*.js
 Allow: /*.css
 Allow: /
+
+# Handle canonical domain redirects
+Host: https://sfg-ins.com
 
 Sitemap: https://sfg-ins.com/sitemap.xml

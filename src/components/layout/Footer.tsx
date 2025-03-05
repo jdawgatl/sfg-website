@@ -1,148 +1,100 @@
 
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Clock, Lock } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { PhoneIcon, MailIcon, MapPinIcon } from "lucide-react";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+  
   return (
     <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Column 1: Company Info */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-            <div className="space-y-3">
-              <p className="flex items-center">
-                <Phone className="h-5 w-5 mr-2" />
-                (770) 997-7999
+            <h3 className="text-lg font-semibold mb-4">Standard Financial Group</h3>
+            <div className="space-y-2">
+              <p className="flex items-start">
+                <MapPinIcon className="h-5 w-5 mr-2 shrink-0 mt-0.5" />
+                <span>490 Bradley Dr Ste A<br />Fayetteville, GA 30214</span>
               </p>
               <p className="flex items-center">
-                <MapPin className="h-5 w-5 mr-2" />
-                490 Bradley Dr Ste A
-                <br />
-                Fayetteville, GA 30214
+                <PhoneIcon className="h-5 w-5 mr-2 shrink-0" />
+                <a href="tel:+17709977999" className="hover:text-sky-400 transition-colors">(770) 997-7999</a>
               </p>
               <p className="flex items-center">
-                <Clock className="h-5 w-5 mr-2" />
-                Mon - Fri: 9 AM - 4 PM
+                <MailIcon className="h-5 w-5 mr-2 shrink-0" />
+                <a href="mailto:info@sfg-ins.com" className="hover:text-sky-400 transition-colors">info@sfg-ins.com</a>
               </p>
             </div>
           </div>
-
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/" className="hover:text-sky-300 transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/about"
-                  className="hover:text-sky-300 transition-colors"
-                >
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/products"
-                  className="hover:text-sky-300 transition-colors"
-                >
-                  Products
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/service"
-                  className="hover:text-sky-300 transition-colors"
-                >
-                  Service
-                </Link>
-              </li>
-            </ul>
-          </div>
-
+          
+          {/* Column 2: Insurance Products */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Insurance Products</h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  to="/products/auto"
-                  className="hover:text-sky-300 transition-colors"
-                >
-                  Auto Insurance
-                </Link>
+                <Link to="/products/auto" className="hover:text-sky-400 transition-colors">Auto Insurance</Link>
               </li>
               <li>
-                <Link
-                  to="/products/home"
-                  className="hover:text-sky-300 transition-colors"
-                >
-                  Home Insurance
-                </Link>
+                <Link to="/products/home" className="hover:text-sky-400 transition-colors">Home Insurance</Link>
               </li>
               <li>
-                <Link
-                  to="/products/commercial"
-                  className="hover:text-sky-300 transition-colors"
-                >
-                  Commercial Insurance
-                </Link>
+                <Link to="/products/commercial" className="hover:text-sky-400 transition-colors">Commercial Insurance</Link>
               </li>
               <li>
-                <Link
-                  to="/products/bonds"
-                  className="hover:text-sky-300 transition-colors"
-                >
-                  Surety Bonds
-                </Link>
+                <Link to="/products/bonds" className="hover:text-sky-400 transition-colors">Surety Bonds</Link>
               </li>
             </ul>
           </div>
-
+          
+          {/* Column 3: Locations */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Get a Quote</h3>
-            <p className="mb-4">
-              Ready to get started? Get your free quote today!
-            </p>
-            <Button
-              asChild
-              className="w-full bg-sky-600 hover:bg-sky-700 text-white"
-            >
-              <Link to="/quote">Get A Quote</Link>
-            </Button>
+            <h3 className="text-lg font-semibold mb-4">Locations</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/georgia-insurance" className="hover:text-sky-400 transition-colors">Georgia Insurance</Link>
+              </li>
+              <li>
+                <Link to="/tennessee-auto-insurance" className="hover:text-sky-400 transition-colors">Tennessee Auto Insurance</Link>
+              </li>
+              <li>
+                <Link to="/mississippi-home-insurance" className="hover:text-sky-400 transition-colors">Mississippi Home Insurance</Link>
+              </li>
+            </ul>
+          </div>
+          
+          {/* Column 4: Resources */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Resources</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/about" className="hover:text-sky-400 transition-colors">About Us</Link>
+              </li>
+              <li>
+                <Link to="/contact" className="hover:text-sky-400 transition-colors">Contact Us</Link>
+              </li>
+              <li>
+                <Link to="/blog" className="hover:text-sky-400 transition-colors">Blog</Link>
+              </li>
+              <li>
+                <Link to="/quote" className="hover:text-sky-400 transition-colors">Get a Quote</Link>
+              </li>
+              <li>
+                <Link to="/sitemap" className="hover:text-sky-400 transition-colors">Site Map</Link>
+              </li>
+              <li>
+                <Link to="/privacy" className="hover:text-sky-400 transition-colors">Privacy Policy</Link>
+              </li>
+            </ul>
           </div>
         </div>
-
-        <div className="mt-8 pt-8 border-t border-gray-800">
-          <div className="text-center text-gray-400">
-            <p>
-              © {new Date().getFullYear()} Standard Financial Group. All rights
-              reserved.
-            </p>
-            <div className="mt-2">
-              <Link
-                to="/privacy"
-                className="hover:text-sky-300 transition-colors"
-              >
-                Privacy Policy
-              </Link>
-              {" | "}
-              <Link
-                to="/blog"
-                className="hover:text-sky-300 transition-colors"
-              >
-                Blog
-              </Link>
-              {" | "}
-              <Link
-                to="/agent-login"
-                className="hover:text-sky-300 transition-colors flex items-center justify-center gap-1 opacity-50 hover:opacity-100 inline-flex"
-              >
-                <Lock className="h-3 w-3" />
-                <span>Agent</span>
-              </Link>
+        
+        <div className="mt-8 pt-8 border-t border-gray-800 text-sm text-gray-400">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p>&copy; {currentYear} Standard Financial Group. All rights reserved.</p>
+            <div className="flex space-x-4">
+              <a href="https://www.facebook.com/standardfinancialgroup" className="hover:text-sky-400 transition-colors" target="_blank" rel="noopener noreferrer">Facebook</a>
+              <a href="https://www.linkedin.com/company/standard-financial-group" className="hover:text-sky-400 transition-colors" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             </div>
           </div>
         </div>
