@@ -1,9 +1,16 @@
-
 import { Link } from "react-router-dom";
 import { PhoneIcon, MailIcon, MapPinIcon } from "lucide-react";
+import { trackButtonClick, trackOutboundLink } from "@/utils/analytics";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  
+  const handleAgentLoginClick = () => {
+    trackButtonClick({
+      buttonText: "Agent Login",
+      location: "Footer"
+    });
+  };
   
   return (
     <footer className="bg-gray-900 text-white">
@@ -91,10 +98,42 @@ const Footer = () => {
         
         <div className="mt-8 pt-8 border-t border-gray-800 text-sm text-gray-400">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p>&copy; {currentYear} Standard Financial Group. All rights reserved.</p>
+            <div>
+              <p>&copy; {currentYear} Standard Financial Group. All rights reserved.</p>
+              <Link 
+                to="/agent-login" 
+                className="text-gray-700 hover:text-gray-500 text-xs mt-2 opacity-60"
+                onClick={handleAgentLoginClick}
+                aria-label="Agent Login"
+              >
+                Agent
+              </Link>
+            </div>
             <div className="flex space-x-4">
-              <a href="https://www.facebook.com/standardfinancialgroup" className="hover:text-sky-400 transition-colors" target="_blank" rel="noopener noreferrer">Facebook</a>
-              <a href="https://www.linkedin.com/company/standard-financial-group" className="hover:text-sky-400 transition-colors" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              <a 
+                href="https://www.facebook.com/standardfinancialgroup" 
+                className="hover:text-sky-400 transition-colors" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                onClick={() => trackOutboundLink({ 
+                  url: "https://www.facebook.com/standardfinancialgroup", 
+                  linkText: "Facebook" 
+                })}
+              >
+                Facebook
+              </a>
+              <a 
+                href="https://www.linkedin.com/company/standard-financial-group" 
+                className="hover:text-sky-400 transition-colors" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                onClick={() => trackOutboundLink({ 
+                  url: "https://www.linkedin.com/company/standard-financial-group", 
+                  linkText: "LinkedIn" 
+                })}
+              >
+                LinkedIn
+              </a>
             </div>
           </div>
         </div>

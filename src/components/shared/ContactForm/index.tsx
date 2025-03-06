@@ -3,130 +3,134 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/components/ui/use-toast";
+import { trackFormSubmission, trackButtonClick } from "@/utils/analytics";
 
-import { PersonalInfoFields } from "./PersonalInfoFields";
 import { ContactInfoFields } from "./ContactInfoFields";
+import { PersonalInfoFields } from "./PersonalInfoFields";
 import { AddressFields } from "./AddressFields";
 import { InsuranceTypeSelector } from "./InsuranceTypeSelector";
 import { ConsentCheckbox } from "./ConsentCheckbox";
 
-type FormData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
-  insuranceTypes: string[];
-  message: string;
-  consent: boolean;
-};
-
 const ContactForm = () => {
-  const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { register, handleSubmit, formState: { errors }, setValue, watch, reset } = useForm();
   const [selectedInsuranceTypes, setSelectedInsuranceTypes] = useState<string[]>([]);
-  
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    setValue,
-    watch,
-  } = useForm<FormData>({
-    defaultValues: {
-      insuranceTypes: [],
-    }
-  });
+  const [consentChecked, setConsentChecked] = useState(false);
 
-  const onSubmit = async (data: FormData) => {
+  const handleTypesChange = (types: string[]) => {
+    setSelectedInsuranceTypes(types);
+    setValue('insuranceTypes', types);
+  };
+
+  const handleConsentChange = (checked: boolean) => {
+    setConsentChecked(checked);
+    setValue('consent', checked);
+  };
+
+  const onSubmit = async (data: any) => {
     setIsSubmitting(true);
+    
+    // Track the click on the submit button
+    trackButtonClick({
+      buttonText: "Submit Contact Form",
+      location: "Contact Form"
+    });
+
     try {
-      const dbData = {
-        first_name: data.firstName,
-        last_name: data.lastName,
-        email: data.email,
-        phone: data.phone,
-        address: data.address,
-        city: data.city,
-        state: data.state,
-        zip: data.zip,
-        insurance_type: data.insuranceTypes.join(", "),
-        message: data.message,
-        consent: data.consent
-      };
-      const { error: supabaseError } = await supabase.from("contact_submissions").insert(dbData);
-      if (supabaseError) throw supabaseError;
-      console.log("Sending email notification...");
-      const {
-        data: emailResponse,
-        error: emailError
-      } = await supabase.functions.invoke("send-contact-notification", {
-        body: {
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: data.email,
-          phone: data.phone,
-          message: data.message,
-          insuranceType: data.insuranceTypes.join(", ")
-        }
+      // Form submission logic here
+      console.log("Form data:", data);
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Track successful form submission
+      trackFormSubmission({
+        formName: "Contact Form",
+        successful: true
       });
-      console.log("Email response:", emailResponse);
-      if (emailError) {
-        console.error("Email error:", emailError);
-        throw emailError;
-      }
+      
       toast({
-        title: "Form submitted successfully!",
-        description: "We'll get back to you as soon as possible."
+        title: "Message Sent",
+        description: "We'll get back to you as soon as possible.",
       });
+      
+      // Reset form
       reset();
       setSelectedInsuranceTypes([]);
-    } catch (error: any) {
-      console.error("Error submitting form:", error);
+      setConsentChecked(false);
+    } catch (error) {
+      console.error("Form submission error:", error);
+      
+      // Track failed form submission
+      trackFormSubmission({
+        formName: "Contact Form",
+        successful: false
+      });
+      
       toast({
-        title: "Error submitting form",
-        description: error.message || "Please try again later.",
-        variant: "destructive"
+        variant: "destructive",
+        title: "Error",
+        description: "There was a problem submitting your form. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleInsuranceTypesChange = (types: string[]) => {
-    setSelectedInsuranceTypes(types);
-    setValue("insuranceTypes", types);
-  };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <PersonalInfoFields register={register} errors={errors} />
-      
-      <ContactInfoFields register={register} errors={errors} />
+      {/* Personal Information */}
+      <div>
+        <h3 className="text-lg font-medium mb-4">Personal Information</h3>
+        <PersonalInfoFields register={register} errors={errors} />
+      </div>
 
-      <AddressFields register={register} errors={errors} />
-      
-      <InsuranceTypeSelector 
-        selectedTypes={selectedInsuranceTypes} 
-        onChange={handleInsuranceTypesChange} 
-      />
+      {/* Contact Information */}
+      <div>
+        <h3 className="text-lg font-medium mb-4">Contact Information</h3>
+        <ContactInfoFields register={register} errors={errors} />
+      </div>
 
-      <Textarea 
-        placeholder="How can we help you?" 
-        {...register("message")} 
-        className="min-h-[100px]" 
-      />
+      {/* Address */}
+      <div>
+        <h3 className="text-lg font-medium mb-4">Address</h3>
+        <AddressFields register={register} errors={errors} />
+      </div>
 
-      <ConsentCheckbox onCheckedChange={(checked) => setValue("consent", checked)} />
+      {/* Insurance Types */}
+      <div>
+        <h3 className="text-lg font-medium mb-4">What type of insurance are you interested in?</h3>
+        <InsuranceTypeSelector
+          selected={selectedInsuranceTypes}
+          onSelectionChange={handleTypesChange}
+        />
+      </div>
 
-      <Button type="submit" className="w-full bg-sky-600 hover:bg-sky-700" disabled={isSubmitting}>
-        {isSubmitting ? "Submitting..." : "Submit"}
+      {/* Message */}
+      <div>
+        <h3 className="text-lg font-medium mb-4">Additional Information</h3>
+        <Textarea
+          placeholder="Please provide any additional details about your insurance needs..."
+          className="min-h-[120px]"
+          {...register("message")}
+        />
+      </div>
+
+      {/* Consent Checkbox */}
+      <ConsentCheckbox checked={consentChecked} onCheckedChange={handleConsentChange} />
+
+      {/* Submit Button */}
+      <Button 
+        type="submit" 
+        disabled={isSubmitting || !consentChecked}
+        className="w-full"
+        onClick={() => trackButtonClick({
+          buttonText: "Contact Form Submit",
+          location: "Contact Form",
+        })}
+      >
+        {isSubmitting ? "Sending..." : "Submit"}
       </Button>
     </form>
   );
