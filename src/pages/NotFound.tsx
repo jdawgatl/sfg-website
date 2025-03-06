@@ -2,7 +2,8 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Home } from "lucide-react";
+import HomeButton from "@/components/shared/HomeButton";
 
 const NotFound = () => {
   const location = useLocation();
@@ -22,12 +23,18 @@ const NotFound = () => {
         <p className="text-xl text-gray-600 mb-4">
           {isAdminRoute ? "This admin page is under construction" : "Page not found"}
         </p>
-        <Button asChild variant="default" className="gap-2">
-          <Link to={isAdminRoute ? "/admin" : "/"}>
-            <ArrowLeft className="h-4 w-4" />
-            {isAdminRoute ? "Back to Admin Dashboard" : "Return to Home"}
-          </Link>
-        </Button>
+        <div className="flex gap-4 justify-center">
+          <Button asChild variant="default" className="gap-2">
+            <Link to={isAdminRoute ? "/admin" : "/"}>
+              <ArrowLeft className="h-4 w-4" />
+              {isAdminRoute ? "Back to Admin Dashboard" : "Return to Home"}
+            </Link>
+          </Button>
+          
+          {!isAdminRoute && (
+            <HomeButton variant="default" />
+          )}
+        </div>
       </div>
     </div>
   );

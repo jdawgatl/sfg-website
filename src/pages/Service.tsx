@@ -1,15 +1,20 @@
+
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Card } from "@/components/ui/card";
 import { ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
 import { carriers } from "@/data/carriers";
+import HomeButton from "@/components/shared/HomeButton";
 
 const Service = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow">
+        <div className="fixed bottom-6 right-6 z-40">
+          <HomeButton />
+        </div>
         <div className="py-16 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div

@@ -1,16 +1,20 @@
-
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { Building2, Shield, Users, AlertCircle } from "lucide-react";
+import { Building2, Shield, Users, DollarSign } from "lucide-react";
+import HomeButton from "@/components/shared/HomeButton";
 
 const Commercial = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow">
+        <div className="fixed bottom-6 right-6 z-40">
+          <HomeButton />
+        </div>
+        
         <div className="relative h-[400px]">
           <img
             src="/images/products-commercial-cover.avif"
@@ -34,19 +38,19 @@ const Commercial = () => {
           >
             <div className="space-y-6">
               <h2 className="text-3xl font-bold text-gray-900">
-                Protect Your Business
+                Protect Your Business with Comprehensive Coverage
               </h2>
               <p className="text-lg text-gray-600">
-                Comprehensive commercial insurance solutions designed to protect your
-                business assets, employees, and operations. We offer tailored coverage
-                options to meet your industry-specific needs.
+                Our commercial insurance solutions are designed to protect your business
+                from a variety of risks. We offer tailored coverage options for businesses
+                of all sizes across multiple industries.
               </p>
               <ul className="space-y-4">
                 <li className="flex items-center gap-3">
                   <Building2 className="h-6 w-6 text-sky-600" />
                   <div>
-                    <h3 className="font-semibold">Property Coverage</h3>
-                    <p className="text-gray-600">Protection for your business property</p>
+                    <h3 className="font-semibold">Property Insurance</h3>
+                    <p className="text-gray-600">Protect your business property and assets</p>
                   </div>
                 </li>
                 <li className="flex items-center gap-3">
@@ -64,21 +68,21 @@ const Commercial = () => {
                   </div>
                 </li>
                 <li className="flex items-center gap-3">
-                  <AlertCircle className="h-6 w-6 text-sky-600" />
+                  <DollarSign className="h-6 w-6 text-sky-600" />
                   <div>
                     <h3 className="font-semibold">Business Interruption</h3>
-                    <p className="text-gray-600">Coverage for operational disruptions</p>
+                    <p className="text-gray-600">Coverage for lost income</p>
                   </div>
                 </li>
               </ul>
               <Button asChild size="lg" className="mt-6">
-                <Link to="/quote">Get a Quote</Link>
+                <Link to="/quote">Get a Business Quote</Link>
               </Button>
             </div>
             <div className="space-y-6">
               <img
                 src="/images/products-commercial-commercial-insurance.avif"
-                alt="Commercial Insurance"
+                alt="Commercial Insurance Coverage"
                 className="rounded-lg shadow-lg"
               />
               <div className="bg-sky-50 p-6 rounded-lg">
@@ -86,19 +90,19 @@ const Commercial = () => {
                 <ul className="space-y-2">
                   <li className="flex items-center gap-2">
                     <div className="h-2 w-2 rounded-full bg-sky-600" />
-                    Industry-specific coverage options
+                    Customized coverage for your specific industry
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="h-2 w-2 rounded-full bg-sky-600" />
-                    Risk management expertise
+                    Competitive rates from multiple carriers
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="h-2 w-2 rounded-full bg-sky-600" />
-                    Customizable policy options
+                    Dedicated business insurance specialists
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="h-2 w-2 rounded-full bg-sky-600" />
-                    Dedicated business support
+                    Fast claims processing
                   </li>
                 </ul>
               </div>

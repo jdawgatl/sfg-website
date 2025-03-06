@@ -7,9 +7,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Lock } from "lucide-react";
+import { Lock, Home } from "lucide-react";
+import { Link } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import HomeButton from "@/components/shared/HomeButton";
 
 const AgentLogin = () => {
   const [email, setEmail] = useState("");
@@ -55,7 +57,16 @@ const AgentLogin = () => {
       </Helmet>
 
       <Navbar />
-      <main className="flex-grow flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
+      <main className="flex-grow flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8 relative">
+        <div className="absolute top-6 left-6">
+          <Button asChild variant="outline" size="sm" className="gap-2">
+            <Link to="/">
+              <Home className="h-4 w-4" />
+              <span>Back to Home</span>
+            </Link>
+          </Button>
+        </div>
+        
         <Card className="w-full max-w-md p-8">
           <div className="flex flex-col items-center mb-8">
             <div className="w-16 h-16 bg-sky-600/10 rounded-full flex items-center justify-center mb-4">

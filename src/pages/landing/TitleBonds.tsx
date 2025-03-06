@@ -3,6 +3,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ContactForm from "@/components/shared/ContactForm";
 import { Card } from "@/components/ui/card";
+import HomeButton from "@/components/shared/HomeButton";
 import { 
   HeroTitleSection, 
   WhatIsTitleBondSection, 
@@ -21,6 +22,10 @@ const TitleBonds = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow">
+        <div className="fixed bottom-6 right-6 z-40">
+          <HomeButton />
+        </div>
+        
         {/* Hero Section */}
         <HeroTitleSection />
 

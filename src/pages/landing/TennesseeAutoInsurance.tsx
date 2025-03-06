@@ -7,12 +7,16 @@ import TennesseeCoverageOptions from "@/components/tennessee/TennesseeCoverageOp
 import TennesseeCities from "@/components/tennessee/TennesseeCities";
 import TennesseeCTA from "@/components/tennessee/TennesseeCTA";
 import TennesseeContactForm from "@/components/tennessee/TennesseeContactForm";
+import HomeButton from "@/components/shared/HomeButton";
 
 const TennesseeAutoInsurance = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow">
+        <div className="fixed bottom-6 right-6 z-40">
+          <HomeButton />
+        </div>
         <TennesseeHero />
         <TennesseeMainContent />
         <TennesseeCoverageOptions />

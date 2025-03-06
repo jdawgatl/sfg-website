@@ -1,15 +1,20 @@
+
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Car, Building2, Users, Shield } from "lucide-react";
+import HomeButton from "@/components/shared/HomeButton";
 
 const GeorgiaInsurance = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow">
+        <div className="fixed bottom-6 right-6 z-40">
+          <HomeButton />
+        </div>
         <div className="relative h-[400px]">
           <img
             src="/images/products-commercial-cover.avif"

@@ -5,6 +5,7 @@ import BondsHero from "@/components/bonds/BondsHero";
 import BondsContent from "@/components/bonds/BondsContent";
 import BondsSEO from "@/components/bonds/BondsSEO";
 import { SEOWrapper } from "@/components/seo/SEOWrapper";
+import HomeButton from "@/components/shared/HomeButton";
 
 const Bonds = () => {
   return (
@@ -13,6 +14,9 @@ const Bonds = () => {
       <Navbar />
 
       <main className="flex-grow">
+        <div className="fixed bottom-6 right-6 z-40">
+          <HomeButton />
+        </div>
         <BondsHero />
         <BondsContent />
         <BondsSEO />

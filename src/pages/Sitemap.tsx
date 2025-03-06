@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { SEOWrapper } from "@/components/seo/SEOWrapper";
+import HomeButton from "@/components/shared/HomeButton";
 
 const Sitemap = () => {
   return (
@@ -10,7 +11,10 @@ const Sitemap = () => {
       <SEOWrapper />
       <Navbar />
 
-      <main className="container mx-auto px-4 py-12 flex-grow">
+      <main className="container mx-auto px-4 py-12 flex-grow relative">
+        <div className="fixed bottom-6 right-6 z-40">
+          <HomeButton />
+        </div>
         <h1 className="text-3xl font-bold mb-8 text-gray-800">Site Map</h1>
         
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">

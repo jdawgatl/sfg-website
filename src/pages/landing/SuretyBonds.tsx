@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import ContactForm from "@/components/shared/ContactForm";
 import { Card } from "@/components/ui/card";
 import { BondType } from "./types/suretyBonds";
+import HomeButton from "@/components/shared/HomeButton";
 import {
   HeroSection,
   BondTypesSection,
@@ -49,6 +50,9 @@ const SuretyBonds = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow">
+        <div className="fixed bottom-6 right-6 z-40">
+          <HomeButton />
+        </div>
         <HeroSection />
         <BondTypesSection bondTypes={bondTypes} />
         <TitleBondSection />

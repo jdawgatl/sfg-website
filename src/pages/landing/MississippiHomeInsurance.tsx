@@ -9,6 +9,7 @@ import { Home, Shield, Umbrella, DollarSign, BadgeCheck, Clock, MapPin } from "l
 import ContactForm from "@/components/shared/ContactForm";
 import { HelmetProvider } from "react-helmet-async";
 import { SEOWrapper } from "@/components/seo/SEOWrapper";
+import HomeButton from "@/components/shared/HomeButton";
 
 const MississippiHomeInsurance = () => {
   return (
@@ -19,6 +20,10 @@ const MississippiHomeInsurance = () => {
       
       <Navbar />
       <main className="flex-grow">
+        <div className="fixed bottom-6 right-6 z-40">
+          <HomeButton />
+        </div>
+        
         {/* Hero Section */}
         <div className="relative h-[500px]">
           <img
