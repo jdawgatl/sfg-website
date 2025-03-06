@@ -2,16 +2,26 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { InsuranceTypeSelector } from '../InsuranceTypeSelector';
+import { useForm } from 'react-hook-form';
+import { renderHook } from '@testing-library/react';
 
 describe('InsuranceTypeSelector', () => {
-  const mockOnChange = vi.fn();
-
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
+  const setupForm = (defaultValue = '') => {
+    const { result } = renderHook(() => useForm({
+      defaultValues: {
+        insuranceType: defaultValue,
+      }
+    }));
+    return result.current;
+  };
+
   it('renders all insurance type options', () => {
-    render(<InsuranceTypeSelector selectedTypes={[]} onChange={mockOnChange} />);
+    const form = setupForm();
+    render(<InsuranceTypeSelector form={form} />);
     
     expect(screen.getByText('Auto Insurance')).toBeInTheDocument();
     expect(screen.getByText('Home Insurance')).toBeInTheDocument();
@@ -21,34 +31,34 @@ describe('InsuranceTypeSelector', () => {
   });
 
   it('selects an insurance type when clicked', () => {
-    render(<InsuranceTypeSelector selectedTypes={[]} onChange={mockOnChange} />);
+    const form = setupForm();
+    const setValueSpy = vi.spyOn(form, 'setValue');
+    
+    render(<InsuranceTypeSelector form={form} />);
     
     fireEvent.click(screen.getByText('Auto Insurance'));
     
-    expect(mockOnChange).toHaveBeenCalledWith(['auto']);
-  });
-
-  it('deselects an insurance type when clicked again', () => {
-    render(<InsuranceTypeSelector selectedTypes={['auto']} onChange={mockOnChange} />);
-    
-    fireEvent.click(screen.getByText('Auto Insurance'));
-    
-    expect(mockOnChange).toHaveBeenCalledWith([]);
+    expect(setValueSpy).toHaveBeenCalledWith('insuranceType', 'auto');
   });
 
   it('shows selected types with different styling', () => {
-    render(<InsuranceTypeSelector selectedTypes={['auto']} onChange={mockOnChange} />);
+    const form = setupForm('auto');
+    
+    render(<InsuranceTypeSelector form={form} />);
     
     const autoElement = screen.getByText('Auto Insurance');
-    expect(autoElement.className).toContain('border-sky-600');
-    expect(autoElement.className).toContain('bg-sky-100');
+    expect(autoElement.parentElement?.className).toContain('border-sky-600');
+    expect(autoElement.parentElement?.className).toContain('bg-sky-100');
   });
 
-  it('allows multiple selections', () => {
-    render(<InsuranceTypeSelector selectedTypes={['auto']} onChange={mockOnChange} />);
+  it('allows selecting a different type', () => {
+    const form = setupForm('auto');
+    const setValueSpy = vi.spyOn(form, 'setValue');
+    
+    render(<InsuranceTypeSelector form={form} />);
     
     fireEvent.click(screen.getByText('Home Insurance'));
     
-    expect(mockOnChange).toHaveBeenCalledWith(['auto', 'home']);
+    expect(setValueSpy).toHaveBeenCalledWith('insuranceType', 'home');
   });
 });
