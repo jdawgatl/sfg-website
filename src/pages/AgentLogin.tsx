@@ -10,7 +10,6 @@ import { Card } from "@/components/ui/card";
 import { Lock } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { trackButtonClick, trackFormSubmission } from "@/utils/analytics";
 
 const AgentLogin = () => {
   const [email, setEmail] = useState("");
@@ -29,21 +28,11 @@ const AgentLogin = () => {
         password,
       });
 
-      trackFormSubmission({
-        formName: "Agent Login",
-        successful: !error
-      });
-
       if (error) throw error;
 
       toast({
         title: "Login successful",
         description: "Welcome back!",
-      });
-
-      trackButtonClick({
-        buttonText: "Login Success",
-        location: "Agent Login Page"
       });
 
       navigate("/admin");
@@ -52,11 +41,6 @@ const AgentLogin = () => {
         variant: "destructive",
         title: "Login failed",
         description: "Invalid email or password",
-      });
-      
-      trackButtonClick({
-        buttonText: "Login Failed",
-        location: "Agent Login Page"
       });
     } finally {
       setLoading(false);
@@ -68,7 +52,6 @@ const AgentLogin = () => {
       <Helmet>
         <title>Agent Login | Standard Financial Group</title>
         <meta name="description" content="Secure agent login portal for Standard Financial Group employees." />
-        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <Navbar />
@@ -117,10 +100,6 @@ const AgentLogin = () => {
               type="submit"
               className="w-full bg-sky-600 hover:bg-sky-700"
               disabled={loading}
-              onClick={() => trackButtonClick({
-                buttonText: "Login Attempt",
-                location: "Agent Login Form"
-              })}
             >
               {loading ? "Logging in..." : "Login"}
             </Button>

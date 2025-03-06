@@ -2,21 +2,21 @@
 import { useState, useEffect } from "react";
 
 type InsuranceTypeSelectorProps = {
-  selected: string[];
-  onSelectionChange: (values: string[]) => void;
+  selectedTypes: string[];
+  onChange: (values: string[]) => void;
 };
 
-export const InsuranceTypeSelector = ({ selected, onSelectionChange }: InsuranceTypeSelectorProps) => {
+export const InsuranceTypeSelector = ({ selectedTypes, onChange }: InsuranceTypeSelectorProps) => {
   const handleInsuranceTypeChange = (value: string) => {
     // Check if value is already selected
-    if (selected.includes(value)) {
+    if (selectedTypes.includes(value)) {
       // Remove it
-      const updated = selected.filter(type => type !== value);
-      onSelectionChange(updated);
+      const updated = selectedTypes.filter(type => type !== value);
+      onChange(updated);
     } else {
       // Add it
-      const updated = [...selected, value];
-      onSelectionChange(updated);
+      const updated = [...selectedTypes, value];
+      onChange(updated);
     }
   };
 
@@ -34,7 +34,7 @@ export const InsuranceTypeSelector = ({ selected, onSelectionChange }: Insurance
       <div className="text-sm font-medium mb-2">Insurance Type (Select all that apply)</div>
       <div className="flex flex-wrap gap-2">
         {insuranceTypes.map((type) => {
-          const isSelected = selected.includes(type);
+          const isSelected = selectedTypes.includes(type);
           
           return (
             <div
