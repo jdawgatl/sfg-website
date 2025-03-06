@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryProvider } from "@/components/providers/QueryProvider";
+import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
 import ScrollToTop from "@/components/utils/ScrollToTop";
 import { SEOWrapper } from "@/components/seo/SEOWrapper";
 import { AppRoutes } from "@/routes";
@@ -17,11 +18,13 @@ const App = () => (
         <TooltipProvider>
           <ScrollToTop />
           <SEOWrapper />
-          <main>
-            <Toaster />
-            <Sonner />
-            <AppRoutes />
-          </main>
+          <AnalyticsProvider>
+            <main>
+              <Toaster />
+              <Sonner />
+              <AppRoutes />
+            </main>
+          </AnalyticsProvider>
         </TooltipProvider>
       </QueryProvider>
     </HelmetProvider>
