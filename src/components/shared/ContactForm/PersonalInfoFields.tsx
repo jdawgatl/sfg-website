@@ -1,23 +1,40 @@
 
 import { Input } from "@/components/ui/input";
-import { FormFieldError } from "./FormFieldError";
+import { FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form";
+import { UseFormReturn } from "react-hook-form";
 
 type PersonalInfoFieldsProps = {
-  register: any;
-  errors: any;
+  form: UseFormReturn<any>;
 };
 
-export const PersonalInfoFields = ({ register, errors }: PersonalInfoFieldsProps) => {
+export const PersonalInfoFields = ({ form }: PersonalInfoFieldsProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <Input placeholder="First Name" {...register("firstName", { required: true })} />
-        {errors.firstName && <FormFieldError message="This field is required" />}
-      </div>
-      <div>
-        <Input placeholder="Last Name" {...register("lastName", { required: true })} />
-        {errors.lastName && <FormFieldError message="This field is required" />}
-      </div>
+      <FormField
+        control={form.control}
+        name="firstName"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <Input placeholder="First Name" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      
+      <FormField
+        control={form.control}
+        name="lastName"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <Input placeholder="Last Name" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </div>
   );
 };

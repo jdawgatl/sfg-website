@@ -1,25 +1,13 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form";
+import { UseFormReturn } from "react-hook-form";
 
 type InsuranceTypeSelectorProps = {
-  selectedTypes: string[];
-  onChange: (values: string[]) => void;
+  form: UseFormReturn<any>;
 };
 
-export const InsuranceTypeSelector = ({ selectedTypes, onChange }: InsuranceTypeSelectorProps) => {
-  const handleInsuranceTypeChange = (value: string) => {
-    // Check if value is already selected
-    if (selectedTypes.includes(value)) {
-      // Remove it
-      const updated = selectedTypes.filter(type => type !== value);
-      onChange(updated);
-    } else {
-      // Add it
-      const updated = [...selectedTypes, value];
-      onChange(updated);
-    }
-  };
-
+export const InsuranceTypeSelector = ({ form }: InsuranceTypeSelectorProps) => {
   const insuranceTypes = ["auto", "home", "commercial", "bonds", "other"];
   const displayNames: Record<string, string> = {
     auto: "Auto Insurance",
@@ -29,28 +17,39 @@ export const InsuranceTypeSelector = ({ selectedTypes, onChange }: InsuranceType
     other: "Other"
   };
 
+  const handleInsuranceTypeClick = (value: string) => {
+    form.setValue("insuranceType", value);
+  };
+
   return (
-    <div className="col-span-2 md:col-span-4">
-      <div className="text-sm font-medium mb-2">Insurance Type (Select all that apply)</div>
-      <div className="flex flex-wrap gap-2">
-        {insuranceTypes.map((type) => {
-          const isSelected = selectedTypes.includes(type);
-          
-          return (
-            <div
-              key={type}
-              onClick={() => handleInsuranceTypeChange(type)}
-              className={`px-3 py-2 rounded-full text-sm cursor-pointer border transition-colors ${
-                isSelected 
-                  ? "border-sky-600 bg-sky-100 text-sky-800" 
-                  : "border-gray-300 hover:border-sky-400 hover:bg-gray-50"
-              }`}
-            >
-              {displayNames[type]}
-            </div>
-          );
-        })}
-      </div>
-    </div>
+    <FormField
+      control={form.control}
+      name="insuranceType"
+      render={({ field }) => (
+        <FormItem className="col-span-2 md:col-span-4">
+          <div className="text-sm font-medium mb-2">Insurance Type (Select one)</div>
+          <div className="flex flex-wrap gap-2">
+            {insuranceTypes.map((type) => {
+              const isSelected = field.value === type;
+              
+              return (
+                <div
+                  key={type}
+                  onClick={() => handleInsuranceTypeClick(type)}
+                  className={`px-3 py-2 rounded-full text-sm cursor-pointer border transition-colors ${
+                    isSelected 
+                      ? "border-sky-600 bg-sky-100 text-sky-800" 
+                      : "border-gray-300 hover:border-sky-400 hover:bg-gray-50"
+                  }`}
+                >
+                  {displayNames[type]}
+                </div>
+              );
+            })}
+          </div>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
   );
 };

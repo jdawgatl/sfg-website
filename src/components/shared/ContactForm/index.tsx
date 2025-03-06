@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -5,11 +6,11 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
-import ContactInfoFields from "./ContactInfoFields";
-import PersonalInfoFields from "./PersonalInfoFields";
-import AddressFields from "./AddressFields";
-import InsuranceTypeSelector from "./InsuranceTypeSelector";
-import ConsentCheckbox from "./ConsentCheckbox";
+import { ContactInfoFields } from "./ContactInfoFields";
+import { PersonalInfoFields } from "./PersonalInfoFields";
+import { AddressFields } from "./AddressFields";
+import { InsuranceTypeSelector } from "./InsuranceTypeSelector";
+import { ConsentCheckbox } from "./ConsentCheckbox";
 import { trackFormSubmission } from "@/utils/analytics";
 
 const formSchema = z.object({
