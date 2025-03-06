@@ -5,49 +5,6 @@ import { defaultSEO, pageSEOConfig, productSEOConfig, landingSEOConfig, getSchem
 import { useEffect } from "react";
 import { trackPageView } from "@/utils/analytics";
 
-// Export the getSEOConfig function so it can be used by other components
-export const getSEOConfig = (path = '') => {
-  // If no path is provided, use the current path
-  if (!path) {
-    const location = typeof window !== 'undefined' ? window.location : { pathname: '/' };
-    path = location.pathname;
-  }
-
-  // Remove trailing slash if present
-  const normalizedPath = path.endsWith('/') ? path.slice(0, -1) : path;
-  
-  // Main pages
-  if (normalizedPath === '') return pageSEOConfig.home;
-  if (normalizedPath === '/about') return pageSEOConfig.about;
-  if (normalizedPath === '/service') return pageSEOConfig.service;
-  if (normalizedPath === '/products') return pageSEOConfig.products;
-  if (normalizedPath === '/quote') return pageSEOConfig.quote;
-  if (normalizedPath === '/contact') return pageSEOConfig.contact;
-  if (normalizedPath === '/blog') return pageSEOConfig.blog;
-  if (normalizedPath === '/privacy') return pageSEOConfig.privacy;
-  if (normalizedPath === '/agent-login') return pageSEOConfig.agentLogin;
-  if (normalizedPath === '/sitemap') return pageSEOConfig.sitemap;
-  
-  // Product pages
-  if (normalizedPath === '/products/auto') return productSEOConfig.auto;
-  if (normalizedPath === '/products/home') return productSEOConfig.home;
-  if (normalizedPath === '/products/commercial') return productSEOConfig.commercial;
-  if (normalizedPath === '/products/bonds') return productSEOConfig.bonds;
-  
-  // Landing pages
-  if (normalizedPath === '/georgia-insurance') return landingSEOConfig.georgiaInsurance;
-  if (normalizedPath === '/tennessee-auto-insurance') return landingSEOConfig.tennesseeAutoInsurance;
-  if (normalizedPath === '/mississippi-home-insurance') return landingSEOConfig.mississippiHomeInsurance;
-  if (normalizedPath === '/surety-bonds') return landingSEOConfig.suretyBonds;
-  if (normalizedPath === '/landing/title-bonds') return landingSEOConfig.titleBonds;
-  
-  // 404 page
-  if (normalizedPath === '*') return pageSEOConfig.notFound;
-  
-  // Default SEO config if no match
-  return defaultSEO;
-};
-
 export const SEOWrapper = () => {
   const location = useLocation();
   const baseUrl = "https://sfg-ins.com";
@@ -57,12 +14,49 @@ export const SEOWrapper = () => {
   // Track page view in analytics
   useEffect(() => {
     trackPageView({
-      title: getSEOConfig(path).title,
+      title: getSEOConfig().title,
       path: location.pathname
     });
-  }, [location.pathname, path]);
+  }, [location.pathname]);
 
-  const seoConfig = getSEOConfig(path);
+  // Get the SEO configuration based on the current path
+  const getSEOConfig = () => {
+    // Remove trailing slash if present
+    const normalizedPath = path.endsWith('/') ? path.slice(0, -1) : path;
+    
+    // Main pages
+    if (normalizedPath === '') return pageSEOConfig.home;
+    if (normalizedPath === '/about') return pageSEOConfig.about;
+    if (normalizedPath === '/service') return pageSEOConfig.service;
+    if (normalizedPath === '/products') return pageSEOConfig.products;
+    if (normalizedPath === '/quote') return pageSEOConfig.quote;
+    if (normalizedPath === '/contact') return pageSEOConfig.contact;
+    if (normalizedPath === '/blog') return pageSEOConfig.blog;
+    if (normalizedPath === '/privacy') return pageSEOConfig.privacy;
+    if (normalizedPath === '/agent-login') return pageSEOConfig.agentLogin;
+    if (normalizedPath === '/sitemap') return pageSEOConfig.sitemap;
+    
+    // Product pages
+    if (normalizedPath === '/products/auto') return productSEOConfig.auto;
+    if (normalizedPath === '/products/home') return productSEOConfig.home;
+    if (normalizedPath === '/products/commercial') return productSEOConfig.commercial;
+    if (normalizedPath === '/products/bonds') return productSEOConfig.bonds;
+    
+    // Landing pages
+    if (normalizedPath === '/georgia-insurance') return landingSEOConfig.georgiaInsurance;
+    if (normalizedPath === '/tennessee-auto-insurance') return landingSEOConfig.tennesseeAutoInsurance;
+    if (normalizedPath === '/mississippi-home-insurance') return landingSEOConfig.mississippiHomeInsurance;
+    if (normalizedPath === '/surety-bonds') return landingSEOConfig.suretyBonds;
+    if (normalizedPath === '/landing/title-bonds') return landingSEOConfig.titleBonds;
+    
+    // 404 page
+    if (normalizedPath === '*') return pageSEOConfig.notFound;
+    
+    // Default SEO config if no match
+    return defaultSEO;
+  };
+
+  const seoConfig = getSEOConfig();
   const { title, description, keywords } = seoConfig;
   const structuredData = getSchemaMarkup(baseUrl, description);
   

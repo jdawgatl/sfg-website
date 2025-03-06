@@ -1,46 +1,27 @@
 
 import { Input } from "@/components/ui/input";
 import { FormFieldError } from "./FormFieldError";
-import { FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form";
-import { UseFormReturn } from "react-hook-form";
 
 type ContactInfoFieldsProps = {
-  form: UseFormReturn<any>;
+  register: any;
+  errors: any;
 };
 
-export const ContactInfoFields = ({ form }: ContactInfoFieldsProps) => {
+export const ContactInfoFields = ({ register, errors }: ContactInfoFieldsProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <FormField
-        control={form.control}
-        name="email"
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <Input type="email" placeholder="Email" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      
-      <FormField
-        control={form.control}
-        name="phone"
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <Input 
-                type="tel" 
-                placeholder="Phone" 
-                {...field} 
-                aria-label="Phone number"
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <div>
+        <Input type="email" placeholder="Email" {...register("email", { required: true })} />
+        {errors.email && <FormFieldError message="This field is required" />}
+      </div>
+      <div>
+        <Input 
+          type="tel" 
+          placeholder="Phone (Optional)" 
+          {...register("phone")} 
+          aria-label="Phone number (Optional)"
+        />
+      </div>
     </div>
   );
 };

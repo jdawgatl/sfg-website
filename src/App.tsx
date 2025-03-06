@@ -7,7 +7,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import ScrollToTop from "@/components/utils/ScrollToTop";
 import { SEOWrapper } from "@/components/seo/SEOWrapper";
-import AnalyticsProvider from "@/components/providers/AnalyticsProvider";
 import { AppRoutes } from "@/routes";
 
 // Fix the HelmetProvider type issue by wrapping components
@@ -18,7 +17,6 @@ const App = () => (
         <TooltipProvider>
           <ScrollToTop />
           <SEOWrapper />
-          <AnalyticsProvider />
           <main>
             <Toaster />
             <Sonner />
