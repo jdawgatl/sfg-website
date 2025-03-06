@@ -4,14 +4,14 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { InsuranceTypeSelector } from '../InsuranceTypeSelector';
 
 describe('InsuranceTypeSelector', () => {
-  const mockOnChange = vi.fn();
+  const mockOnSelectionChange = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it('renders all insurance type options', () => {
-    render(<InsuranceTypeSelector selectedTypes={[]} onChange={mockOnChange} />);
+    render(<InsuranceTypeSelector selected={[]} onSelectionChange={mockOnSelectionChange} />);
     
     expect(screen.getByText('Auto Insurance')).toBeInTheDocument();
     expect(screen.getByText('Home Insurance')).toBeInTheDocument();
@@ -21,23 +21,23 @@ describe('InsuranceTypeSelector', () => {
   });
 
   it('selects an insurance type when clicked', () => {
-    render(<InsuranceTypeSelector selectedTypes={[]} onChange={mockOnChange} />);
+    render(<InsuranceTypeSelector selected={[]} onSelectionChange={mockOnSelectionChange} />);
     
     fireEvent.click(screen.getByText('Auto Insurance'));
     
-    expect(mockOnChange).toHaveBeenCalledWith(['auto']);
+    expect(mockOnSelectionChange).toHaveBeenCalledWith(['auto']);
   });
 
   it('deselects an insurance type when clicked again', () => {
-    render(<InsuranceTypeSelector selectedTypes={['auto']} onChange={mockOnChange} />);
+    render(<InsuranceTypeSelector selected={['auto']} onSelectionChange={mockOnSelectionChange} />);
     
     fireEvent.click(screen.getByText('Auto Insurance'));
     
-    expect(mockOnChange).toHaveBeenCalledWith([]);
+    expect(mockOnSelectionChange).toHaveBeenCalledWith([]);
   });
 
   it('shows selected types with different styling', () => {
-    render(<InsuranceTypeSelector selectedTypes={['auto']} onChange={mockOnChange} />);
+    render(<InsuranceTypeSelector selected={['auto']} onSelectionChange={mockOnSelectionChange} />);
     
     const autoElement = screen.getByText('Auto Insurance');
     expect(autoElement.className).toContain('border-sky-600');
@@ -45,10 +45,10 @@ describe('InsuranceTypeSelector', () => {
   });
 
   it('allows multiple selections', () => {
-    render(<InsuranceTypeSelector selectedTypes={['auto']} onChange={mockOnChange} />);
+    render(<InsuranceTypeSelector selected={['auto']} onSelectionChange={mockOnSelectionChange} />);
     
     fireEvent.click(screen.getByText('Home Insurance'));
     
-    expect(mockOnChange).toHaveBeenCalledWith(['auto', 'home']);
+    expect(mockOnSelectionChange).toHaveBeenCalledWith(['auto', 'home']);
   });
 });

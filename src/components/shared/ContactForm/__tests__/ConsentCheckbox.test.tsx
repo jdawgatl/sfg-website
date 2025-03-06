@@ -14,7 +14,7 @@ describe('ConsentCheckbox', () => {
   it('renders the consent text and checkbox', () => {
     render(
       <BrowserRouter>
-        <ConsentCheckbox onCheckedChange={mockOnCheckedChange} />
+        <ConsentCheckbox checked={false} onCheckedChange={mockOnCheckedChange} />
       </BrowserRouter>
     );
     
@@ -26,7 +26,7 @@ describe('ConsentCheckbox', () => {
   it('calls onCheckedChange when checkbox is clicked', () => {
     render(
       <BrowserRouter>
-        <ConsentCheckbox onCheckedChange={mockOnCheckedChange} />
+        <ConsentCheckbox checked={false} onCheckedChange={mockOnCheckedChange} />
       </BrowserRouter>
     );
     
@@ -38,7 +38,7 @@ describe('ConsentCheckbox', () => {
   it('links to the privacy page', () => {
     render(
       <BrowserRouter>
-        <ConsentCheckbox onCheckedChange={mockOnCheckedChange} />
+        <ConsentCheckbox checked={false} onCheckedChange={mockOnCheckedChange} />
       </BrowserRouter>
     );
     
