@@ -1,7 +1,18 @@
 
 import { Button } from "@/components/ui/button";
+import { trackButtonClick, trackOutboundLink } from "@/utils/analytics";
 
 const TitleBondCTA = () => {
+  const handleBuyOnlineClick = () => {
+    trackOutboundLink('https://www.mybondapp.com/23196952');
+    trackButtonClick("Buy Title Bond Online", "Title Bond CTA Section");
+  };
+
+  const handleContactClick = () => {
+    trackButtonClick("Contact Us", "Title Bond CTA Section");
+    document.getElementById('contactSection')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section className="py-16 bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -11,16 +22,14 @@ const TitleBondCTA = () => {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button
-            onClick={() => window.open('https://www.mybondapp.com/23196952', '_blank')}
+            onClick={handleBuyOnlineClick}
             size="lg"
             className="bg-white text-[#9b87f5] hover:bg-gray-100 hover:text-[#7E69AB]"
           >
             Buy Title Bond Online
           </Button>
           <Button
-            onClick={() => {
-              document.getElementById('contactSection')?.scrollIntoView({ behavior: 'smooth' });
-            }}
+            onClick={handleContactClick}
             size="lg"
             variant="outline"
             className="bg-transparent border-white text-white hover:bg-white hover:text-[#9b87f5]"

@@ -1,135 +1,125 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { Form } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import ContactInfoFields from "./ContactInfoFields";
+import PersonalInfoFields from "./PersonalInfoFields";
+import AddressFields from "./AddressFields";
+import InsuranceTypeSelector from "./InsuranceTypeSelector";
+import ConsentCheckbox from "./ConsentCheckbox";
+import { trackFormSubmission } from "@/utils/analytics";
 
-import { PersonalInfoFields } from "./PersonalInfoFields";
-import { ContactInfoFields } from "./ContactInfoFields";
-import { AddressFields } from "./AddressFields";
-import { InsuranceTypeSelector } from "./InsuranceTypeSelector";
-import { ConsentCheckbox } from "./ConsentCheckbox";
+const formSchema = z.object({
+  firstName: z.string().min(2, {
+    message: "First name must be at least 2 characters.",
+  }),
+  lastName: z.string().min(2, {
+    message: "Last name must be at least 2 characters.",
+  }),
+  email: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
+  phone: z.string().min(10, {
+    message: "Please enter a valid phone number.",
+  }),
+  address: z.string().min(5, {
+    message: "Address must be at least 5 characters.",
+  }),
+  city: z.string().min(2, {
+    message: "City must be at least 2 characters.",
+  }),
+  state: z.string().min(2, {
+    message: "State must be at least 2 characters.",
+  }),
+  zipCode: z.string().min(5, {
+    message: "Zip code must be at least 5 characters.",
+  }),
+  insuranceType: z.string().min(2, {
+    message: "Please select an insurance type.",
+  }),
+  message: z.string().optional(),
+  consent: z.boolean().refine((value) => value === true, {
+    message: "You must consent to our terms and conditions.",
+  }),
+});
 
-type FormData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
-  insuranceTypes: string[];
-  message: string;
-  consent: boolean;
-};
-
-const ContactForm = () => {
-  const { toast } = useToast();
+export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedInsuranceTypes, setSelectedInsuranceTypes] = useState<string[]>([]);
+  const { toast } = useToast();
   
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    setValue,
-    watch,
-  } = useForm<FormData>({
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      insuranceTypes: [],
-    }
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      address: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      insuranceType: "",
+      message: "",
+      consent: false,
+    },
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
+    
     try {
-      const dbData = {
-        first_name: data.firstName,
-        last_name: data.lastName,
-        email: data.email,
-        phone: data.phone,
-        address: data.address,
-        city: data.city,
-        state: data.state,
-        zip: data.zip,
-        insurance_type: data.insuranceTypes.join(", "),
-        message: data.message,
-        consent: data.consent
-      };
-      const { error: supabaseError } = await supabase.from("contact_submissions").insert(dbData);
-      if (supabaseError) throw supabaseError;
-      console.log("Sending email notification...");
-      const {
-        data: emailResponse,
-        error: emailError
-      } = await supabase.functions.invoke("send-contact-notification", {
-        body: {
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: data.email,
-          phone: data.phone,
-          message: data.message,
-          insuranceType: data.insuranceTypes.join(", ")
-        }
+      // Track the form submission event
+      trackFormSubmission("contact_form");
+      
+      const response = await fetch("/api/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
-      console.log("Email response:", emailResponse);
-      if (emailError) {
-        console.error("Email error:", emailError);
-        throw emailError;
+      
+      if (!response.ok) {
+        throw new Error(`Failed to send message: ${response.status}`);
       }
+      
       toast({
         title: "Form submitted successfully!",
-        description: "We'll get back to you as soon as possible."
+        description: "We'll get back to you as soon as possible.",
       });
-      reset();
-      setSelectedInsuranceTypes([]);
-    } catch (error: any) {
-      console.error("Error submitting form:", error);
+      
+      form.reset();
+    } catch (error) {
+      console.error("Form submission error:", error);
       toast({
-        title: "Error submitting form",
-        description: error.message || "Please try again later.",
-        variant: "destructive"
+        variant: "destructive",
+        title: "An error occurred",
+        description: "Please try again later or contact us directly.",
       });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleInsuranceTypesChange = (types: string[]) => {
-    setSelectedInsuranceTypes(types);
-    setValue("insuranceTypes", types);
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <PersonalInfoFields register={register} errors={errors} />
-      
-      <ContactInfoFields register={register} errors={errors} />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <PersonalInfoFields form={form} />
+        <ContactInfoFields form={form} />
+        <AddressFields form={form} />
+        <InsuranceTypeSelector form={form} />
 
-      <AddressFields register={register} errors={errors} />
-      
-      <InsuranceTypeSelector 
-        selectedTypes={selectedInsuranceTypes} 
-        onChange={handleInsuranceTypesChange} 
-      />
+        <ConsentCheckbox form={form} />
 
-      <Textarea 
-        placeholder="How can we help you?" 
-        {...register("message")} 
-        className="min-h-[100px]" 
-      />
-
-      <ConsentCheckbox onCheckedChange={(checked) => setValue("consent", checked)} />
-
-      <Button type="submit" className="w-full bg-sky-600 hover:bg-sky-700" disabled={isSubmitting}>
-        {isSubmitting ? "Submitting..." : "Submit"}
-      </Button>
-    </form>
+        <div>
+          <Button type="submit" disabled={isSubmitting} className="w-full">
+            {isSubmitting ? "Submitting..." : "Submit"}
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
-};
-
-export default ContactForm;
+}
