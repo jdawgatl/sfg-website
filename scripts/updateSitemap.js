@@ -34,12 +34,15 @@ const routes = [
   { path: '/sitemap', priority: 0.5, changefreq: 'monthly' },
   { path: '/surety-bonds', priority: 1.0, changefreq: 'weekly' },
   { path: '/landing/title-bonds', priority: 1.0, changefreq: 'weekly' },
+  { path: '/glossary', priority: 0.8, changefreq: 'monthly' },
+  { path: '/safeway-insurance', priority: 1.0, changefreq: 'weekly' },
 ];
 
 const baseUrl = 'https://sfg-ins.com';
 const today = format(new Date(), 'yyyy-MM-dd');
 
 function generateSitemapXml() {
+  // Ensure no BOM or whitespace is added before the XML declaration
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
   xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
   
@@ -60,7 +63,8 @@ function generateSitemapXml() {
 const sitemap = generateSitemapXml();
 const sitemapPath = path.resolve(__dirname, '../public/sitemap.xml');
 
-fs.writeFileSync(sitemapPath, sitemap, 'utf8');
+// Use the {encoding: 'utf8'} option to ensure no BOM is added
+fs.writeFileSync(sitemapPath, sitemap, {encoding: 'utf8'});
 console.log(`Sitemap updated at ${sitemapPath}`);
 
 // Generate an HTML sitemap file

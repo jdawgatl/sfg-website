@@ -67,9 +67,12 @@ export const generateSitemapFromRoutes = () => {
     { path: '/georgia-insurance', priority: 1.0, changefreq: 'monthly' as const },
     { path: '/tennessee-auto-insurance', priority: 1.0, changefreq: 'monthly' as const },
     { path: '/mississippi-home-insurance', priority: 1.0, changefreq: 'monthly' as const },
+    { path: '/safeway-insurance', priority: 1.0, changefreq: 'weekly' as const },
+    { path: '/privacy', priority: 0.5, changefreq: 'yearly' as const },
+    { path: '/sitemap', priority: 0.5, changefreq: 'monthly' as const },
     { path: '/surety-bonds', priority: 1.0, changefreq: 'weekly' as const },
     { path: '/landing/title-bonds', priority: 1.0, changefreq: 'weekly' as const },
-    // Add more routes as needed
+    { path: '/glossary', priority: 0.8, changefreq: 'monthly' as const },
   ];
   
   const sitemapUrls: SitemapUrl[] = routes.map(route => ({
@@ -86,6 +89,7 @@ export const generateSitemapFromRoutes = () => {
  * Creates a sitemap.xml string from an array of URLs
  */
 export const createSitemapXml = (urls: SitemapUrl[]): string => {
+  // Ensure no BOM or whitespace is added before the XML declaration
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
   xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
   
