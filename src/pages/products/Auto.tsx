@@ -5,10 +5,12 @@ import AutoHero from "@/components/auto/AutoHero";
 import AutoContent from "@/components/auto/AutoContent";
 import SEOContent from "@/components/auto/SEOContent";
 import HomeButton from "@/components/shared/HomeButton";
+import { SEOWrapper } from "@/components/seo/SEOWrapper";
 
 const Auto = () => {
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOWrapper />
       <Navbar />
 
       <main className="flex-grow">

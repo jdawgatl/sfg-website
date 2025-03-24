@@ -29,6 +29,9 @@ const MississippiHomeInsurance = lazy(() => import("@/pages/landing/MississippiH
 const SuretyBonds = lazy(() => import("@/pages/landing/SuretyBonds"));
 const TitleBonds = lazy(() => import("@/pages/landing/TitleBonds"));
 
+// New Safeway Insurance landing page
+const SafewayInsurance = lazy(() => import("@/pages/landing/SafewayInsurance"));
+
 // Route configuration
 export const routes: RouteObject[] = [
   {
@@ -110,6 +113,10 @@ export const routes: RouteObject[] = [
   {
     path: "/landing/title-bonds",
     element: <TitleBonds />
+  },
+  {
+    path: "/safeway-insurance",
+    element: <SafewayInsurance />
   },
   {
     path: "*",

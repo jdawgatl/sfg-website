@@ -8,10 +8,12 @@ import TennesseeCities from "@/components/tennessee/TennesseeCities";
 import TennesseeCTA from "@/components/tennessee/TennesseeCTA";
 import TennesseeContactForm from "@/components/tennessee/TennesseeContactForm";
 import HomeButton from "@/components/shared/HomeButton";
+import { SEOWrapper } from "@/components/seo/SEOWrapper";
 
 const TennesseeAutoInsurance = () => {
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOWrapper />
       <Navbar />
       <main className="flex-grow">
         <div className="fixed bottom-6 right-6 z-40">

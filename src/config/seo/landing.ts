@@ -25,5 +25,10 @@ export const landingSEOConfig = {
     title: "Georgia Title Bonds | Lost Vehicle Title Bond Solutions",
     description: "Quick and affordable title bonds in Georgia. Certificate of title bonds for vehicles with missing titles. Same-day service available.",
     keywords: "Standard Financial Group, insurance Fayetteville GA, cheap car insurance, cheap auto insurance, affordable insurance, title bond, cheap title bond, car title bond, lost title bond, Georgia title bond, certificate of title bond, lost title bond Georgia, car title bond"
+  },
+  safewayInsurance: {
+    title: "Safeway Insurance | Affordable Auto Coverage in Georgia",
+    description: "Your trusted local Safeway Insurance agent in Georgia. Get affordable Safeway auto insurance quotes, low down payments, and exceptional service.",
+    keywords: "Safeway Insurance, Safeway Insurance Georgia, Safeway agent near me, cheap Safeway insurance, affordable Safeway auto insurance, Safeway quote, S & S Insurance, Standard Financial Group, SFG Insurance, MySafeway, Safeway Insurance agent, Safeway car insurance, best car insurance Georgia"
   }
 };

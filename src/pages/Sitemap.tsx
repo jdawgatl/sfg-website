@@ -58,6 +58,7 @@ const Sitemap = () => {
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-gray-700 border-b pb-2">Specialty Services</h2>
             <ul className="space-y-2">
+              <li><Link to="/safeway-insurance" className="text-blue-600 hover:underline">Safeway Insurance</Link></li>
               <li><Link to="/surety-bonds" className="text-blue-600 hover:underline">Surety Bonds</Link></li>
               <li><Link to="/landing/title-bonds" className="text-blue-600 hover:underline">Title Bonds</Link></li>
             </ul>
