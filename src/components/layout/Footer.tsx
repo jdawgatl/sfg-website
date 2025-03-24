@@ -47,9 +47,9 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Column 3: Locations */}
+          {/* Column 3: Specialty Services - formerly Locations */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Locations</h3>
+            <h3 className="text-lg font-semibold mb-4">Specialty Services</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/georgia-insurance" className="hover:text-sky-400 transition-colors">Georgia Insurance</Link>
@@ -59,6 +59,12 @@ const Footer = () => {
               </li>
               <li>
                 <Link to="/mississippi-home-insurance" className="hover:text-sky-400 transition-colors">Mississippi Home Insurance</Link>
+              </li>
+              <li>
+                <Link to="/safeway-insurance" className="hover:text-sky-400 transition-colors">Safeway Insurance</Link>
+              </li>
+              <li>
+                <Link to="/landing/title-bonds" className="hover:text-sky-400 transition-colors">Title Bonds</Link>
               </li>
             </ul>
           </div>
