@@ -1,3 +1,4 @@
+
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ContactForm from "@/components/shared/ContactForm";
@@ -5,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { MapPin, Clock, Phone, Mail } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
+import HomeButton from "@/components/shared/HomeButton";
 
 const Contact = () => {
   return (
@@ -20,6 +22,10 @@ const Contact = () => {
 
       <Navbar />
       <main className="flex-grow py-16 px-4 sm:px-6 lg:px-8">
+        <div className="fixed bottom-6 right-6 z-40">
+          <HomeButton />
+        </div>
+        
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

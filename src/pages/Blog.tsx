@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import HomeButton from "@/components/shared/HomeButton";
 
 const blogPosts = [
   {
@@ -171,6 +172,10 @@ const Blog = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow py-16 px-4 sm:px-6 lg:px-8">
+        <div className="fixed bottom-6 right-6 z-40">
+          <HomeButton />
+        </div>
+        
         <div className="max-w-7xl mx-auto">
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}

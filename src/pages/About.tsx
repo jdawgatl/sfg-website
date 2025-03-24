@@ -4,6 +4,7 @@ import Footer from "@/components/layout/Footer";
 import { Card } from "@/components/ui/card";
 import { UserCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import HomeButton from "@/components/shared/HomeButton";
 
 const teamMembers = [
   {
@@ -25,6 +26,10 @@ const About = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-gray-50">
+        <div className="fixed bottom-6 right-6 z-40">
+          <HomeButton />
+        </div>
+        
         <div className="max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
