@@ -223,8 +223,7 @@ const SafewayInsurance = () => {
                 </Button>
                 <Button 
                   asChild
-                  variant="outline" 
-                  className="border-white text-white hover:bg-white/10 text-lg px-8 py-6"
+                  className="bg-blue-600 text-white hover:bg-blue-700 border border-white/20 text-lg px-8 py-6"
                 >
                   <Link to="/contact">Contact Our Agency</Link>
                 </Button>

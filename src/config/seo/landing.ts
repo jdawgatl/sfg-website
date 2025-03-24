@@ -29,6 +29,6 @@ export const landingSEOConfig = {
   safewayInsurance: {
     title: "Safeway Insurance | Affordable Auto Coverage in Georgia",
     description: "Your trusted local Safeway Insurance agent in Georgia. Get affordable Safeway auto insurance quotes, low down payments, and exceptional service.",
-    keywords: "Safeway Insurance, Safeway Insurance Georgia, Safeway agent near me, cheap Safeway insurance, affordable Safeway auto insurance, Safeway quote, S & S Insurance, Standard Financial Group, SFG Insurance, MySafeway, Safeway Insurance agent, Safeway car insurance, best car insurance Georgia"
+    keywords: "Safeway Insurance, Safeway Insurance Georgia, Safeway agent near me, cheap Safeway insurance, affordable Safeway auto insurance, Safeway quote, S & S Insurance, Standard Financial Group, SFG Insurance, MySafeway, Safeway Insurance agent, Safeway car insurance, best car insurance Georgia, Safeway insurance Atlanta, Safeway insurance Fayetteville, Safeway insurance Peachtree City, Safeway insurance Newnan, Safeway insurance McDonough, Safeway insurance agent near me, cheap insurance, low down payment"
   }
 };

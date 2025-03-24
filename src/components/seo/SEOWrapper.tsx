@@ -48,6 +48,7 @@ export const SEOWrapper = () => {
     if (normalizedPath === '/mississippi-home-insurance') return landingSEOConfig.mississippiHomeInsurance;
     if (normalizedPath === '/surety-bonds') return landingSEOConfig.suretyBonds;
     if (normalizedPath === '/landing/title-bonds') return landingSEOConfig.titleBonds;
+    if (normalizedPath === '/safeway-insurance') return landingSEOConfig.safewayInsurance;
     
     // 404 page
     if (normalizedPath === '*') return pageSEOConfig.notFound;
