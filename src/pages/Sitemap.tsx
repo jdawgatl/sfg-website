@@ -29,6 +29,7 @@ const Sitemap = () => {
               <li><Link to="/quote" className="text-blue-600 hover:underline">Get a Quote</Link></li>
               <li><Link to="/contact" className="text-blue-600 hover:underline">Contact Us</Link></li>
               <li><Link to="/blog" className="text-blue-600 hover:underline">Insurance Blog</Link></li>
+              <li><Link to="/glossary" className="text-blue-600 hover:underline">Insurance Glossary</Link></li>
               <li><Link to="/privacy" className="text-blue-600 hover:underline">Privacy Policy</Link></li>
             </ul>
           </div>

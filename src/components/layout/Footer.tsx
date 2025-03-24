@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Column 1: Company Info */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Standard Financial Group</h3>
@@ -86,6 +86,18 @@ const Footer = () => {
                 <Link to="/privacy" className="hover:text-sky-400 transition-colors">Privacy Policy</Link>
               </li>
             </ul>
+          </div>
+          
+          {/* NEW Column 5: Insurance Glossary */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Insurance Glossary</h3>
+            <p className="text-gray-400 mb-3">Learn about insurance terms and concepts with our comprehensive glossary.</p>
+            <Link 
+              to="/glossary" 
+              className="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded transition-colors inline-block"
+            >
+              View Glossary
+            </Link>
           </div>
         </div>
         

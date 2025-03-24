@@ -19,6 +19,7 @@ const Admin = lazy(() => import("@/pages/Admin"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const AgentLogin = lazy(() => import("@/pages/AgentLogin"));
 const Sitemap = lazy(() => import("@/pages/Sitemap"));
+const Glossary = lazy(() => import("@/pages/Glossary"));
 
 // State landing pages
 const GeorgiaInsurance = lazy(() => import("@/pages/landing/GeorgiaInsurance"));
@@ -89,6 +90,10 @@ export const routes: RouteObject[] = [
   {
     path: "/sitemap",
     element: <Sitemap />
+  },
+  {
+    path: "/glossary",
+    element: <Glossary />
   },
   {
     path: "/admin/*",
