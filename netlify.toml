@@ -51,6 +51,7 @@
 [build]
   command = "npm run build"
   publish = "dist"
+  functions = "netlify/functions"
 
 [build.processing]
   skip_processing = false
@@ -62,3 +63,14 @@
   minify = true
 [build.processing.images]
   compress = true
+
+# CRON jobs to ping Supabase to prevent inactivity
+[functions]
+  directory = "netlify/functions"
+
+[[plugins]]
+  package = "@netlify/plugin-functions-core"
+
+# Schedule the ping function to run twice a week (Monday and Thursday at 3:15 AM UTC)
+[functions.ping-supabase]
+  schedule = "15 3 * * 1,4"
