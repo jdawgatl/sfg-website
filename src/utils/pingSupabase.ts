@@ -7,7 +7,9 @@ import { supabase } from "@/integrations/supabase/client";
 export const pingSupabase = async (): Promise<{ success: boolean; timestamp?: string; error?: any }> => {
   try {
     // Call a lightweight RPC function to keep the connection active
-    const { data, error } = await supabase.rpc('now');
+    // Using the any type assertion to bypass TypeScript's type checking for RPC functions
+    // This is necessary because the Database type definition doesn't know about our custom RPC function
+    const { data, error } = await (supabase.rpc as any)('now');
     
     if (error) {
       console.error("Error pinging Supabase:", error);
